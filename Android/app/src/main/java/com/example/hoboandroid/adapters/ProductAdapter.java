@@ -5,9 +5,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.models.Product;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -45,10 +54,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
                 super(itemView);
             }
             public void bind(Product product){
+                    TextView productName = itemView.findViewById(R.id.productItemName);
+                    productName.setText(product.getProductName());
 
+                    // productRating = itemView.findViewById(R.id.productItemRating);
+                    //productName.setText(product.getProductName());
 
-        
-        
+                    TextView productPrice = itemView.findViewById(R.id.productItemPrice);
+
+                    RatingBar  rating = itemView.findViewById(R.id.productItemRating);
+                    rating.setRating(Float.parseFloat(product.getProductRating()));
+                    rating.setEnabled(false);
+
+                    try {
+                            Glide.with(itemView.getContext())
+                                    .load(R.string.category_path + (String)product.getAttributes().get("image_url"))
+                                    .into((ImageView) itemView.findViewById(R.id.category_image));
+                    } catch (JSONException e) {
+                            e.printStackTrace();
+                    }
+
             }
         }
 }

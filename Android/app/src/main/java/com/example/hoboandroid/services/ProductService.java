@@ -12,17 +12,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ProductService {
-    @GET("/product/listcategory")
+    @GET("/listcategory")
     Call<List<Category>> getCategories();
 
-    @GET("/product/getall")
-    Call<List<Category>> getAllProducts();
+    @POST("/listsubcategory")
+    Call<List<SubCategory>> getSubCategory(@Query("category") String category);
 
-    @GET("/product/category")
-    Call<List<Product>> getProrductsByCatAndSub(@Query("category") String category, @Query("subCategory") String subCategory);
+    @GET("/getall")
+    Call<List<Product>> getAllProducts();
+
+    @GET("/category")
+    Call<List<Product>> getProrductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
 
 
-    @GET("/product/get")
+    @GET("/get")
     Call<Product> getProductById(@Query("productId") int productId);
 
 }

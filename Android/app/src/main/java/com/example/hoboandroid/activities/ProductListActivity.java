@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.hoboandroid.R;
@@ -27,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ProductListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity implements View.OnClickListener{
 
     RecyclerView productRecyclerView;
     ProductAdapter productAdapter;
@@ -77,14 +78,14 @@ public class ProductListActivity extends AppCompatActivity {
         ProductService service = retrofit.create(ProductService.class);
 
         service.getProrductsByCatAndSub(null,subcategory)
-                .enqueue(new Callback<List<Product>>() { // this enqueue method calls api asynchronously and success/error
-                    @Override                              //hover over the enqueue method to check what this is
+                .enqueue(new Callback<List<Product>>() {
+                    @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
 
                         if(response.body() != null){
 
                             productList.addAll(response.body());
-                            productAdapter.notifyDataSetChanged(); // to notify the current recycler view we use recyclerView.ada
+                            productAdapter.notifyDataSetChanged();
                             Log.e("ProductListActivity",response.body().toString());
 
                             getRatings();
@@ -151,6 +152,11 @@ public class ProductListActivity extends AppCompatActivity {
 
     //TODO search function  using search
     void getProducts(){
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

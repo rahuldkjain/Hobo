@@ -1,37 +1,37 @@
 package com.hobo.merchant.model;
 
 public class MerchantDTO {
-    int merchant_id;
-    String merchant_name;
-    float merchant_rating;
+    int merchantId;
+    String merchantName;
+    float merchantRating;
     String description;
     String address;
     String email;
-    long phone_number;
-    int merchant_score;
+    long phoneNumber;
+    int merchantScore;
 
-    public int getMerchant_id() {
-        return merchant_id;
+    public int getMerchantId() {
+        return merchantId;
     }
 
-    public void setMerchant_id(int merchant_id) {
-        this.merchant_id = merchant_id;
+    public void setMerchantId(int merchantId) {
+        this.merchantId = merchantId;
     }
 
-    public String getMerchant_name() {
-        return merchant_name;
+    public String getMerchantName() {
+        return merchantName;
     }
 
-    public void setMerchant_name(String merchant_name) {
-        this.merchant_name = merchant_name;
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
-    public float getMerchant_rating() {
-        return merchant_rating;
+    public float getMerchantRating() {
+        return merchantRating;
     }
 
-    public void setMerchant_rating(float merchant_rating) {
-        this.merchant_rating = merchant_rating;
+    public void setMerchantRating(float merchantRating) {
+        this.merchantRating = merchantRating;
     }
 
     public String getDescription() {
@@ -58,33 +58,33 @@ public class MerchantDTO {
         this.email = email;
     }
 
-    public long getPhone_number() {
-        return phone_number;
+    public long getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(long phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getMerchant_score() {
-        return merchant_score;
+    public int getMerchantScore() {
+        return merchantScore;
     }
 
-    public void setMerchant_score(int merchant_score) {
-        this.merchant_score = merchant_score;
+    public void setMerchantScore(int merchantScore) {
+        this.merchantScore = merchantScore;
     }
 
     @Override
     public String toString() {
         return "MerchantDTO{" +
-                "merchant_id=" + merchant_id +
-                ", merchant_name='" + merchant_name + '\'' +
-                ", merchant_rating=" + merchant_rating +
+                "merchantId=" + merchantId +
+                ", merchantName='" + merchantName + '\'' +
+                ", merchantRating=" + merchantRating +
                 ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
-                ", phone_number=" + phone_number +
-                ", merchant_score=" + merchant_score +
+                ", phoneNumber=" + phoneNumber +
+                ", merchantScore=" + merchantScore +
                 '}';
     }
 }

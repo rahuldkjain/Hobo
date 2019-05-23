@@ -39,6 +39,14 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         String category = intent.getStringExtra("Category Object");
 
+        subCategoryRecyclerViewAdapter = new SubCategoryAdapter(subCategoryList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        subCategoryRecyclerView.setLayoutManager(linearLayoutManager);
+
+
+        subCategoryRecyclerView.setAdapter(subCategoryRecyclerViewAdapter);
 
         getSubCategories(category);
 
@@ -66,14 +74,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                             boolean b = subCategoryList.addAll(response.body());
                             Log.d("HOBOLandingPage",response.body().toString()+" "+b);
 
-                            subCategoryRecyclerViewAdapter = new SubCategoryAdapter(subCategoryList);
 
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                            subCategoryRecyclerView.setLayoutManager(linearLayoutManager);
-
-
-                            subCategoryRecyclerView.setAdapter(subCategoryRecyclerViewAdapter);
                             subCategoryRecyclerViewAdapter.notifyDataSetChanged();
 
 
@@ -89,9 +90,6 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                         Log.d("HOBOLandingPage",t.getMessage()+" failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
                 });
-
-
-
 
 
     }

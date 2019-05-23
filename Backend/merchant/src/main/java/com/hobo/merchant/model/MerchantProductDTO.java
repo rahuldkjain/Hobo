@@ -1,27 +1,36 @@
 package com.hobo.merchant.model;
 
 public class MerchantProductDTO {
-    int merchant_id;
-    int product_id;
+    int indexx;
+    int merchantId;
+    int productId;
     int stock;
     float price;
-    float product_rating;
-    int products_sold;
+    float productRating;
+    int productsSold;
 
-    public int getMerchant_id() {
-        return merchant_id;
+    public int getIndexx() {
+        return indexx;
     }
 
-    public void setMerchant_id(int merchant_id) {
-        this.merchant_id = merchant_id;
+    public void setIndexx(int indexx) {
+        this.indexx = indexx;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getMerchantId() {
+        return merchantId;
     }
 
-    public void setProduct_id(int product_id) {
-        this.product_id = product_id;
+    public void setMerchantId(int merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getStock() {
@@ -40,31 +49,32 @@ public class MerchantProductDTO {
         this.price = price;
     }
 
-    public float getProduct_rating() {
-        return product_rating;
+    public float getProductRating() {
+        return productRating;
     }
 
-    public void setProduct_rating(float product_rating) {
-        this.product_rating = product_rating;
+    public void setProductRating(float productRating) {
+        this.productRating = productRating;
     }
 
-    public int getProducts_sold() {
-        return products_sold;
+    public int getProductsSold() {
+        return productsSold;
     }
 
-    public void setProducts_sold(int products_sold) {
-        this.products_sold = products_sold;
+    public void setProductsSold(int productsSold) {
+        this.productsSold = productsSold;
     }
 
     @Override
     public String toString() {
         return "MerchantProductDTO{" +
-                "merchant_id=" + merchant_id +
-                ", product_id=" + product_id +
+                "indexx=" + indexx +
+                ", merchantId=" + merchantId +
+                ", productId=" + productId +
                 ", stock=" + stock +
                 ", price=" + price +
-                ", product_rating=" + product_rating +
-                ", products_sold=" + products_sold +
+                ", productRating=" + productRating +
+                ", productsSold=" + productsSold +
                 '}';
     }
 }

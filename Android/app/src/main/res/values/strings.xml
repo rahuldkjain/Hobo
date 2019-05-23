@@ -3,4 +3,5 @@
     <string name="category_api">http://api.themoviedb.org</string>
     <string name="category_path">http://image.tmdb.org/t/p/w185/</string>
     <string name="product_api">http://api.themoviedb.org</string>
+    <string name="ordered_api">http://api/</string>
 </resources>
