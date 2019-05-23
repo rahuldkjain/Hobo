@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 @Document(collection = Product.COLLECTION_NAME)
 public class Product {
-    public static final String COLLECTION_NAME="product";
+    static final String COLLECTION_NAME="product";
     @Id
     String productId;
     String productName;

@@ -3,6 +3,7 @@ package com.hobo.product.service.ProductServiceImpl;
 
 import com.hobo.product.exceptions.ProductAlreadyExists;
 import com.hobo.product.exceptions.ProductNotFound;
+import com.hobo.product.model.Category;
 import com.hobo.product.model.Product;
 import com.hobo.product.model.ProductDTO;
 import com.hobo.product.repository.ProductRepository;
@@ -11,6 +12,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -93,4 +97,27 @@ public class ProductServiceImpl implements ProductService {
 
         return productDTO;
     }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        products = repository.findAll();
+        return products;
+    }
+
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        List<Product> products = new ArrayList<>();
+        products = repository.findByCategory(category);
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductsBySubCategory(String subCategory) {
+        List<Product> products = new ArrayList<>();
+        products = repository.findBySubCategory(subCategory);
+        return products;
+    }
+
 }
