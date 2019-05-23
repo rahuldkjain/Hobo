@@ -1,6 +1,7 @@
 package com.hobo.merchant.service.implementation;
 
 
+import com.hobo.merchant.entity.JoinedTable;
 import com.hobo.merchant.entity.Merchant;
 import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.repository.MerchantRepositoryImpl;
@@ -8,6 +9,8 @@ import com.hobo.merchant.service.MerchantService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public  class MerchantServiceImpl implements MerchantService {
@@ -17,7 +20,8 @@ public  class MerchantServiceImpl implements MerchantService {
 
     @Override
     public MerchantDTO createMerchant(MerchantDTO merchantDTO) {
-        MerchantDTO checkAlreadyExists=readMerchantById(merchantDTO.getMerchant_id());
+        //checking primary key
+        MerchantDTO checkAlreadyExists=readMerchantById(merchantDTO.getMerchantId());
         MerchantDTO merchantDTO1=null;
 
         if(checkAlreadyExists!=null)
@@ -47,7 +51,7 @@ public  class MerchantServiceImpl implements MerchantService {
 
     @Override
     public MerchantDTO updateMerchant(MerchantDTO merchantDTO) {
-        MerchantDTO checkAlreadyExists=readMerchantById(merchantDTO.getMerchant_id());
+        MerchantDTO checkAlreadyExists=readMerchantById(merchantDTO.getMerchantId());
 
         MerchantDTO merchantDTO1=null;
 
@@ -72,5 +76,11 @@ public  class MerchantServiceImpl implements MerchantService {
             merchantRepository.delete(merchant);
         }
         return merchantDTO;
+    }
+
+    @Override
+    public List<JoinedTable> getTopMerchant() {
+        List<JoinedTable> topMerchant=merchantRepository.findTopMerchant();
+        return topMerchant;
     }
 }
