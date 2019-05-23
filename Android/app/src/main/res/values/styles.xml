@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="custom_style_toolbar_item">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_margin">10dp</item>
+    </style>
 </resources>

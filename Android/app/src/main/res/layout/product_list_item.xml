@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_new"
+    android:layout_margin="5dp"
+    android:padding="2dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <ImageView
+        android:id="@+id/productItemImage"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/productItemName"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/productItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="item"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toStartOf="@+id/productItemPrice"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/productItemImage"
+        app:layout_constraintTop_toTopOf="@+id/productItemImage" />
+
+    <TextView
+        android:id="@+id/productItemPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/productItemName"
+        app:layout_constraintTop_toTopOf="@+id/productItemImage" />
+
+
+    <TextView
+        android:id="@+id/productItemRate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/productItemRating"
+        app:layout_constraintStart_toEndOf="@+id/productItemImage"
+        app:layout_constraintTop_toBottomOf="@+id/productItemName" />
+
+    <RatingBar
+        android:id="@+id/productItemRating"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/productItemRate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/productItemRate"
+        app:layout_constraintTop_toTopOf="@+id/productItemRate" />
+
+
+</android.support.constraint.ConstraintLayout>
