@@ -1,44 +1,47 @@
 <template>
   <div >
+      
       <br>
       <b-row>
           
             <b-col sm="6">
-            <b-card bg-variant="light" class="text-center">
-            <h4>Login</h4>
-            <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-            <b-form-group
-                id="input-group-1"
-                label="Email address:"
-                label-for="input-1">
+            <b-card bg-variant="light" class="text-center cardlogin">
+                <h4>Login</h4>
+                <b-form @submit="onLogin" v-if="show">
+                <b-form-group
+                    id="login-email"
+                    label="Email address:"
+                    label-for="login-email-box">
     
-            <b-form-input
-                size="4"  
-                id="input-1"
-                v-model="form.email"
-                type="email"
+                    <b-form-input
+                        size="4"  
+                        id="login-email-box"
+                        v-model="form.loginemail"
+                        type="email"
+                        required
+                        placeholder="Enter email">
+                    </b-form-input>
+
+            </b-form-group>
+
+            <b-form-group id="login-password" label="Your Password:" label-for="login-password-box">
+                <b-form-input
+                id="login-password-box"
+                type="password"
+                v-model="form.loginpswd"
                 required
-                placeholder="Enter email">
+                placeholder="Enter password">
             </b-form-input>
-
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Your Password:" label-for="input-2">
-            <b-form-input
-            id="input-2"
-            v-model="form.name"
-            required
-            placeholder="Enter password">
-        </b-form-input>
-        </b-form-group>
+            </b-form-group>
 
       
 
         <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
+        <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
         </b-form>
       </b-card>
 
+        {{getLoggedIn}}
         <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
         </b-card>
@@ -46,34 +49,70 @@
         
           
       <b-col sm="5">
-      <b-card bg-variant="light" class="text-center">
-          <h4>Signin</h4>
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-card bg-variant="light" class="text-center cardsignup">
+          <h4>Signup</h4>
+        <b-form @submit="onSignup" v-if="show">
              <b-form-group
-                id="name"
+                id="signup-name"
                 label="Name:"
-                label-for="name">
+                label-for="signup-name-box">
     
             <b-form-input
                 size="4"  
-                id="name"
-                v-model="form.name"
+                id="signup-name-box"
+                v-model="form.signupname"
                 type="text"
+                minlength="3"
                 required
                 placeholder="Enter name">
             </b-form-input>
 
         </b-form-group>
-            
-            <b-form-group
-                id="input-group-1"
-                label="Email address:"
-                label-for="input-1">
+
+        <!-- <b-form-invalid-feedback :state="nameState">
+            Enter at least 3 characters
+        </b-form-invalid-feedback> -->
+        <b-form-group
+                id="signup-phone"
+                label="Phone Number:"
+                label-for="signup-phone-box">
     
             <b-form-input
                 size="4"  
-                id="input-1"
-                v-model="form.email"
+                id="signup-phone-box"
+                v-model="form.signupphone"
+                type="tel"
+                pattern='[0-9]{10}'
+                required
+                placeholder="Enter Phone">
+            </b-form-input>
+
+        </b-form-group>
+        <b-form-group
+                id="signup-dob"
+                label="Date Of Birth:"
+                label-for="signup-dob-box">
+    
+            <b-form-input
+                size="4"  
+                id="signup-dob-box"
+                v-model="form.signupdob"
+                type="date"
+                value="dd/mm/yy"
+                required
+                placeholder="Enter date of birth">
+            </b-form-input>
+
+        </b-form-group>            
+            <b-form-group
+                id="signup-email"
+                label="Email address:"
+                label-for="signup-email-box">
+    
+            <b-form-input
+                size="4"  
+                id="signup-email-box"
+                v-model="form.signupemail"
                 type="email"
                 required
                 placeholder="Enter email">
@@ -81,25 +120,24 @@
 
         </b-form-group>
 
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+      <b-form-group id="signup-password" label="Your Password:" label-for="signup-password-box">
         <b-form-input
-          id="input-2"
-          v-model="form.name"
+          id="signup-password-box"
+          type="password"
+          v-model="form.signuppswd"
           required
-          placeholder="Enter name"
+          placeholder="Enter Password"
         ></b-form-input>
       </b-form-group>
 
       
 
       <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
     </b-form>
       </b-card>
 
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
+    
       </b-col>
           
       </b-row>
@@ -107,42 +145,67 @@
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue';
+import {mapGetters, mapActions} from 'vuex';
   export default {
     data() {
       return {
         form: {
-          email: '',
-          name: '',
-        //   food: null,
-        //   checked: []
+          loginemail: '',
+          loginpswd: '',
+          signupemail:'',
+          signupname:'',
+          signupphone:'',
+          signupdob:''
         },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
+        logIn: false,
         show: true
       }
     },
+    props: {
+        
+    },
+    computed: {
+     ...mapGetters(['getLoggedIn']),
+
+    //  nameState() {
+    //      return this.form.signupname.length > 2 ? true : false
+    //  }
+     
+    },
     methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        alert(JSON.stringify(this.form))
+      onLogin(evt) {
+        //   console.log(evt);
+        evt.preventDefault();
+        alert(JSON.stringify(this.form));
+
+       this.$store.dispatch('checkLogin');
+       console.log("on clicking login "+ this.$store.getters.getLoggedIn);
+
+        sessionStorage.setItem('loggedInFlag',this.$store.getters.getLoggedIn);
+
+    
+        this.$router.push("/");
       },
-      onReset(evt) {
-        evt.preventDefault()
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
+      onSignup(evt) {
+          evt.preventDefault()
+        alert(JSON.stringify(this.form))
+        this.$router.push("/")
       }
+    },
+    components: {
+        Navbar
     }
   }
 </script>
 <style scoped>
-
+.cardlogin{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.cardsignup{
+    margin-left:0;
+}
 </style>
 
 
