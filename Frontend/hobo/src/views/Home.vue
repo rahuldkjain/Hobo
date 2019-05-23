@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Carousel/><br><br>
-    <h4>Categories </h4><br>
+    <h4>Products </h4><br>
     <ProductItems/>
     <!-- <StarRating/> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
