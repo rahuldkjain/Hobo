@@ -14,7 +14,6 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import Carousel from '@/components/Carousel.vue'
 import ProductItems from '@/components/ProductItems.vue'
-import StarRating from '@/components/StarRating.vue'
 
 export default {
   name: 'home',
@@ -22,7 +21,7 @@ export default {
     HelloWorld,
     Carousel,
     ProductItems,
-    StarRating
+   
   }
 }
 </script>

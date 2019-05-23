@@ -1,9 +1,16 @@
 <template>
-    <h1> Heyyyy</h1>
+    <div>
+        <h1> Categories </h1>
+        <ProductItems/>
+    </div>
 </template>
 <script>
+import ProductItems from '@/components/ProductItems.vue'
 export default {
-    name: 'Category'
+    name: 'Category',
+    components: {
+        ProductItems
+    }
 }
 </script>
 

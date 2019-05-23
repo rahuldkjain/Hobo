@@ -7,18 +7,23 @@ import store from './store/store.js'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import StarRating from 'vue-star-rating'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+// import store from './store'
+// import Axios from 'axios'
 
 // Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
-Vue.use(StarRating)
 
+library.add(faCoffee)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 new Vue({
   router,
   store,
-  StarRating,
   render: h => h(App)
 }).$mount('#app')

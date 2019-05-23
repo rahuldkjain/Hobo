@@ -63,11 +63,11 @@ export default new Router({
     path: '/profile',
     component: Profile
   },
-  {
-    name: 'Search',
-    path: '/search',
-    component: Search
-  },
+  // {
+  //   name: 'Search',
+  //   path: '/search',
+  //   component: Search
+  // },
   {
     name: 'SuccessPage',
     path: '/success',
