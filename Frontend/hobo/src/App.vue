@@ -1,12 +1,25 @@
 <template>
   <div id="app">
     <div id="nav">
+      <Navbar fixed="top"/>
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/category">Category</router-link>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Navbar from './components/Navbar.vue'
+import { appendFile } from 'fs';
+export default {
+  name: 'app',
+  components: {
+    Navbar
+  }
+}
+</script>
+
 
 <style>
 #app {
@@ -16,11 +29,12 @@
   text-align: center;
   color: #2c3e50;
 }
-#nav {
+/* #nav {
   padding: 30px;
-}
+} */
 
 #nav a {
+  padding-top: 10px;
   font-weight: bold;
   color: #2c3e50;
 }

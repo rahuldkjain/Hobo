@@ -13,8 +13,10 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.20",
     "core-js": "^2.6.5",
+    "jquery": "^1.9.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-star-rating": "^1.6.1",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
