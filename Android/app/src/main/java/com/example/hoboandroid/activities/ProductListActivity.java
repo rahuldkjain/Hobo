@@ -77,14 +77,14 @@ public class ProductListActivity extends AppCompatActivity {
         ProductService service = retrofit.create(ProductService.class);
 
         service.getProrductsByCatAndSub(null,subcategory)
-                .enqueue(new Callback<List<Product>>() { // this enqueue method calls api asynchronously and success/error
-                    @Override                              //hover over the enqueue method to check what this is
+                .enqueue(new Callback<List<Product>>() {
+                    @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
 
                         if(response.body() != null){
 
                             productList.addAll(response.body());
-                            productAdapter.notifyDataSetChanged(); // to notify the current recycler view we use recyclerView.ada
+                            productAdapter.notifyDataSetChanged();
                             Log.e("ProductListActivity",response.body().toString());
 
                             getRatings();

@@ -1,6 +1,6 @@
 package com.example.hoboandroid.models;
 
-import com.google.gson.JsonObject;
+import org.json.JSONObject;
 import com.google.gson.annotations.SerializedName;
 
 public class Product {
@@ -22,7 +22,7 @@ public class Product {
 	private String productName;
 
 	@SerializedName("“attributes”")
-	private JsonObject attributes;
+	private JSONObject attributes;
 
 	private String productRating;
 
@@ -74,11 +74,11 @@ public class Product {
 		return productName;
 	}
 
-	public void setAttributes(JsonObject attributes){
+	public void setAttributes(JSONObject attributes){
 		this.attributes = attributes;
 	}
 
-	public JsonObject getAttributes(){
+	public JSONObject getAttributes(){
 		return attributes;
 	}
 
