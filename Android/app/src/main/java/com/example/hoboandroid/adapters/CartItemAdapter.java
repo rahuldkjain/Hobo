@@ -10,17 +10,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.hoboandroid.R;
+import com.example.hoboandroid.activities.CartActivity;
 import com.example.hoboandroid.activities.LandingPageActivity;
-import com.example.hoboandroid.activities.OrderHistoryActivity;
+import com.example.hoboandroid.activities.ProductListActivity;
+import com.example.hoboandroid.models.Cart;
 import com.example.hoboandroid.models.Category;
-import com.example.hoboandroid.models.Order;
 
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.RecyclerViewHolder>  {
-    private List<Order> list;
-    OrderHistoryActivity orderHistoryActivity = new OrderHistoryActivity();
-    public OrderAdapter(List<Order> list){
+public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.RecyclerViewHolder> {
+
+    private List<Cart> list;
+
+    public CartItemAdapter(List<Cart> list){
         this.list = list;
     }
 
@@ -28,15 +30,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.RecyclerView
 
     @NonNull
     @Override
-    public OrderAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public CartItemAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+
+        //TODO create list item for cart and inflate here
         View view =  LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.category_list_item,viewGroup,false);
-        view.setOnClickListener(orderHistoryActivity);
-        return new OrderAdapter.RecyclerViewHolder(view);
+        //view.setOnClickListener(productListActivity);
+        return new CartItemAdapter.RecyclerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderAdapter.RecyclerViewHolder recyclerViewHolder, int position) {
+    public void onBindViewHolder(@NonNull CartItemAdapter.RecyclerViewHolder recyclerViewHolder, int position) {
         recyclerViewHolder.bind(list.get(position));
     }
 
@@ -50,18 +54,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.RecyclerView
         public RecyclerViewHolder(View itemView){
             super(itemView);
         }
-        public void bind(Order order){
+        public void bind(Cart cart){
 
 
-            //TODO bind the respective list item with a row in recyler view
+           //TextView title = itemView.findViewById(R.id.cartItemName);
+           // title.setText(category.getCategoryName());
+
+
 
             //Loading image from below url into imageView
-/*
-            Glide.with(itemView.getContext())
+            /*Glide.with(itemView.getContext())
                     .load(R.string.category_path + category.getImage())
                     .into((ImageView) itemView.findViewById(R.id.category_image));
 */
-
 
 
         }

@@ -17,7 +17,9 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(ProductInfoActivity.this,)
+    public void onClick(View view) {
+        //if(view.getId() == R.id.add_cart_button)
+            //Intent intent = new Intent(ProductInfoActivity.this,CartActivity.class);
+
     }
 }

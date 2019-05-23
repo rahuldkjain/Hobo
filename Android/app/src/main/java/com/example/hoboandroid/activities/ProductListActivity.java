@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.hoboandroid.R;
@@ -27,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ProductListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity implements View.OnClickListener{
 
     RecyclerView productRecyclerView;
     ProductAdapter productAdapter;
@@ -151,6 +152,11 @@ public class ProductListActivity extends AppCompatActivity {
 
     //TODO search function  using search
     void getProducts(){
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }
