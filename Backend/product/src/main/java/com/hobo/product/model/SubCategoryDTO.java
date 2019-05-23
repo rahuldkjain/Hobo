@@ -1,13 +1,6 @@
 package com.hobo.product.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = SubCategory.COLLECTION_NAME)
-public class SubCategory {
-    public static final String COLLECTION_NAME="subcategory";
-
-    @Id
+public class SubCategoryDTO {
     String subCategoryId;
     String subCategoryName;
     String parentCategory;
@@ -19,10 +12,6 @@ public class SubCategory {
 
     public void setSubCategoryId(String subCategoryId) {
         this.subCategoryId = subCategoryId;
-    }
-
-    public static String getCollectionName() {
-        return COLLECTION_NAME;
     }
 
     public String getSubCategoryName() {
