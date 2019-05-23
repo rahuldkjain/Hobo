@@ -25,7 +25,7 @@ public class CartServiceImpl implements CartService {
         CartDTO cartDTOCheck=null;
 
         if(checkAlreadyExists!=null)
-            return null;
+            return cartDTOCheck;
 
         CartEntity cartEntity =new CartEntity();
         BeanUtils.copyProperties(cartDTO,cartEntity);

@@ -2,22 +2,23 @@ package com.hobo.order.controller;
 
 
 import com.hobo.order.model.CartDTO;
+import com.hobo.order.model.OrderDTO;
 import com.hobo.order.service.CartService;
+import com.hobo.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
-@RequestMapping("/cart")
-public class CartController {
+@RequestMapping("/orders")
+public class OrderController {
 
     @Autowired
-    private CartService cartService;
+    private OrderService orderService;
 
     @GetMapping("/read")
-    public CartDTO readCart(@RequestParam Integer cartItemId) {
+    public OrderDTO readOrder(@RequestParam Integer orderId) {
         try {
-            return cartService.readCart(cartItemId);
+            return orderService.readOrder(orderId);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -25,9 +26,9 @@ public class CartController {
     }
 
     @PostMapping(value = "/create", consumes = {"application/json"})
-    public CartDTO createCart(@RequestBody CartDTO cartDTO) {
+    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO) {
         try {
-            return cartService.createCart(cartDTO);
+            return orderService.createOrder(orderDTO);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -35,9 +36,9 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public CartDTO updateCart(@RequestBody CartDTO cartDTO) {
+    public OrderDTO updateDTO(@RequestBody OrderDTO orderDTO) {
         try {
-            return cartService.updateCart(cartDTO);
+            return  orderService.updateOrder(orderDTO);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
@@ -45,26 +46,12 @@ public class CartController {
     }
 
     @DeleteMapping("/delete")
-    public CartDTO deleteCart(@RequestParam int cart_item_id) {
+    public OrderDTO deleteOrder(@RequestParam int orderItemId) {
         try {
-            return cartService.deleteCart(cart_item_id);
+            return orderService.deleteOrder(orderItemId);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
