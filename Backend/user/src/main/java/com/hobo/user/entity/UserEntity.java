@@ -8,6 +8,7 @@ import java.util.Date;
 public class UserEntity {
 
    @Id
+   @GeneratedValue
    private Integer userId;
    @Column(unique = true)
    private String emailId;

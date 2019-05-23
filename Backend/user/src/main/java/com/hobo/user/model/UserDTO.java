@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class UserDTO {
 
-    private Integer userId;
     private String emailId;
     private String name;
     private String password;
@@ -16,14 +15,6 @@ public class UserDTO {
     private String address2;
     private String city;
     private Integer pincode;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getEmailId() {
         return emailId;
@@ -108,7 +99,6 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                "userId=" + userId +
                 ", emailId='" + emailId + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
