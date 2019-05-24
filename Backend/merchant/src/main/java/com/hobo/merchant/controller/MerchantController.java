@@ -1,15 +1,12 @@
 package com.hobo.merchant.controller;
 
-import com.hobo.merchant.entity.JoinedTable;
-import com.hobo.merchant.entity.Merchant;
+import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantAlreadyExists;
+import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantNotFound;
 import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.*;
 import org.json.simple.JSONObject;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/merchant")
@@ -19,7 +16,7 @@ public class MerchantController{
     private MerchantService merchantService;
 
     @PostMapping(consumes = {"application/json"})
-    public JSONObject create(@RequestBody MerchantDTO merchantDTO){
+    public JSONObject create(@RequestBody MerchantDTO merchantDTO) throws MerchantAlreadyExists {
         try {
             MerchantDTO merchantDTO1=merchantService.createMerchant(merchantDTO);
             JSONObject response=getJSONResponse(merchantDTO1);
@@ -32,7 +29,7 @@ public class MerchantController{
     }
 
     @GetMapping()
-    public JSONObject read(@RequestParam Integer id){
+    public JSONObject read(@RequestParam Integer id) throws MerchantNotFound {
         try {
             MerchantDTO merchantDTO = merchantService.readMerchantById(id);
             JSONObject response = getJSONResponse(merchantDTO);
@@ -46,7 +43,7 @@ public class MerchantController{
     }
 
     @PutMapping()
-    public JSONObject update(@RequestBody MerchantDTO merchantDTO){
+    public JSONObject update(@RequestBody MerchantDTO merchantDTO) throws MerchantNotFound {
         try {
             MerchantDTO merchantDTO1=merchantService.updateMerchant(merchantDTO);
             JSONObject response=getJSONResponse(merchantDTO1);
@@ -58,7 +55,7 @@ public class MerchantController{
         return null;
     }
     @DeleteMapping()
-    public JSONObject delete(@RequestParam Integer id){
+    public JSONObject delete(@RequestParam Integer id) throws MerchantNotFound {
         try {
             MerchantDTO merchantDTO=merchantService.deleteMerchantById(id);
             JSONObject response=getJSONResponse(merchantDTO);
@@ -70,17 +67,18 @@ public class MerchantController{
         return null;
     }
 
-    @GetMapping("/topproductmerchant")
-    public JSONObject getTopMerchant(){
+    @PutMapping("/updatemerchantrating")
+    public JSONObject updateMerchantRating(@RequestParam Integer merchantId, @RequestParam float merchantRating) throws MerchantNotFound {
         try {
-            List<JoinedTable> topMerchant=merchantService.getTopMerchant();
-            JSONObject response=getJSONResponse(topMerchant);
+            MerchantDTO merchantDTO=merchantService.updateMerchantRating(merchantId,merchantRating);
+            JSONObject response=getJSONResponse(merchantDTO);
             return response;
         }
         catch (RuntimeException e){
             e.printStackTrace();
         }
         return null;
+
     }
 
     public JSONObject getJSONResponse(Object data){

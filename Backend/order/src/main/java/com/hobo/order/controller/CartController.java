@@ -1,10 +1,16 @@
 package com.hobo.order.controller;
 
 
+import com.hobo.order.Exceptions.cartExceptions.CartAlreadyExists;
+import com.hobo.order.Exceptions.cartExceptions.CartNotFound;
+import com.hobo.order.entity.CartEntity;
 import com.hobo.order.model.CartDTO;
 import com.hobo.order.service.CartService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -14,44 +20,88 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/read")
-    public CartDTO readCart(@RequestParam Integer cartItemId) {
+    @GetMapping("")
+    public JSONObject readCart(@RequestParam Integer cartItemId) throws CartNotFound {
         try {
-            return cartService.readCart(cartItemId);
+            CartDTO cartDTO= cartService.readCart(cartItemId);
+            JSONObject response=getJSONResponse(cartDTO);
+            return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @PostMapping(value = "/create", consumes = {"application/json"})
-    public CartDTO createCart(@RequestBody CartDTO cartDTO) {
+    @PostMapping(value = "", consumes = {"application/json"})
+    public JSONObject createCart(@RequestBody CartDTO cartDTO) throws CartAlreadyExists {
         try {
-            return cartService.createCart(cartDTO);
+            CartDTO cartDTO1= cartService.createCart(cartDTO);
+            JSONObject response=getJSONResponse(cartDTO1);
+            return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @PutMapping("/update")
-    public CartDTO updateCart(@RequestBody CartDTO cartDTO) {
+    @PutMapping("")
+    public JSONObject updateCart(@RequestBody CartDTO cartDTO) throws CartNotFound{
         try {
-            return cartService.updateCart(cartDTO);
+            CartDTO cartDTO1= cartService.updateCart(cartDTO);
+            JSONObject response=getJSONResponse(cartDTO1);
+            return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @DeleteMapping("/delete")
-    public CartDTO deleteCart(@RequestParam int cart_item_id) {
+    @DeleteMapping("")
+    public JSONObject deleteCart(@RequestParam int cartItemId) throws CartNotFound{
         try {
-            return cartService.deleteCart(cart_item_id);
+            CartDTO cartDTO= cartService.deleteCart(cartItemId);
+            JSONObject response=getJSONResponse(cartDTO);
+            return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @GetMapping("/usercart")
+    public  JSONObject userCart(@RequestParam Integer userId){
+        try {
+            List<CartEntity> cartEntities=cartService.userCart(userId);
+            JSONObject response=getJSONResponse(cartEntities);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    @DeleteMapping("deleteallcart")
+    public JSONObject delteCart(@RequestParam Integer userId){
+        try {
+            List<CartEntity> cartEntities=cartService.deleteCart(userId);
+            JSONObject response=getJSONResponse(cartEntities);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONObject getJSONResponse(Object data){
+        JSONObject response = new JSONObject();
+        response.put("code", "200");
+        response.put("data", data);
+        response.put("error","");
+        response.put("message", "success");
+        return response;
     }
 }
 

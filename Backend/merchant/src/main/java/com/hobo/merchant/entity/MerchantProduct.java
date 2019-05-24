@@ -15,6 +15,8 @@ public class MerchantProduct {
     float price;
     float productRating;
     int productsSold;
+    int merchantScore;
+
 
     public int getIndexx() {
         return indexx;
@@ -71,6 +73,13 @@ public class MerchantProduct {
     public void setProductsSold(int productsSold) {
         this.productsSold = productsSold;
     }
+    public int getMerchantScore() {
+        return merchantScore;
+    }
+
+    public void setMerchantScore(int merchantScore) {
+        this.merchantScore = merchantScore;
+    }
 
     @Override
     public String toString() {
@@ -82,6 +91,7 @@ public class MerchantProduct {
                 ", price=" + price +
                 ", productRating=" + productRating +
                 ", productsSold=" + productsSold +
+                ", merchantScore=" + merchantScore +
                 '}';
     }
 }

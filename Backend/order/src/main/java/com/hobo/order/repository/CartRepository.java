@@ -4,6 +4,9 @@ import com.hobo.order.entity.CartEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CartRepository extends CrudRepository<CartEntity, Integer> {
+    List<CartEntity> findByUserId(Integer userId);
 }

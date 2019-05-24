@@ -2,17 +2,12 @@ package com.hobo.order.model;
 
 public class CartDTO {
 
-    //Cart info variables declared -->
     private Integer cartItemId;
     private int userId;
     private int productId;
     private int merchantId;
     private int quantity;
     private float productPrice;
-
-
-
-    //getters and setters for Cart data variables -->
 
 
     public Integer getCartItemId() {
