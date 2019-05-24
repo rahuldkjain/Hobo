@@ -19,7 +19,7 @@ public interface ProductService {
     @POST("/listsubcategory")
     Call<List<SubCategory>> getSubCategory(@Query("category") String category);
 
-    @GET("/getall")
+    @GET("/product/getall")
     Call<ResponseFromApi> getAllProducts();
 
     @GET("/category")

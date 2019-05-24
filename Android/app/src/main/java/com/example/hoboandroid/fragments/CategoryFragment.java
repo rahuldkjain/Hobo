@@ -81,7 +81,7 @@ public class CategoryFragment extends Fragment {
                     public void onResponse(Call<ResponseFromApi> call, Response<ResponseFromApi> response) {
 
                         if(response.body() != null){
-                            itemsList.addAll(response.body().getData());
+                            //itemsList.addAll(response.body().getData());
                             Log.d("HOBOLandingPage",response.body().toString());
 
                             categoryAdapter.notifyDataSetChanged();

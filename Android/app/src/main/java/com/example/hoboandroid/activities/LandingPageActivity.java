@@ -11,12 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
+import com.example.hoboandroid.adapters.ProductAdapter;
 import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.models.Category;
 import com.example.hoboandroid.models.Product;
@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LandingPageActivity extends BaseActivity implements View.OnClickListener {
 
     List<Product> productList = new ArrayList<>();
-    CategoryAdapter productRecyclerViewAdapter;
+    ProductAdapter productRecyclerViewAdapter;
     RecyclerView productRecyclerView;
 
 
@@ -55,14 +55,9 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
 
+        productRecyclerView = findViewById(R.id.landing_page_image_recycler_view);
 
-
-
-
-
-        /*productRecyclerView = findViewById(R.id.landing_page_image_recycler_view);
-
-        productRecyclerViewAdapter = new CategoryAdapter(productList);
+        productRecyclerViewAdapter = new ProductAdapter(productList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -71,11 +66,11 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
 
-        Retrofit retrofit = Api.getclient("/product/getall");
+        Retrofit retrofit = Api.getclient("/product/getall/");
 
         ProductService service = retrofit.create(ProductService.class);
 
-        service.getCategories()
+        service.getAllProducts()
                 .enqueue(new Callback<ResponseFromApi>() {
                     @Override
                     public void onResponse(Call<ResponseFromApi> call, Response<ResponseFromApi> response) {
@@ -101,8 +96,8 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
 
-    }
-*/
+
+
 
         //loadSlidingImages();
 
@@ -123,10 +118,6 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-
-
-
-
 
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);

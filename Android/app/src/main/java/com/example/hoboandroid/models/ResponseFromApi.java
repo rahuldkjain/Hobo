@@ -9,7 +9,7 @@ public class ResponseFromApi{
 	private String code;
 
 	@SerializedName("data")
-	private List<Category> data;
+	private List<Product> data;
 
 	@SerializedName("error")
 	private String error;
@@ -26,11 +26,11 @@ public class ResponseFromApi{
 		return code;
 	}
 
-	public void setData(List<Category> data){
+	public void setData(List<Product> data){
 		this.data = data;
 	}
 
-	public List<Category> getData(){
+	public List<Product> getData(){
 		return data;
 	}
 
