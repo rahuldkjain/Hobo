@@ -9,7 +9,6 @@ import java.util.Date;
 @Table(name = "orders")
 public class OrderEntity {
 
-
     @Id
     private int orderId;
     private int userId;

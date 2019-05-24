@@ -1,8 +1,9 @@
 package com.hobo.merchant.controller;
 
-import com.hobo.merchant.entity.JoinedTable;
+import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantNotFound;
+import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductAlreadyExists;
+import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductNotFound;
 import com.hobo.merchant.entity.MerchantProduct;
-import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.service.MerchantProductService;
 import org.json.simple.JSONObject;
@@ -18,9 +19,8 @@ public class MerchantProductController {
     MerchantProductService merchantProductService;
 
     @PostMapping(consumes = {"application/json"})
-    public JSONObject create(@RequestBody MerchantProductDTO merchantProductDTO){
+    public JSONObject create(@RequestBody MerchantProductDTO merchantProductDTO) throws MerchantProductAlreadyExists,MerchantNotFound {
         try {
-           // System.out.println("in controller" + merchantProductDTO);
             MerchantProductDTO merchantProductDTO1=merchantProductService.createMerchantProduct(merchantProductDTO);
             System.out.println(merchantProductDTO1);
             JSONObject response=getJSONResponse(merchantProductDTO1);
@@ -33,9 +33,9 @@ public class MerchantProductController {
     }
 
     @GetMapping("")
-    public JSONObject readByMerchangAndProductId(@RequestParam Integer merchantId, @RequestParam Integer productId){
+    public JSONObject readMerchantProduct(@RequestParam Integer index)throws MerchantProductNotFound {
         try {
-            MerchantProductDTO merchantProductDTO=merchantProductService.readByMerchangAndProductId(merchantId,productId);
+            MerchantProductDTO merchantProductDTO=merchantProductService.readMerchantProduct(index);
             JSONObject response=getJSONResponse(merchantProductDTO);
             return response;
         }
@@ -48,7 +48,7 @@ public class MerchantProductController {
 
 
     @PutMapping("")
-    public JSONObject update(@RequestBody MerchantProductDTO merchantProductDTO){
+    public JSONObject update(@RequestBody MerchantProductDTO merchantProductDTO)throws MerchantProductNotFound,MerchantNotFound{
         try {
             MerchantProductDTO merchantProductDTO1= merchantProductService.updateMerchantProduct(merchantProductDTO);
             JSONObject response=getJSONResponse(merchantProductDTO1);
@@ -61,9 +61,9 @@ public class MerchantProductController {
     }
 
     @DeleteMapping("")
-    public JSONObject delete(@RequestParam Integer merchantId, @RequestParam Integer productId){
+    public JSONObject delete(@RequestParam Integer index) throws MerchantProductNotFound{
         try {
-            MerchantProductDTO merchantProductDTO= merchantProductService.deleteMerchantProductById(merchantId,productId);
+            MerchantProductDTO merchantProductDTO= merchantProductService.deleteMerchantProductById(index);
             JSONObject response=getJSONResponse(merchantProductDTO);
             return response;
         }
@@ -74,7 +74,7 @@ public class MerchantProductController {
     }
 
     @GetMapping("/gettopproductmerchant")
-    public JSONObject getTopMerchant(@RequestParam Integer productId){
+    public JSONObject getTopMerchant(@RequestParam Integer productId) throws MerchantProductNotFound{
         try{
             MerchantProductDTO merchantProductDTO=merchantProductService.getTopMerchant(productId);
             JSONObject response=getJSONResponse(merchantProductDTO);
@@ -88,7 +88,7 @@ public class MerchantProductController {
 
 
     @GetMapping("/productmerchants")
-    public JSONObject getAllMerchants(@RequestParam Integer productId){
+    public JSONObject getAllMerchants(@RequestParam Integer productId) throws MerchantProductNotFound{
         try {
             List<MerchantProduct> merchantProducts=merchantProductService.getAllMerchants(productId);
             JSONObject response=getJSONResponse(merchantProducts);
@@ -101,9 +101,9 @@ public class MerchantProductController {
     }
 
     @PutMapping("/updateprodcutrating")
-    public JSONObject updateProductRating(@RequestParam Integer productId, @RequestParam Integer merchantId, @RequestParam float productRating){
+    public JSONObject updateProductRating(@RequestParam Integer index, @RequestParam float productRating) throws MerchantProductNotFound, MerchantNotFound{
         try {
-            MerchantProductDTO merchantProductDTO=merchantProductService.updateProductRating(productId,merchantId,productRating);
+            MerchantProductDTO merchantProductDTO=merchantProductService.updateProductRating(index,productRating);
             JSONObject response=getJSONResponse(merchantProductDTO);
             return response;
         }
@@ -114,7 +114,7 @@ public class MerchantProductController {
     }
 
     @GetMapping("/getallproduct")
-    public JSONObject read(@RequestParam Integer merchantId){
+    public JSONObject read(@RequestParam Integer merchantId) throws MerchantProductNotFound{
         try {
             List<MerchantProduct> merchantProducts=merchantProductService.readMerchantProductById(merchantId);
             JSONObject response=getJSONResponse(merchantProducts);
@@ -127,7 +127,7 @@ public class MerchantProductController {
     }
 
     @GetMapping("/getprodcutrating")
-    public JSONObject getProductRating(@RequestParam Integer productId){
+    public JSONObject getProductRating(@RequestParam Integer productId) throws MerchantProductNotFound{
         try {
             float productRating=merchantProductService.getProductRating(productId);
             JSONObject response=getJSONResponse(productRating);

@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class OrderDTO {
 
-
     private int orderId;
     private int userId;
     private float order_price;

@@ -1,14 +1,15 @@
 package com.hobo.order.service.serviceImpl;
 
+import com.hobo.order.Exceptions.cartExceptions.CartAlreadyExists;
+import com.hobo.order.Exceptions.cartExceptions.CartNotFound;
 import com.hobo.order.entity.CartEntity;
 import com.hobo.order.model.CartDTO;
 import com.hobo.order.repository.CartRepository;
 import com.hobo.order.service.CartService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,61 +19,72 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
 
-
     @Override
-    public CartDTO createCart(CartDTO cartDTO) {
-        CartDTO checkAlreadyExists=readCart(cartDTO.getCartItemId());
-        CartDTO cartDTOCheck=null;
+    public CartDTO createCart(CartDTO cartDTO) throws CartAlreadyExists {
 
-        if(checkAlreadyExists!=null)
-            return cartDTOCheck;
+        if(cartRepository.exists(cartDTO.getCartItemId())){
+            JSONObject error = new JSONObject();
+            error.put("code", "500");
+            error.put("data", "{}");
+            error.put("error", "Content Already Exists");
+            error.put("message", "Content you are inserting is already present in the database");
+            throw new CartAlreadyExists(error);
+        }
 
         CartEntity cartEntity =new CartEntity();
         BeanUtils.copyProperties(cartDTO,cartEntity);
         CartEntity cartEntityCheck=cartRepository.save(cartEntity);
 
-        cartDTOCheck = new CartDTO();
-        BeanUtils.copyProperties(cartEntityCheck,cartDTOCheck);
-        return cartDTOCheck;    }
-
-    @Override
-    public CartDTO readCart(int cartItemId) {
-        CartDTO cartDTO=null;
-        CartEntity cartEntity=cartRepository.findOne(cartItemId);
-        if(cartEntity!=null)
-        {
-            cartDTO=new CartDTO();
-            BeanUtils.copyProperties(cartEntity,cartDTO);
-        }
-        System.out.println(cartDTO);
-        return cartDTO;    }
-
-    @Override
-    public CartDTO deleteCart(int cartItemId) {
-        CartDTO cartDTO=readCart(cartItemId);
-        if(cartDTO!=null){
-            CartEntity cartEntity=new CartEntity();
-            BeanUtils.copyProperties(cartDTO,cartEntity);
-            cartRepository.delete(cartEntity);
-        }
         return cartDTO;
     }
 
     @Override
-    public CartDTO updateCart(CartDTO cartDTO) {
+    public CartDTO readCart(int cartItemId) throws CartNotFound {
+        if(!cartRepository.exists(cartItemId)){
+            JSONObject error = new JSONObject();
+            error.put("code", "500");
+            error.put("data", "{}");
+            error.put("error", "Content not found");
+            error.put("message", "Content you are looking for is not present in the database");
+            throw new CartNotFound(error);
+        }
+        CartEntity cartEntity=cartRepository.findOne(cartItemId);
+        CartDTO cartDTO=new CartDTO();
+        BeanUtils.copyProperties(cartEntity,cartDTO);
+        return cartDTO;
+    }
+
+    @Override
+    public CartDTO deleteCart(int cartItemId) throws CartNotFound{
+        CartDTO cartDTO=readCart(cartItemId);
+        CartEntity cartEntity=new CartEntity();
+        BeanUtils.copyProperties(cartDTO,cartEntity);
+        cartRepository.delete(cartEntity);
+        return cartDTO;
+    }
+
+    @Override
+    public CartDTO updateCart(CartDTO cartDTO) throws CartNotFound{
         CartDTO checkAlreadyExists=readCart(cartDTO.getCartItemId());
 
-        CartDTO cartDTOCheck=null;
-
-        if(checkAlreadyExists==null)
-            return cartDTOCheck;
-
         CartEntity cartEntity=new CartEntity();
-        BeanUtils.copyProperties(cartEntity,cartDTO);
+        BeanUtils.copyProperties(cartDTO,cartEntity);
         CartEntity cartEntityCheck=cartRepository.save(cartEntity);
+        return cartDTO;
+    }
 
-        cartDTOCheck=new CartDTO();
-        BeanUtils.copyProperties(cartEntityCheck,cartDTOCheck);
-        return cartDTOCheck;
+    @Override
+    public List<CartEntity> userCart(Integer userId) {
+        List<CartEntity> cartEntities=cartRepository.findByUserId(userId);
+        return cartEntities;
+    }
+
+    @Override
+    public List<CartEntity> deleteCart(Integer userId) {
+        List<CartEntity> cartEntities=cartRepository.findByUserId(userId);
+        for (CartEntity cartEntity:cartEntities) {
+            cartRepository.delete(cartEntity);
+        }
+        return cartEntities;
     }
 }
