@@ -1,6 +1,7 @@
 <template>
-<b-col sm="7">
-    <b-card bg-variant="light" class="text-center card">
+<b-row>
+<b-col sm="6">
+    <b-card bg-variant="light" class="text-center formcard">
                 <h4>Shipping Details</h4>
                 
                 <b-form @submit="onSubmit" v-if="show">
@@ -65,8 +66,13 @@
                
       </b-card>
        </b-col>
+       <b-col>
+        <ProductDetails/>
+        </b-col>
+</b-row>
 </template>
 <script>
+import ProductDetails from '@/components/ProductDetails';
 export default {
     data() {
       return {
@@ -89,17 +95,17 @@ export default {
         this.$router.push("/success");
         }
     },
-    watch: {
-
+    components: {
+        ProductDetails
     }
+
 }
 </script>
 <style scoped>
 
-.card{
+.formcard{
     margin: 10%;
+    margin-right: 0;
 }
 
 </style>
-
-

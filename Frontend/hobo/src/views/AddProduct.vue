@@ -17,7 +17,7 @@
             </b-form-select>
             
         </b-form-group>
-        <b-form-group v-if="selected == 'Electronics'">
+        <b-form-group v-if="selected == 'Electronics'"> 
         
 
             <b-form-select v-model="subcategory" class="mb-3 subcategory">
@@ -165,5 +165,3 @@ export default {
     font-weight: bold;
 }
 </style>
-
-

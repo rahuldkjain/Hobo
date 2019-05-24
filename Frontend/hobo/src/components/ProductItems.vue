@@ -3,11 +3,27 @@
         <b-row>
             
                 <b-col sm="3" id="products" v-for="(product,index) in products" :key="index">
-                    <img class="productItem" :src='product.productImage[0]'>
-                    <div>Product: {{product.productName}}</div>
+                    <!-- <img class="productItem" :src='product.productImage[0]'> -->
+                    <!-- <div>Product: {{product.productName}}</div>
                     <div>Price: {{product.description}}</div>
-                    <div>Category: {{product.category}}</div>
+                    <div>Category: {{product.category}}</div> -->
+                    <div>
+                        <b-card
+                            :title="product.productName"
+                            :img-src="product.productImage[0]"
+                            img-alt="Image"
+                            img-top
+                            tag="article"
+                            style="max-width: 20rem;"
+                            class="mb-2"
+                        >
+                            <b-card-text>
+                            {{product.description}}
+                            </b-card-text>
 
+                            <b-button href="#" variant="primary">Buy Now</b-button>
+                        </b-card>
+                    </div>
                 
                 </b-col>
                 <div>
