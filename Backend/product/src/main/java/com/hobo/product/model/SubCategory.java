@@ -1,7 +1,10 @@
 package com.hobo.product.model;
 
+import org.json.simple.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = SubCategory.COLLECTION_NAME)
 public class SubCategory {
@@ -12,6 +15,15 @@ public class SubCategory {
     String subCategoryName;
     String parentCategory;
     String subCategoryImage;
+    List subCategoryAttributes;
+
+    public List getSubCategoryAttributes() {
+        return subCategoryAttributes;
+    }
+
+    public void setSubCategoryAttributes(List subCategoryAttributes) {
+        this.subCategoryAttributes = subCategoryAttributes;
+    }
 
     public String getSubCategoryId() {
         return subCategoryId;
