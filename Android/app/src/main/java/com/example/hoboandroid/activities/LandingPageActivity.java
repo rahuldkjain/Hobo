@@ -1,6 +1,7 @@
 package com.example.hoboandroid.activities;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LandingPageActivity extends AppCompatActivity implements View.OnClickListener {
+public class LandingPageActivity extends BaseActivity implements View.OnClickListener {
 
     List<Category> categoryList;
     CategoryAdapter categoryRecyclerViewAdapter;
@@ -38,14 +39,17 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing_page);
+        super.setContentView(R.layout.activity_landing_page);
+
+        Fragment fragment = new CategoryFragment();
 
 
-        categoryRecyclerView = findViewById(R.id.recyclerView);
+        //loadSlidingImages();
 
-        loadSlidingImages();
+        //categoryList = new ArrayList<>();
+        //categoryList.add(new Category());
 
-        getCategories();
+        //getCategories();
 
 
     }
@@ -61,8 +65,8 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
         ProductService service = retrofit.create(ProductService.class);
 
         service.getCategories()
-                .enqueue(new Callback<List<Category>>() { // this enqueue method calls api asynchronously and success/error
-                    @Override                              //hover over the enqueue method to check what this is
+                .enqueue(new Callback<List<Category>>() {
+                    @Override
                     public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
 
                         //List<Category> categoryList = new ArrayList<>();
@@ -105,14 +109,6 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    @Override
-    public void setContentView(int layoutResID)
-    {
-        //DrawerLayout fullView = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
-        //FrameLayout activityContainer = (FrameLayout) fullView.findViewById(R.id.landing_page_frame_layout);
-        //getLayoutInflater().inflate(layoutResID, activityContainer, true);
-        super.setContentView(layoutResID);
-    }
 
 
     @Override

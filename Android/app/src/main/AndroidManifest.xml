@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".activities.BaseActivity"></activity>
+        <activity android:name=".activities.BaseActivity"/>
         <activity android:name=".activities.OrderedProductsActivity" />
         <activity android:name=".activities.OrderHistoryActivity" />
         <activity android:name=".activities.CheckoutPromptActivity" />

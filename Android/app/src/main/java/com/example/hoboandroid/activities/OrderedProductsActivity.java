@@ -28,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderedProductsActivity extends AppCompatActivity implements View.OnClickListener {
+public class OrderedProductsActivity extends AppCompatActivity{
 
     RecyclerView orderedProductsRecyclerView;
     OrderedProductAdapter orderedProductsAdapter;
@@ -55,7 +55,7 @@ public class OrderedProductsActivity extends AppCompatActivity implements View.O
 
         orderedProductsRecyclerView.setAdapter(orderedProductsAdapter);
 
-        orderedProductsRecyclerView.setOnClickListener(this);
+        //orderedProductsRecyclerView.setOnClickListener(this);
 
 
 
@@ -114,7 +114,8 @@ public class OrderedProductsActivity extends AppCompatActivity implements View.O
 
     }
 
-    @Override
+    //This is moved into the OrderedProductAdapter
+/*    @Override
     public void onClick(View view) {
         int itemPosition = orderedProductsRecyclerView.getChildLayoutPosition(view);
         OrderedProduct item = orderedProductsList.get(itemPosition);
@@ -124,5 +125,5 @@ public class OrderedProductsActivity extends AppCompatActivity implements View.O
         //TODO check the objects inserted into database and retrieved here
         intent.putExtra("Ordered Product Object",item.getProductId());
         startActivity(intent);
-    }
+    }*/
 }

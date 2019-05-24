@@ -5,27 +5,23 @@ import com.google.gson.annotations.SerializedName;
 
 public class Product {
 
-	@SerializedName("description")
+	@SerializedName("“description”")
 	private String description;
 
-	@SerializedName("category")
+	@SerializedName("“category”")
 	private String category;
 
 
-	@SerializedName("image_id")
-	private String imageId;
-
-
-	@SerializedName("product_id")
+	@SerializedName("“productId”")
 	private String productId;
 
-	@SerializedName("sub_category")
+	@SerializedName("“subCategory”")
 	private String subCategory;
 
-	@SerializedName("product_name")
+	@SerializedName("“productName”")
 	private String productName;
 
-	@SerializedName("attributes")
+	@SerializedName("“attributes”")
 	private JSONObject attributes;
 
 	private String productRating;
@@ -48,14 +44,6 @@ public class Product {
 
 	public void setCategory(String category){
 		this.category = category;
-	}
-
-	public String getImageId() {
-		return imageId;
-	}
-
-	public void setImageId(String imageId) {
-		this.imageId = imageId;
 	}
 
 	public String getCategory(){
@@ -95,16 +83,15 @@ public class Product {
 	}
 
 	@Override
-	public String toString() {
-		return "Product{" +
-				"description='" + description + '\'' +
-				", category='" + category + '\'' +
-				", imageId='" + imageId + '\'' +
-				", productId='" + productId + '\'' +
-				", subCategory='" + subCategory + '\'' +
-				", productName='" + productName + '\'' +
-				", attributes=" + attributes +
-				", productRating='" + productRating + '\'' +
-				'}';
-	}
+ 	public String toString(){
+		return
+			"Product{" +
+			"“description” = '" + description + '\'' +
+			",“category” = '" + category + '\'' +
+			",“productId” = '" + productId + '\'' +
+			",“subCategory” = '" + subCategory + '\'' +
+			",“productName” = '" + productName + '\'' +
+			",“attributes” = '" + attributes + '\'' +
+			"}";
+		}
 }
