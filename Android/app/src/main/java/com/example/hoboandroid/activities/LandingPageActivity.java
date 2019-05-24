@@ -116,7 +116,7 @@ public class LandingPageActivity extends AppCompatActivity implements View.OnCli
 
 
     @Override
-    public void onClick(final View view) {
+    public void onClick(View view) {
 
         int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         Category item = categoryList.get(itemPosition);

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.RecyclerViewHolder>  {
     private List<Order> list;
-    OrderHistoryActivity orderHistoryActivity = new OrderHistoryActivity();
+    private OrderHistoryActivity orderHistoryActivity = new OrderHistoryActivity();
     public OrderAdapter(List<Order> list){
         this.list = list;
     }

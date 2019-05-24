@@ -1,10 +1,21 @@
 package com.hobo.product.model;
 
+import java.util.List;
+
 public class SubCategoryDTO {
     String subCategoryId;
     String subCategoryName;
     String parentCategory;
     String subCategoryImage;
+    List subCategoryAttributes;
+
+    public List getSubCategoryAttributes() {
+        return subCategoryAttributes;
+    }
+
+    public void setSubCategoryAttributes(List subCategoryAttributes) {
+        this.subCategoryAttributes = subCategoryAttributes;
+    }
 
     public String getSubCategoryId() {
         return subCategoryId;

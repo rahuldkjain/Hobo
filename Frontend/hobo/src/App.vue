@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <Navbar fixed="top"/>
+      <NavbarMerchant v-if="getMerchant" fixed="top"/>
+      <Navbar v-else fixed="top"/>
       <router-link to="/">Home</router-link> |
       <router-link to="/category">Category</router-link>
     </div>
@@ -11,11 +12,24 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import NavbarMerchant from './components/NavbarMerchant.vue'
 import { appendFile } from 'fs';
+import {mapGetters, mapActions} from 'vuex';
 export default {
   name: 'app',
   components: {
-    Navbar
+    Navbar,
+    NavbarMerchant
+  },
+  computed: {
+    ...mapGetters(['getMerchant'])
+  },
+  methods: {
+    // checkMerchant() {
+    //   console.log("hello")
+    //   console.log(this.$store.getters.merchant)
+    //   return this.$store.getters.merchant;
+    // }
   }
 }
 </script>

@@ -71,7 +71,9 @@ export default {
         }
     },
     methods: {
-       
+       getAllProducts: function(){
+           this.$store.dispatch('allProducts');
+       }
         }
     
 }
