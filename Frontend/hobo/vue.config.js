@@ -14,6 +14,20 @@ module.exports = {
                 pathRewrite: {
                     '^/allProducts': ''
                 }
+            },
+            '/goToProduct': {
+                target: 'http://localhost:8080/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/goToProduct': ''
+                }
+            },
+            '/merchantProduct': {
+                target: 'http://172.16.20.101:8080/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/merchantProduct': ''
+                }
             }
         }
     }

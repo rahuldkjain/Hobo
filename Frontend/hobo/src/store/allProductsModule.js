@@ -2,6 +2,7 @@ import productsAPI from '../apis/productsAPI.js'
 export default {
     state: {
         products: []
+
     },
     getters: {
         getAllProducts: (state) => state.products

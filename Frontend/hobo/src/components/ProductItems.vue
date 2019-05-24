@@ -8,6 +8,7 @@
                     <div>Price: {{product.description}}</div>
                     <div>Category: {{product.category}}</div> -->
                     <div>
+                       
                         <b-card
                             :title="product.productName"
                             :img-src="product.productImage[0]"
@@ -20,9 +21,11 @@
                             <b-card-text>
                             {{product.description}}
                             </b-card-text>
-
-                            <b-button href="#" variant="primary">Buy Now</b-button>
+                             <!-- <router-link to="/product"> -->
+                            <b-button @click="goToProduct(product.productId)"  variant="primary">Product Page</b-button>
+                             <!-- </router-link> -->
                         </b-card>
+                       
                     </div>
                 
                 </b-col>
@@ -59,6 +62,9 @@ export default {
            this.products = this.$store.getters.getAllProducts
            console.log(this.products)
        },
+       goToProduct (pid){
+           this.$router.push('/product/'+pid )
+       }
     },
     computed : {
       ...mapGetters({

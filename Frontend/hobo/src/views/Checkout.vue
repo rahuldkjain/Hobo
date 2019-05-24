@@ -67,12 +67,13 @@
       </b-card>
        </b-col>
        <b-col>
-        <ProductDetails/>
+        <ProductDetailsShipping/>
         </b-col>
 </b-row>
 </template>
 <script>
 import ProductDetails from '@/components/ProductDetails';
+import ProductDetailsShipping from '@/components/ProductDetailsShipping';
 export default {
     data() {
       return {
@@ -96,7 +97,8 @@ export default {
         }
     },
     components: {
-        ProductDetails
+        ProductDetails,
+        ProductDetailsShipping
     }
 
 }
