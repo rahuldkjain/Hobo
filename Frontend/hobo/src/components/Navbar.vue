@@ -25,7 +25,7 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" v-model="searchValue" placeholder="Search" @input="myFunc()"></b-form-input>
+          <b-form-input size="sm" class="mr-sm-2" v-model="searchValue" @input="searchFunc" placeholder="Search"></b-form-input>
           <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form>
         
@@ -41,6 +41,7 @@
 <script>
 import { METHODS } from 'http';
 import LoggedIn from '@/components/LoggedIn.vue';
+import {mapGetters, mapActions} from 'vuex';
 export default {
     name: 'Navbar',
     data() {
@@ -53,8 +54,11 @@ export default {
        
     },
     methods: {
-        myFunc() {
-            console.log(this.searchValue);
+        searchFunc() {
+            console.log(this.searchValue.length);
+            if(this.searchValue.length>3){
+                this.$store.dispatch('checkSearch',this.searchValue)
+            }
         }
     },
     components: {
