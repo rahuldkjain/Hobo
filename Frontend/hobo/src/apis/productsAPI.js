@@ -1,7 +1,7 @@
 import makeApiCalls from './makeApiCalls.js'
 export default {
-    getSearch(callback, query) {
-        var url = '/api/search/suggestion?query=' + query
+    getProducts(callback) {
+        var url = '/allProducts/product/getall'
         makeApiCalls.makeGetRequest(url, callback)
     }
 }

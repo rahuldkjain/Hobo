@@ -18,19 +18,10 @@
                 <span class="text"><b>Product Description:</b> {{getProduct.description}}</span>
                 </b-row>
                 <b-row>    
-                <span class="text"><b>Product Price:</b>{{getProductDetails ? getProductDetails[0].price : ''}}</span>
+                <span class="text"><b>Product Price:</b>{{product.price}}</span>
                 </b-row>
-
             </b-col>
-            <b-col >
-              
-                    <b-button class="button" variant="primary">Add to Cart</b-button>
-                    <router-link to="/checkout"><b-button class="button" variant="success">Buy</b-button></router-link><br><br><br>
-                    <span class="textmerchant">Merchant Details</span>
-                    <br>
-                    <div v-for="(product,index) in getProductDetails" :key="index" row="text">{{product.merchantId}}</div>
-               
-            </b-col>
+            
         </b-row>
     </b-card>
     <!-- <h1> HELLOO </h1> -->
@@ -38,7 +29,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'; 
 export default {
-    name: 'ProductDetails',
+    name: 'ProductDetailsShipping',
     data() {
         return {
             product: {
@@ -50,13 +41,9 @@ export default {
             
         }
     },
-    created() {
-           this.$store.dispatch('productPage', this.$route.params.id)
-           this.$store.dispatch('productDetails', this.$route.params.id)
-    },
     computed: {
-        ...mapGetters(['getProduct','getProductDetails'])
-    },
+        ...mapGetters(['getProduct'])
+    }
     // methods: {
     //     func() {
     //         console.log(this.$route.path);

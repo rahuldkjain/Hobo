@@ -1,7 +1,19 @@
 <resources>
     <string name="app_name">HOBO</string>
-    <string name="category_api">http://api.themoviedb.org</string>
+    <string name="category_api">http://172.16.20.80:8080/</string>
     <string name="category_path">http://image.tmdb.org/t/p/w185/</string>
     <string name="product_api">http://api.themoviedb.org</string>
     <string name="ordered_api">http://api/</string>
+
+
+    <string name="imageProductInfo">Image</string>
+    <string name="product_info_name">Product Name</string>
+    <string name="product_info_price">Product Price</string>
+    <string name="product_info_description">Product Description</string>
+    <string name="product_description_zone">Product Description Zone</string>
+    <string name="product_attributes">Attributes</string>
+    <string name="attributes_zone">Attributes Zone</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="buy_now">Buy Now</string>
+
 </resources>

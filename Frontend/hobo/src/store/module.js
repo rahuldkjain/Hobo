@@ -1,11 +1,13 @@
 export default {
     state: {
         loggedin: false,
-        merchant: false
+        merchant: false,
+
     },
     getters: {
         getLoggedIn: (state) => state.loggedin,
         getMerchant: (state) => state.merchant
+
     },
     mutations: {
         SET_LOGIN: (state) => {

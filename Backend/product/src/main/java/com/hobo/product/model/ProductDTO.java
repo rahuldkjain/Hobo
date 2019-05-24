@@ -2,12 +2,16 @@ package com.hobo.product.model;
 
 import org.json.simple.JSONObject;
 
+import java.util.List;
+
 public class ProductDTO {
     String productId;
     String productName;
     String description;
     String category;
     String subCategory;
+    List<String> productImage;
+    String productBrand;
     JSONObject attributes;
 
     public JSONObject getAttributes() {
@@ -16,6 +20,14 @@ public class ProductDTO {
 
     public void setAttributes(JSONObject attributes) {
         this.attributes = attributes;
+    }
+
+    public String getProductBrand() {
+        return productBrand;
+    }
+
+    public void setProductBrand(String productBrand) {
+        this.productBrand = productBrand;
     }
 
     @Override
@@ -28,6 +40,14 @@ public class ProductDTO {
                 ", subCategory='" + subCategory + '\'' +
                 ", attributes=" + attributes +
                 '}';
+    }
+
+    public List<String> getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(List<String> productImage) {
+        this.productImage = productImage;
     }
 
     public String getProductId() {

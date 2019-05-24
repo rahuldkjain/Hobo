@@ -1,8 +1,15 @@
 package com.example.hoboandroid.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
+    @SerializedName("category_id")
     private int categoryId;
+
+    @SerializedName("category_name")
     private String categoryName;
+
+    @SerializedName("image")
     private String image;
 
     public int getCategoryId() {

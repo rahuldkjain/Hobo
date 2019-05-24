@@ -51,6 +51,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         getSubCategories(category);
 
 
+
     }
     private void getSubCategories(String category) {
         Retrofit retrofit = new Retrofit.Builder()

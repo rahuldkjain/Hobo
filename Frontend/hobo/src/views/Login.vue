@@ -41,10 +41,10 @@
         </b-form>
       </b-card>
 
-        {{getLoggedIn}}
+        <!-- {{getLoggedIn}}
         <b-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
-        </b-card>
+        </b-card> -->
       </b-col>
         
           

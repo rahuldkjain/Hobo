@@ -1,53 +1,48 @@
 package com.example.hoboandroid.models;
 
-import org.json.JSONObject;
+import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+public class Product{
 
-	@SerializedName("“description”")
-	private String description;
-
-	@SerializedName("“category”")
-	private String category;
-
-
-	@SerializedName("“productId”")
-	private String productId;
-
-	@SerializedName("“subCategory”")
+	@SerializedName("subCategory")
 	private String subCategory;
 
-	@SerializedName("“productName”")
+	@SerializedName("productImage")
+	private List<String> productImage;
+
+	@SerializedName("productId")
+	private String productId;
+
+	@SerializedName("productBrand")
+	private String productBrand;
+
+	@SerializedName("description")
+	private String description;
+
+	@SerializedName("attributes")
+	private Attributes attributes;
+
+	@SerializedName("category")
+	private String category;
+
+	@SerializedName("productName")
 	private String productName;
 
-	@SerializedName("“attributes”")
-	private JSONObject attributes;
-
-	private String productRating;
-
-	public String getProductRating() {
-		return productRating;
+	public void setSubCategory(String subCategory){
+		this.subCategory = subCategory;
 	}
 
-	public void setProductRating(String productRating) {
-		this.productRating = productRating;
+	public String getSubCategory(){
+		return subCategory;
 	}
 
-	public void setDescription(String description){
-		this.description = description;
+	public void setProductImage(List<String> productImage){
+		this.productImage = productImage;
 	}
 
-	public String getDescription(){
-		return description;
-	}
-
-	public void setCategory(String category){
-		this.category = category;
-	}
-
-	public String getCategory(){
-		return category;
+	public List<String> getProductImage(){
+		return productImage;
 	}
 
 	public void setProductId(String productId){
@@ -58,12 +53,36 @@ public class Product {
 		return productId;
 	}
 
-	public void setSubCategory(String subCategory){
-		this.subCategory = subCategory;
+	public void setProductBrand(String productBrand){
+		this.productBrand = productBrand;
 	}
 
-	public String getSubCategory(){
-		return subCategory;
+	public String getProductBrand(){
+		return productBrand;
+	}
+
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public String getDescription(){
+		return description;
+	}
+
+	public void setAttributes(Attributes attributes){
+		this.attributes = attributes;
+	}
+
+	public Attributes getAttributes(){
+		return attributes;
+	}
+
+	public void setCategory(String category){
+		this.category = category;
+	}
+
+	public String getCategory(){
+		return category;
 	}
 
 	public void setProductName(String productName){
@@ -74,24 +93,18 @@ public class Product {
 		return productName;
 	}
 
-	public void setAttributes(JSONObject attributes){
-		this.attributes = attributes;
-	}
-
-	public JSONObject getAttributes(){
-		return attributes;
-	}
-
 	@Override
  	public String toString(){
-		return
-			"Product{" +
-			"“description” = '" + description + '\'' +
-			",“category” = '" + category + '\'' +
-			",“productId” = '" + productId + '\'' +
-			",“subCategory” = '" + subCategory + '\'' +
-			",“productName” = '" + productName + '\'' +
-			",“attributes” = '" + attributes + '\'' +
+		return 
+			"DataItem{" + 
+			"subCategory = '" + subCategory + '\'' + 
+			",productImage = '" + productImage + '\'' + 
+			",productId = '" + productId + '\'' + 
+			",productBrand = '" + productBrand + '\'' + 
+			",description = '" + description + '\'' + 
+			",attributes = '" + attributes + '\'' + 
+			",category = '" + category + '\'' + 
+			",productName = '" + productName + '\'' + 
 			"}";
 		}
 }
