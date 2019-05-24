@@ -1,18 +1,18 @@
 package com.hobo.user.controller;
 
 
-import com.hobo.user.model.UserDTO;
-import com.hobo.user.service.UserService;
+import com.hobo.user.model.MerchantUserDTO;
+import com.hobo.user.service.MerchantUserService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-public class UserController {
+public class MerchantUserController {
 
     @Autowired
-    private UserService userService;
+    private MerchantUserService merchantUserService;
 
     public JSONObject getJSONResponse(Object data){
         JSONObject response = new JSONObject();
@@ -26,43 +26,43 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/merchantuser")
     public JSONObject getUser (@RequestParam Integer id) {
-        UserDTO userDTO = userService.getUser(id);
-        JSONObject response = getJSONResponse(userDTO);
+        MerchantUserDTO merchantUserDTO = merchantUserService.getUser(id);
+        JSONObject response = getJSONResponse(merchantUserDTO);
         response.replace("message", "success", "fetching successful");
         return response;
     }
 
-    @PostMapping(value="/user", consumes = {"application/json"})
-    public JSONObject saveUser(@RequestBody UserDTO userDTO) {
-        UserDTO result = userService.saveUser(userDTO);
+    @PostMapping(value="/merchantuser", consumes = {"application/json"})
+    public JSONObject saveUser(@RequestBody MerchantUserDTO merchantUserDTO) {
+        MerchantUserDTO result = merchantUserService.saveUser(merchantUserDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "adding successful");
         return response;
     }
 
-    @PutMapping(value="/user", consumes = {"application/json"})
-    public JSONObject updateUser(@RequestBody UserDTO userDTO) {
-        UserDTO result = userService.putUser(userDTO);
+    @PutMapping(value="/merchantuser", consumes = {"application/json"})
+    public JSONObject updateUser(@RequestBody MerchantUserDTO merchantUserDTO) {
+        MerchantUserDTO result = merchantUserService.putUser(merchantUserDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "updating successful");
         return response;
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/merchantuser")
     public JSONObject updateUser(@RequestParam Integer id) {
-        UserDTO userDTO = userService.deleteUser(id);
-        JSONObject response = getJSONResponse(userDTO);
+        MerchantUserDTO merchantUserDTO = merchantUserService.deleteUser(id);
+        JSONObject response = getJSONResponse(merchantUserDTO);
         response.replace("message", "success", "deleting successful");
         return response;
     }
 
-    @PostMapping(value="/login", consumes = {"application/json"})
-    public JSONObject loginCheck(@RequestBody Login data) {
-        UserDTO userDTO = userService.loginCheck(data.getEmailId(),data.getPassword());
-        JSONObject response = getJSONResponse(userDTO);
-        if(userDTO== null)
+    @PostMapping(value="/merchantlogin", consumes = {"application/json"})
+    public JSONObject loginCheck(@RequestBody MerchantLogin data) {
+        MerchantUserDTO merchantUserDTO= merchantUserService.loginCheck(data.getEmailId(),data.getPassword());
+        JSONObject response = getJSONResponse(merchantUserDTO);
+        if(merchantUserDTO== null)
             response.replace("message", "success", "verification fail");
         else
             response.replace("message", "success", "verification successful");
@@ -72,7 +72,7 @@ public class UserController {
 
 }
 
-class Login {
+class MerchantLogin {
     private String emailId;
     private String password;
 

@@ -61,11 +61,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO loginCheck(String email, String password) {
         UserDTO userDTO = new UserDTO();
-        UserEntity result = userRepository.findByEmailId(email);
-        if(password.equals(result.getPassword())) {
-            BeanUtils.copyProperties(result, userDTO);
+        if(userRepository.existsByEmailId(email)) {
+            UserEntity result = userRepository.findByEmailId(email);
+            if (password.equals(result.getPassword())) {
+                BeanUtils.copyProperties(result, userDTO);
+                userDTO.setPassword("");
+            }
+            else {
+                userDTO = null;
+            }
         }
-        userDTO.setPassword("");
+        else {
+            userDTO = null;
+        }
         return userDTO;
     }
 }
