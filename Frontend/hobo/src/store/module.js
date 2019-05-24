@@ -1,11 +1,14 @@
+import productsAPI from '../apis/productsAPI.js'
 export default {
     state: {
         loggedin: false,
-        merchant: false
+        merchant: false,
+        products: []
     },
     getters: {
         getLoggedIn: (state) => state.loggedin,
-        getMerchant: (state) => state.merchant
+        getMerchant: (state) => state.merchant,
+        getAllProducts: (state) => state.products
     },
     mutations: {
         SET_LOGIN: (state) => {
@@ -13,6 +16,9 @@ export default {
         },
         MERCHANT_LOGIN: (state) => {
             state.merchantLogin = true
+        },
+        SET_PRODUCTS: (state, result) => {
+            state.products = result
         }
     },
     actions: {
@@ -21,6 +27,11 @@ export default {
         },
         merchantLogin: (context) => {
             context.commit('MERCHANT_LOGIN')
+        },
+        allProducts: (context) => {
+            productsAPI.getProducts((result) => {
+                context.commit('SET_PRODUCTS', result.data)
+            })
         }
     }
 }
