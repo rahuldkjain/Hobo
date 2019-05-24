@@ -13,10 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,28 +31,35 @@ import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
+import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.NavigationAdapter;
+import com.example.hoboandroid.models.category.Category;
+import com.example.hoboandroid.models.category.ResponseCategory;
+import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BaseActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener {
 
 
     private DrawerLayout drawerLayout;
-//    private RecyclerView drawerList;
-
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private List<String> mPlanetTitles;
+    NavigationView navigationView;
 
     private TextView logoTextView;
 
 
     public ViewGroup fullLayout;
     public FrameLayout frameLayout;
-    List<String> layers;
+
+    private List<String> categoryItems = new ArrayList<>();
 
 
     @Override
@@ -61,11 +70,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         logoTextView = findViewById(R.id.logoTextView);
         //Log.d("BaseActivity",drawerLayout.toString());
 
-        layers = new ArrayList<>();
-        layers.add("Login/SignUp");
 
-        mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = layers;//getResources().getStringArray(R.array.planets_array);
+
+        navigationView = findViewById(R.id.base_nav_view);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -128,6 +135,46 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
 
     }
+
+
+    private void getCategories() {
+
+
+        Retrofit retrofit = Api.getclient(getString(R.string.category_api)+ "product/listcategory/");
+
+        ProductService service = retrofit.create(ProductService.class);
+
+        service.getCategories()
+                .enqueue(new Callback<ResponseCategory>() {
+                    @Override
+                    public void onResponse(Call<ResponseCategory> call, Response<ResponseCategory> response) {
+
+                        if(response.body() != null){
+
+                            for(Category category:response.body().getData()){
+                                categoryItems.add(category.getCategoryName());
+                            }
+                            //categoryList.addAll(response.body().getData());
+                            Log.d("BaseActivity",response.body().toString());
+
+
+
+
+                        }
+
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseCategory> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(),"Check your connection",Toast.LENGTH_LONG).show();
+                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
+                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
+                });
+
+
+
+
+    }
+
 
     /*public void makeSearchButton(View view) {
         SearchView searchView = (SearchView) view;
@@ -201,6 +248,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
     }
 
+    public void setMenuItems(){
+
+        Menu menu = navigationView.getMenu();
+
+        for(String category:categoryItems){
+            menu.add(category);
+        }
+
+    }
 
         /*navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -241,7 +297,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public void onClick(View view, int position) {
         Intent intent = new Intent(getApplicationContext(),CategoryActivity.class);
-        intent.putExtra("CategoryName",layers.get(position));
+        intent.putExtra("CategoryName",categoryItems.get(position));
         startActivity(intent);
     }
 }
