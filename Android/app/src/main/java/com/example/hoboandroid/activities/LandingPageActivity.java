@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
-import com.example.hoboandroid.adapters.ProductAdapter;
+import com.example.hoboandroid.adapters.LandingPageProductAdapter;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 public class LandingPageActivity extends BaseActivity implements View.OnClickListener {
 
     List<Product> productList = new ArrayList<>();
-    ProductAdapter productRecyclerViewAdapter;
+    LandingPageProductAdapter productRecyclerViewAdapter;
     RecyclerView productRecyclerView;
 
     List<Category> categoryList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         productRecyclerView = findViewById(R.id.landing_page_image_recycler_view);
 
-        productRecyclerViewAdapter = new ProductAdapter(productList);
+        productRecyclerViewAdapter = new LandingPageProductAdapter(productList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

@@ -62,7 +62,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
             //Loading image from below url into imageView
             Glide.with(itemView.getContext())
-                    .load(R.string.category_path + subCategory.getSubCategoryImage())
+                    .load(subCategory.getSubCategoryImage())
                     .into((ImageView) itemView.findViewById(R.id.sub_category_image));
 
 

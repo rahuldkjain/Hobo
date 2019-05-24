@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.ProductAdapter;
+import com.example.hoboandroid.adapters.LandingPageProductAdapter;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductListFragment extends Fragment implements View.OnClickListener{
     RecyclerView productRecyclerView;
-    ProductAdapter productAdapter;
+    LandingPageProductAdapter landingPageProductAdapter;
     List<Product> productList;
     String type;
 
@@ -59,14 +59,14 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
         productRecyclerView =view.findViewById(R.id.recyclerView);
 
-        productAdapter = new ProductAdapter(productList);
+        landingPageProductAdapter = new LandingPageProductAdapter(productList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         productRecyclerView.setLayoutManager(linearLayoutManager);
 
 
-        productRecyclerView.setAdapter(productAdapter);
+        productRecyclerView.setAdapter(landingPageProductAdapter);
 
         productRecyclerView.setOnClickListener(this);
 
@@ -94,7 +94,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                         if(response.body() != null){
 
                             productList.addAll(response.body());
-                            productAdapter.notifyDataSetChanged();
+                            landingPageProductAdapter.notifyDataSetChanged();
                             Log.e("ProductListActivity",response.body().toString());
 
                             getRatings();

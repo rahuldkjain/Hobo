@@ -15,11 +15,11 @@ import com.example.hoboandroid.models.product.Product;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.RecyclerViewHolder> {
+public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageProductAdapter.RecyclerViewHolder> {
 
         List<Product> list;
 
-        public ProductAdapter(List<Product> list){
+        public LandingPageProductAdapter(List<Product> list){
                 this.list = list;
                 }
         
@@ -27,14 +27,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
 
         @NonNull
         @Override
-        public ProductAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        public LandingPageProductAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
                 View view =  LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.landing_page_product_item,viewGroup,false);
                 return new RecyclerViewHolder(view);
         }
         
         @Override
-        public void onBindViewHolder(@NonNull ProductAdapter.RecyclerViewHolder recyclerViewHolder, int position) {
+        public void onBindViewHolder(@NonNull LandingPageProductAdapter.RecyclerViewHolder recyclerViewHolder, int position) {
                 recyclerViewHolder.bind(list.get(position));
         }
         
