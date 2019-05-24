@@ -79,8 +79,10 @@ public  class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public List<JoinedTable> getTopMerchant() {
-        List<JoinedTable> topMerchant=merchantRepository.findTopMerchant();
-        return topMerchant;
+    public MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating) {
+        MerchantDTO merchantDTO=readMerchantById(merchantId);
+        merchantDTO.setMerchantRating(merchantRating);
+        MerchantDTO merchantDTO1=updateMerchant(merchantDTO);
+        return merchantDTO1;
     }
 }

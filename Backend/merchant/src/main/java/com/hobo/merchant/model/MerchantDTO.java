@@ -8,7 +8,6 @@ public class MerchantDTO {
     String address;
     String email;
     long phoneNumber;
-    int merchantScore;
 
     public int getMerchantId() {
         return merchantId;
@@ -66,13 +65,7 @@ public class MerchantDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getMerchantScore() {
-        return merchantScore;
-    }
 
-    public void setMerchantScore(int merchantScore) {
-        this.merchantScore = merchantScore;
-    }
 
     @Override
     public String toString() {
@@ -84,7 +77,6 @@ public class MerchantDTO {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
-                ", merchantScore=" + merchantScore +
                 '}';
     }
 }

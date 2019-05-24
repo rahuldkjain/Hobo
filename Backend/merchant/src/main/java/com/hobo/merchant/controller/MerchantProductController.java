@@ -1,5 +1,6 @@
 package com.hobo.merchant.controller;
 
+import com.hobo.merchant.entity.JoinedTable;
 import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.model.MerchantProductDTO;
@@ -32,10 +33,10 @@ public class MerchantProductController {
     }
 
     @GetMapping("")
-    public JSONObject read(@RequestParam Integer id){
+    public JSONObject readByMerchangAndProductId(@RequestParam Integer merchantId, @RequestParam Integer productId){
         try {
-            List<MerchantProduct> merchantProducts=merchantProductService.readMerchantProductById(id);
-            JSONObject response=getJSONResponse(merchantProducts);
+            MerchantProductDTO merchantProductDTO=merchantProductService.readByMerchangAndProductId(merchantId,productId);
+            JSONObject response=getJSONResponse(merchantProductDTO);
             return response;
         }
         catch (RuntimeException e){
@@ -43,6 +44,8 @@ public class MerchantProductController {
         }
         return null;
     }
+
+
 
     @PutMapping("")
     public JSONObject update(@RequestBody MerchantProductDTO merchantProductDTO){
@@ -69,6 +72,73 @@ public class MerchantProductController {
         }
         return null;
     }
+
+    @GetMapping("/gettopproductmerchant")
+    public JSONObject getTopMerchant(@RequestParam Integer productId){
+        try{
+            MerchantProductDTO merchantProductDTO=merchantProductService.getTopMerchant(productId);
+            JSONObject response=getJSONResponse(merchantProductDTO);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
+
+    @GetMapping("/productmerchants")
+    public JSONObject getAllMerchants(@RequestParam Integer productId){
+        try {
+            List<MerchantProduct> merchantProducts=merchantProductService.getAllMerchants(productId);
+            JSONObject response=getJSONResponse(merchantProducts);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @PutMapping("/updateprodcutrating")
+    public JSONObject updateProductRating(@RequestParam Integer productId, @RequestParam Integer merchantId, @RequestParam float productRating){
+        try {
+            MerchantProductDTO merchantProductDTO=merchantProductService.updateProductRating(productId,merchantId,productRating);
+            JSONObject response=getJSONResponse(merchantProductDTO);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/getallproduct")
+    public JSONObject read(@RequestParam Integer merchantId){
+        try {
+            List<MerchantProduct> merchantProducts=merchantProductService.readMerchantProductById(merchantId);
+            JSONObject response=getJSONResponse(merchantProducts);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GetMapping("/getprodcutrating")
+    public JSONObject getProductRating(@RequestParam Integer productId){
+        try {
+            float productRating=merchantProductService.getProductRating(productId);
+            JSONObject response=getJSONResponse(productRating);
+            return response;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public JSONObject getJSONResponse(Object data){
         JSONObject response = new JSONObject();
         response.put("code", "200");

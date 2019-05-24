@@ -70,17 +70,18 @@ public class MerchantController{
         return null;
     }
 
-    @GetMapping("/topproductmerchant")
-    public JSONObject getTopMerchant(){
+    @PutMapping("/updatemerchantrating")
+    public JSONObject updateMerchantRating(@RequestParam Integer merchantId, @RequestParam float merchantRating){
         try {
-            List<JoinedTable> topMerchant=merchantService.getTopMerchant();
-            JSONObject response=getJSONResponse(topMerchant);
+            MerchantDTO merchantDTO=merchantService.updateMerchantRating(merchantId,merchantRating);
+            JSONObject response=getJSONResponse(merchantDTO);
             return response;
         }
         catch (RuntimeException e){
             e.printStackTrace();
         }
         return null;
+
     }
 
     public JSONObject getJSONResponse(Object data){

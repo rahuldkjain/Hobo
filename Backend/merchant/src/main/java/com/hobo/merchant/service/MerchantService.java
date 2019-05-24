@@ -12,5 +12,5 @@ public interface MerchantService {
     MerchantDTO updateMerchant(MerchantDTO merchantDTO);
     MerchantDTO deleteMerchantById(Integer merchantId);
 
-    List<JoinedTable> getTopMerchant();
+    MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating);
 }

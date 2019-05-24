@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MerchantProductRepositoryImpl extends CrudRepository<MerchantProduct, Integer> {
     List<MerchantProduct> findByMerchantId(Integer merchantId);
+    List<MerchantProduct> findByProductId(Integer productId);
 
 }

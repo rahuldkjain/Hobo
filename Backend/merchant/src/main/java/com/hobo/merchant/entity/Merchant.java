@@ -19,7 +19,6 @@ public class Merchant {
     String address;
     String email;
     long phoneNumber;
-    int merchantScore;
 
     public int getMerchantId() {
         return merchantId;
@@ -71,13 +70,7 @@ public class Merchant {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getMerchantScore() {
-        return merchantScore;
-    }
 
-    public void setMerchantScore(int merchantScore) {
-        this.merchantScore = merchantScore;
-    }
 
     public float getMerchantRating() {
         return merchantRating;
@@ -97,7 +90,6 @@ public class Merchant {
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
-                ", merchantScore=" + merchantScore +
                 '}';
     }
 }
