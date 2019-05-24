@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.activities.LandingPageActivity;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.models.Category;
+import com.example.hoboandroid.models.ResponseFromApi;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class CategoryFragment extends Fragment {
-    List<Category> itemsList;
+    List<Category> itemsList = new ArrayList<>();
     RecyclerView recyclerView;
     CategoryAdapter categoryAdapter;
 
@@ -68,40 +70,32 @@ public class CategoryFragment extends Fragment {
     }
 
     private void getCategories() {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(String.valueOf(R.string.category_api))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client( new OkHttpClient())
-                    .build();
 
-            ProductService service = retrofit.create(ProductService.class);
+        Retrofit retrofit = Api.getclient("listcategory/");
 
-            service.getCategories()
-                    .enqueue(new Callback<List<Category>>() { // this enqueue method calls api asynchronously and success/error
-                        @Override                              //hover over the enqueue method to check what this is
-                        public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+        ProductService service = retrofit.create(ProductService.class);
 
-                            //List<Category> categoryList = new ArrayList<>();
+        service.getCategories()
+                .enqueue(new Callback<ResponseFromApi>() {
+                    @Override
+                    public void onResponse(Call<ResponseFromApi> call, Response<ResponseFromApi> response) {
 
-                            if(response.body() != null){
-                                boolean b = itemsList.addAll(response.body());
-                                Log.d("HOBOLandingPage",response.body().toString());
+                        if(response.body() != null){
+                            itemsList.addAll(response.body().getData());
+                            Log.d("HOBOLandingPage",response.body().toString());
 
-                                categoryAdapter.notifyDataSetChanged();
+                            categoryAdapter.notifyDataSetChanged();
 
 
-                            }
+                        }
 
-
-
-                        } //even 404 response from api it's success here because the api is connected and responding
-
-                        @Override
-                        public void onFailure(Call<List<Category>> call, Throwable t) {
-                            Toast.makeText(getContext(),"Check your connection",Toast.LENGTH_LONG).show();
-                            Log.d("HOBOLandingPage",t.getMessage()+" failure");
-                        }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
-                    });
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseFromApi> call, Throwable t) {
+                        Toast.makeText(getContext(),"Check your connection",Toast.LENGTH_LONG).show();
+                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
+                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
+                });
 
 
 

@@ -63,16 +63,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
                     TextView productPrice = itemView.findViewById(R.id.productItemPrice);
 
                     RatingBar  rating = itemView.findViewById(R.id.productItemRating);
-                    rating.setRating(Float.parseFloat(product.getProductRating()));
+                    //rating.setRating(Float.parseFloat(product.getProductRating()));
                     rating.setEnabled(false);
 
-                    try {
+
                             Glide.with(itemView.getContext())
-                                    .load(R.string.category_path + (String)product.getAttributes().get("image_url"))
+                                    .load(R.string.category_path + product.getProductImage().get(0))
                                     .into((ImageView) itemView.findViewById(R.id.category_image));
-                    } catch (JSONException e) {
-                            e.printStackTrace();
-                    }
+
 
             }
         }

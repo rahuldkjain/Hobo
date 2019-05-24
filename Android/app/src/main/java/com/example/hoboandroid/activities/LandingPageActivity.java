@@ -2,6 +2,7 @@ package com.example.hoboandroid.activities;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,10 +13,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.models.Category;
+import com.example.hoboandroid.models.Product;
+import com.example.hoboandroid.models.ResponseFromApi;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
@@ -30,9 +34,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LandingPageActivity extends BaseActivity implements View.OnClickListener {
 
-    List<Category> categoryList;
-    CategoryAdapter categoryRecyclerViewAdapter;
-    RecyclerView categoryRecyclerView;
+    List<Product> productList = new ArrayList<>();
+    CategoryAdapter productRecyclerViewAdapter;
+    RecyclerView productRecyclerView;
 
 
 
@@ -43,6 +47,56 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         Fragment fragment = new CategoryFragment();
 
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().add(R.id.landing_page_frame_layout,fragment);
+
+        fragmentTransaction.commit();
+
+
+
+        /*productRecyclerView = findViewById(R.id.landing_page_image_recycler_view);
+
+        productRecyclerViewAdapter = new CategoryAdapter(productList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        productRecyclerView.setLayoutManager(linearLayoutManager);
+
+
+        productRecyclerView.setAdapter(productRecyclerViewAdapter);
+
+        Retrofit retrofit = Api.getclient("/product/getall");
+
+        ProductService service = retrofit.create(ProductService.class);
+
+        service.getCategories()
+                .enqueue(new Callback<ResponseFromApi>() {
+                    @Override
+                    public void onResponse(Call<ResponseFromApi> call, Response<ResponseFromApi> response) {
+
+                        if(response.body() != null){
+                            productList.addAll(response.body().getData());
+                            Log.d("HOBOLandingPage",response.body().toString());
+
+                            productRecyclerViewAdapter.notifyDataSetChanged();
+
+
+                        }
+
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseFromApi> call, Throwable t) {
+                        Toast.makeText(LandingPageActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
+                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
+                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
+                });
+
+
+
+
+
+    }
+*/
 
         //loadSlidingImages();
 
@@ -55,56 +109,6 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void getCategories() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(String.valueOf(R.string.category_api))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client( new OkHttpClient())
-                .build();
-
-        ProductService service = retrofit.create(ProductService.class);
-
-        service.getCategories()
-                .enqueue(new Callback<List<Category>>() {
-                    @Override
-                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-
-                        //List<Category> categoryList = new ArrayList<>();
-
-                        if(response.body() != null){
-                            boolean b = categoryList.addAll(response.body());
-                            Log.d("HOBOLandingPage",response.body().toString());
-
-                            categoryRecyclerViewAdapter = new CategoryAdapter(categoryList);
-
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                            categoryRecyclerView.setLayoutManager(linearLayoutManager);
-
-
-                            categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
-                            categoryRecyclerViewAdapter.notifyDataSetChanged();
-
-
-                        }
-
-
-
-                    } //even 404 response from api it's success here because the api is connected and responding
-
-                    @Override
-                    public void onFailure(Call<List<Category>> call, Throwable t) {
-                        Toast.makeText(LandingPageActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
-                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
-                });
-
-
-
-
-
-    }
-
     private void loadSlidingImages() {
 
     }
@@ -114,12 +118,12 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
-        int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
-        Category item = categoryList.get(itemPosition);
+        //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
+        //Category item = categoryList.get(itemPosition);
         Toast.makeText(LandingPageActivity.this, "A category is clicked", Toast.LENGTH_LONG).show();
         //opening a category page
         Intent intent = new Intent(LandingPageActivity.this,CategoryActivity.class);
-        intent.putExtra("Category Object",item.getCategoryName());
+        //intent.putExtra("Category Object",item.getCategoryName());
         startActivity(intent);
 
     }

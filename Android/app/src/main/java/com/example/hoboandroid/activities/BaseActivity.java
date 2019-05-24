@@ -88,13 +88,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
             @Override
             public void onDrawerOpened(@NonNull View view) {
-                getActionBar().setTitle(mDrawerTitle);
+                //getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(@NonNull View view) {
-                getActionBar().setTitle(mTitle);
+                //getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
