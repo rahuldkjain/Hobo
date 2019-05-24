@@ -9,14 +9,14 @@ module.exports = {
                 }
             },
             '/allProducts': {
-                target: 'http://localhost:8080/',
+                target: 'http://172.16.20.80:8080/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/allProducts': ''
                 }
             },
             '/goToProduct': {
-                target: 'http://localhost:8080/',
+                target: 'http://172.16.20.80:8080/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/goToProduct': ''
@@ -27,6 +27,13 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: {
                     '^/merchantProduct': ''
+                }
+            },
+            '/fetchCartProduct': {
+                target: 'http://172.16.20.80:8080/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/fetchCartProduct': ''
                 }
             }
         }

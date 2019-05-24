@@ -2,11 +2,13 @@ import productAPI from '../apis/productApis'
 export default {
     state: {
         product: {},
-        productDetails: {}
+        productDetails: {},
+        cartProduct: []
     },
     getters: {
         getProduct: (state) => state.product,
-        getProductDetails: (state) => state.productDetails
+        getProductDetails: (state) => state.productDetails,
+        getCartProduct: (state) => state.cartProduct
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -14,6 +16,11 @@ export default {
         },
         SET_PRODUCT_DETAILS: (state, result) => {
             state.productDetails = result.data
+        },
+        SET_CART_PRODUCT: (state,result) => {
+            console.log("set_cart_result: "+result.data)
+            state.cartProduct.push(result)
+            console.log("mutation "+state.cartProduct.productName)
         }
     },
     actions: {
@@ -25,6 +32,11 @@ export default {
         productDetails: (context, pid) => {
             productAPI.getProductDetails((result) => {
                 context.commit('SET_PRODUCT_DETAILS', result.data)
+            }, pid)
+        },
+        cartProduct: (context, pid) => {
+            productAPI.fetchCartProduct((result) => {
+                context.commit('SET_CART_PRODUCT', result.data)
             }, pid)
         }
     }

@@ -1,13 +1,14 @@
 <template>
 
     <b-card bg-variant="light">
-        <b-row id="products" v-for="(product,index) in products" :key="index"> 
+      
+        <b-row id="products" v-for="(product,index) in getCardProduct" :key="index"> 
         
             <div class="cartItem">
                 <img :src='product.image'>
                 <div class="head">
-                    <h3>name {{product.name}}</h3>
-                    <h3>price {{product.price}}</h3>
+                    <h3>name {{product.productName}}</h3>
+                    <!-- <h3>price {{productDetails[index].price}}</h3> -->
                 
                 </div>
                 <div class="quantity">
@@ -15,41 +16,49 @@
                 </div>
                 <div class="button">
                     <b-button variant="danger">Remove Item </b-button>
+                    {{getCartProduct}}
                 </div>
             </div>
             
         </b-row>
+        
         <b-button class="success" variant="danger"><router-link to="/checkout">Checkout</router-link></b-button>
     </b-card>
 
 </template>
 <script>
 import Quantity from '@/components/Quantity.vue'
+import {mapGetters, mapActions} from 'vuex'; 
 export default {
     name: 'CartItem',
     data() {
         return {
-            products: [
-                {
-                    image: 'https://i.imgur.com/VgoUWI5.jpg',
-                    name: 'product 1',
-                    price: '15000'
-                },
-                {
-                    image: 'https://i.imgur.com/VgoUWI5.jpg',
-                    name: 'product 1',
-                    price: '15000'
-                },
-                {
-                    image: 'https://i.imgur.com/VgoUWI5.jpg',
-                    name: 'product 1',
-                    price: '15000'
-                }
-            ]
+            products: [{}],
+            productDetails: [{}]
         }
+    },
+    computed: {
+        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails'])
     },
     components: {
         Quantity
+    },
+    mounted() {
+        if(this.getLoggedIn == false){
+            for(var i=1; i<=sessionStorage.length;i++){
+                var pid = sessionStorage.getItem("product"+i)
+                console.log("pid: " +  pid)
+                this.$store.dispatch('cartProduct', pid)
+                this.$store.dispatch('productDetails', pid)
+                console.log("getCartProduct: " + this.getCartProduct)
+                //this.products.push(this.getCartProduct)
+                //console.log("cart products"+this.getCartProduct.productName)
+                //this.productDetails.push(this.getProductDetails) 
+                //console.log("products"+this.products)
+                //console.log("productDetails"+this.productDetails)
+            }
+        
+        }
     }
 }
 </script>

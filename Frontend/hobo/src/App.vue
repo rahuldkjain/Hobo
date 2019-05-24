@@ -25,11 +25,7 @@ export default {
     ...mapGetters(['getMerchant'])
   },
   methods: {
-    // checkMerchant() {
-    //   console.log("hello")
-    //   console.log(this.$store.getters.merchant)
-    //   return this.$store.getters.merchant;
-    // }
+    
   }
 }
 </script>
