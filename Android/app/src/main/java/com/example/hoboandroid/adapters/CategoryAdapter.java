@@ -61,8 +61,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Recycl
 
             //Loading image from below url into imageView
             Glide.with(itemView.getContext())
-                    .load(R.string.category_path + category.getCategoryImage())
-                    .apply(new RequestOptions().override(250,250))
+                    .load( category.getCategoryImage())
+                    .apply(new RequestOptions().override(100,100))
                             .into((ImageView) itemView.findViewById(R.id.category_image));
 
 

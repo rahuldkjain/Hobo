@@ -29,7 +29,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
         @Override
         public ProductAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
                 View view =  LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.category_list_item,viewGroup,false);
+                inflate(R.layout.landing_page_product_item,viewGroup,false);
                 return new RecyclerViewHolder(view);
         }
         
@@ -49,7 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
                 super(itemView);
             }
             public void bind(Product product){
-                    TextView productName = itemView.findViewById(R.id.category_name);
+                    TextView productName = itemView.findViewById(R.id.landing_product_name);
                     productName.setText(product.getProductName());
 
                     // productRating = itemView.findViewById(R.id.productItemRating);
@@ -65,7 +65,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
                             Glide.with(itemView.getContext())
                                     .load( product.getProductImage().get(0))
                                     .apply(new RequestOptions().override(500,500))
-                                    .into((ImageView) itemView.findViewById(R.id.category_image));
+                                    .into((ImageView) itemView.findViewById(R.id.landing_product_image));
 
 
             }
