@@ -1,8 +1,7 @@
 import makeApiCalls from './makeApiCalls.js'
 export default {
     getProducts(callback) {
-        var url = 'api/product/getall'
+        var url = '/allProducts/product/getall'
         makeApiCalls.makeGetRequest(url, callback)
-    },
-
+    }
 }

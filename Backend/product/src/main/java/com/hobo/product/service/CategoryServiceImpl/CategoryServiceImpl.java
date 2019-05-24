@@ -35,8 +35,6 @@ public class CategoryServiceImpl implements CategoryService {
 
         CategoryDTO resultDTO = new CategoryDTO();
         BeanUtils.copyProperties(result, resultDTO);
-        System.out.println("result: " + result);
-        System.out.println("resultDTO: " + resultDTO);
         return resultDTO;
     }
 

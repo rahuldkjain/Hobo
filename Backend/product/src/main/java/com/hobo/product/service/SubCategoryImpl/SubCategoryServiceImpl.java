@@ -56,8 +56,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
         SubCategoryDTO resultDTO = new SubCategoryDTO();
         BeanUtils.copyProperties(result, resultDTO);
-        System.out.println("result: " + result);
-        System.out.println("resultDTO: " + resultDTO);
         return resultDTO;
     }
 

@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.json.simple.JSONObject;
 
+import java.util.List;
+
 @Document(collection = Product.COLLECTION_NAME)
 public class Product {
     static final String COLLECTION_NAME="product";
@@ -13,8 +15,18 @@ public class Product {
     String description;
     String category;
     String subCategory;
+    String productBrand;
+    List<String> productImage;
     //Object attributes;
     JSONObject attributes = new JSONObject();
+
+    public String getProductBrand() {
+        return productBrand;
+    }
+
+    public void setProductBrand(String productBrand) {
+        this.productBrand = productBrand;
+    }
 
     public void setAttributes(JSONObject attributes) {
         this.attributes = attributes;
@@ -25,6 +37,13 @@ public class Product {
     }
 
 
+    public List<String> getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(List<String> productImage) {
+        this.productImage = productImage;
+    }
 
     public String getDescription() {
         return description;
