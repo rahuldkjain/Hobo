@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
@@ -51,6 +52,11 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().add(R.id.landing_page_frame_layout,fragment);
 
         fragmentTransaction.commit();
+
+
+
+
+
 
 
 
@@ -117,6 +123,10 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+
+
+
+
 
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);
