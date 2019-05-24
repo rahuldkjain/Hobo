@@ -58,7 +58,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         public void bind(SubCategory subCategory){
 
 
-            TextView title = itemView.findViewById(R.id.sub_category_name);
+           /* TextView title = itemView.findViewById(R.id.sub_category_name);
             title.setText(subCategory.getSubCategoryName());
 
 
@@ -68,8 +68,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     .load(R.string.category_path + subCategory.getSubCategoryImage())
                     .into((ImageView) itemView.findViewById(R.id.sub_category_image));
 
-
-
+*/
 
         }
     }

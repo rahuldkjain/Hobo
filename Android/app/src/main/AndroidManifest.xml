@@ -2,32 +2,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hoboandroid">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".activities.BaseActivity"/>
+        <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.OrderedProductsActivity" />
         <activity android:name=".activities.OrderHistoryActivity" />
         <activity android:name=".activities.CheckoutPromptActivity" />
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.CartActivity" />
-        <activity android:name=".activities.ProductInfoActivity" />
-        <activity android:name=".activities.ProductListActivity" />
-        <activity android:name=".activities.CategoryActivity" />
-        <activity android:name=".activities.LandingPageActivity">
+        <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.ProductInfoActivity" />
+        <activity android:name=".activities.ProductListActivity" />
+        <activity android:name=".activities.CategoryActivity" />
+        <activity android:name=".activities.LandingPageActivity"></activity>
     </application>
 
 </manifest>
