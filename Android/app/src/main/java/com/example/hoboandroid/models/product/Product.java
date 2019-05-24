@@ -1,7 +1,9 @@
-package com.example.hoboandroid.models;
+package com.example.hoboandroid.models.product;
+
+import com.example.hoboandroid.models.Attributes;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-import com.google.gson.annotations.SerializedName;
 
 public class Product{
 
@@ -29,74 +31,74 @@ public class Product{
 	@SerializedName("productName")
 	private String productName;
 
-	public void setSubCategory(String subCategory){
-		this.subCategory = subCategory;
-	}
-
 	public String getSubCategory(){
 		return subCategory;
 	}
 
-	public void setProductImage(List<String> productImage){
-		this.productImage = productImage;
+	public void setSubCategory(String subCategory){
+		this.subCategory = subCategory;
 	}
 
 	public List<String> getProductImage(){
 		return productImage;
 	}
 
-	public void setProductId(String productId){
-		this.productId = productId;
+	public void setProductImage(List<String> productImage){
+		this.productImage = productImage;
 	}
 
 	public String getProductId(){
 		return productId;
 	}
 
-	public void setProductBrand(String productBrand){
-		this.productBrand = productBrand;
+	public void setProductId(String productId){
+		this.productId = productId;
 	}
 
 	public String getProductBrand(){
 		return productBrand;
 	}
 
-	public void setDescription(String description){
-		this.description = description;
+	public void setProductBrand(String productBrand){
+		this.productBrand = productBrand;
 	}
 
 	public String getDescription(){
 		return description;
 	}
 
-	public void setAttributes(Attributes attributes){
-		this.attributes = attributes;
+	public void setDescription(String description){
+		this.description = description;
 	}
 
 	public Attributes getAttributes(){
 		return attributes;
 	}
 
-	public void setCategory(String category){
-		this.category = category;
+	public void setAttributes(Attributes attributes){
+		this.attributes = attributes;
 	}
 
 	public String getCategory(){
 		return category;
 	}
 
-	public void setProductName(String productName){
-		this.productName = productName;
+	public void setCategory(String category){
+		this.category = category;
 	}
 
 	public String getProductName(){
 		return productName;
 	}
 
+	public void setProductName(String productName){
+		this.productName = productName;
+	}
+
 	@Override
  	public String toString(){
 		return 
-			"DataItem{" + 
+			"Category{" +
 			"subCategory = '" + subCategory + '\'' + 
 			",productImage = '" + productImage + '\'' + 
 			",productId = '" + productId + '\'' + 

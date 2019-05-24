@@ -5,29 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.ProductAdapter;
-import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.fragments.ProductListFragment;
-import com.example.hoboandroid.fragments.SearchProductListFragment;
-import com.example.hoboandroid.models.Product;
-import com.example.hoboandroid.services.MerchantService;
-import com.example.hoboandroid.services.ProductService;
-
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductListActivity extends AppCompatActivity{
 

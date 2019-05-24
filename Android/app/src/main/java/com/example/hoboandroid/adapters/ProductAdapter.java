@@ -6,18 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.models.Product;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.hoboandroid.models.product.Product;
 
 import java.util.List;
 
@@ -70,7 +64,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
 
                             Glide.with(itemView.getContext())
                                     .load( product.getProductImage().get(0))
-                                    .apply(new RequestOptions().override(1000,1000))
+                                    .apply(new RequestOptions().override(500,500))
                                     .into((ImageView) itemView.findViewById(R.id.category_image));
 
 

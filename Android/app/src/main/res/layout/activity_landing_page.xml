@@ -16,20 +16,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/landing_page_frame_layout"
+        app:layout_constraintBottom_toTopOf="@+id/landing_page_textview"
         app:layout_constraintVertical_chainStyle="packed">
 
     </android.support.v7.widget.RecyclerView>
 
-
-    <FrameLayout
-        android:id="@+id/landing_page_frame_layout"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/landing_page_image_recycler_view">
+        android:textSize="20sp"
+        android:text="Categories"
+        android:id="@+id/landing_page_textview"
+        app:layout_constraintBottom_toTopOf="@id/landing_page_category_recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/landing_page_image_recycler_view"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/landing_page_category_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@+id/landing_page_textview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
 
-    </FrameLayout>
+    </android.support.v7.widget.RecyclerView>
 
 
 </android.support.constraint.ConstraintLayout>

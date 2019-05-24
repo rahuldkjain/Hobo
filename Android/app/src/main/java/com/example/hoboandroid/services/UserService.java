@@ -1,10 +1,6 @@
 package com.example.hoboandroid.services;
 
-import com.example.hoboandroid.models.Category;
-import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.models.User;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

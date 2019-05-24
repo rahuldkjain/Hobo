@@ -9,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.activities.LandingPageActivity;
-import com.example.hoboandroid.models.Category;
+import com.example.hoboandroid.models.category.Category;
 
 import java.util.List;
 
@@ -60,7 +61,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Recycl
 
             //Loading image from below url into imageView
             Glide.with(itemView.getContext())
-                    .load(R.string.category_path + category.getImage())
+                    .load(R.string.category_path + category.getCategoryImage())
+                    .apply(new RequestOptions().override(250,250))
                             .into((ImageView) itemView.findViewById(R.id.category_image));
 
 

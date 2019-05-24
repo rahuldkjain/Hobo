@@ -13,12 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.activities.ProductListActivity;
 import com.example.hoboandroid.adapters.ProductAdapter;
-import com.example.hoboandroid.models.Product;
+import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;

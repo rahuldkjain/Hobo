@@ -1,7 +1,6 @@
 package com.example.hoboandroid.activities;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +11,9 @@ import android.widget.Toast;
 
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.OrderAdapter;
-import com.example.hoboandroid.models.Category;
 import com.example.hoboandroid.models.Order;
-import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.services.OrderService;
-import com.example.hoboandroid.services.ProductService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;

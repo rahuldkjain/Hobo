@@ -10,9 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.SubCategoryAdapter;
-import com.example.hoboandroid.models.Category;
 import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.services.ProductService;
 
