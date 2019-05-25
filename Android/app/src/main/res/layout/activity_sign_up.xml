@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
-                    android:id="@+id/userName"
+                    android:id="@+id/signup_userName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_username">
 
                 <EditText
-                    android:id="@+id/userEmail"
+                    android:id="@+id/signup_userEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -81,7 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_phone">
 
                 <EditText
-                    android:id="@+id/passWord"
+                    android:id="@+id/signup_passWord"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -103,7 +103,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_password">
 
                 <EditText
-                    android:id="@+id/confirmPass"
+                    android:id="@+id/signup_confirmPass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -125,7 +125,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_city">
 
                 <EditText
-                    android:id="@+id/phone"
+                    android:id="@+id/signup_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -148,7 +148,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_email">
 
                 <EditText
-                    android:id="@+id/gender"
+                    android:id="@+id/signup_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -171,7 +171,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_gender">
 
                 <EditText
-                    android:id="@+id/dob"
+                    android:id="@+id/signup_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -194,7 +194,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_DOB">
 
                 <EditText
-                    android:id="@+id/address1"
+                    android:id="@+id/signup_address1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -217,7 +217,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_address1">
 
                 <EditText
-                    android:id="@+id/address2"
+                    android:id="@+id/signup_address2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -237,10 +237,10 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_input_picode">
+                app:layout_constraintTop_toBottomOf="@+id/text_input_pincode">
 
                 <EditText
-                    android:id="@+id/city"
+                    android:id="@+id/signup_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -252,7 +252,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/text_input_picode"
+                android:id="@+id/text_input_pincode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -263,7 +263,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_input_address2">
 
                 <EditText
-                    android:id="@+id/pinode"
+                    android:id="@+id/signup_pincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -275,7 +275,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/signUp"
+                android:id="@+id/signup_button"
                 android:layout_width="86dp"
                 android:layout_height="48dp"
                 android:layout_gravity="start"
@@ -283,13 +283,13 @@
                 android:layout_marginBottom="40dp"
                 android:enabled="false"
                 android:text="Sign In"
-                app:layout_constraintBottom_toTopOf="@+id/loading1"
+                app:layout_constraintBottom_toTopOf="@+id/signup_loading"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password_reenter" />
 
             <ProgressBar
-                android:id="@+id/loading1"
+                android:id="@+id/signup_loading"
                 android:layout_width="0dp"
                 android:layout_height="21dp"
                 android:layout_marginTop="36dp"
@@ -302,7 +302,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUp" />
+                app:layout_constraintTop_toBottomOf="@+id/signup_button" />
 
         </android.support.constraint.ConstraintLayout>
 
