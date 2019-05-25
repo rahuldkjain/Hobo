@@ -10,15 +10,26 @@
 
                 </div>
                 <div class="quantity">
-                    <Quantity/>
+                    <!-- <Quantity/> -->
+
+                    <b-form-group>
+                        <b-form-select v-model="quantity[index]" class="mb-3">
+                        <!-- <option :value="null">Quantity</option> -->
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </b-form-select>
+            
+                    </b-form-group>
+
                 </div>
                 <div class="button">
-                    <b-button @click="removeCartItem(getCartProductId[index])" variant="danger">Remove Item</b-button>
+                    <b-button @click="removeCartItem(getCartProductId[index],index)" variant="danger">Remove Item</b-button>
                 </div>
             </div>
         </b-row>
         
-        <b-button class="success" variant="danger"><router-link to="/checkout">Checkout</router-link></b-button>
+        <b-button class="success" @click="checkoutFunction" variant="danger">Checkout</b-button>
     </b-card>
 
 </template>
@@ -30,16 +41,19 @@ export default {
     name: 'CartItem',
     data() {
         return {
-            
+            quantity: [],
+            total: [],
+            totalAmount: 0
         }
     },
     methods:{
-        removeCartItem: function(pid){
+        removeCartItem: function(pid,index){
             var keys = Object.keys(sessionStorage)
-            console.log(keys)
+            // console.log(keys)
             keys.forEach(key => {
-                if(sessionStorage.getItem(key) == pid){
+                if(JSON.parse(sessionStorage.getItem(key)).pid == pid){
                     sessionStorage.removeItem(key)
+                    this.quantity.splice(index,1)
                 }
             })
             this.forceRerender();
@@ -47,11 +61,29 @@ export default {
         forceRerender() {
            
             window.location.reload()
+        },
+        checkoutFunction() {
+            // console.log("quantity on checkout "+this.quantity)
+            // console.log("price "+this.getCartProductPrice)
+
+            this.$store.dispatch('cartQuantity',this.quantity)
+
+            for(var i=0;i<this.getCartQuantity.length;i++){
+                var totalPrice = this.getCartQuantity[i]*this.getCartProductPrice[i]
+                this.total.push(totalPrice)
+            }
+            
+            this.total.forEach(price => {
+                this.totalAmount += price
+            })
+            this.$store.dispatch('checkoutAmount',this.totalAmount)
+
+            this.$router.push('/checkout')
         }
 
     },
     computed: {
-        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId'])
+        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity'])
     },
     components: {
         Quantity
@@ -62,7 +94,7 @@ export default {
             var keys = Object.keys(sessionStorage)
             console.log(keys)
             keys.forEach(key => {
-                var pid = sessionStorage.getItem(key)
+                var pid = JSON.parse(sessionStorage.getItem(key)).pid
                 console.log("pid: " + pid)
                 this.$store.dispatch('cartProduct', pid)
                 this.$store.dispatch('cartProductPrice', pid)
