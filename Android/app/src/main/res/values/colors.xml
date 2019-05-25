@@ -6,4 +6,5 @@
     <color name="white">#FFFF</color>
     <color name="black">#000</color>
     <color name="steelGrey">#43464B</color>
+    <color name="gray">#43464B</color>
 </resources>

@@ -3,27 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
 
     <ImageView
         android:id="@+id/sub_category_image"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:color/background_light"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/sub_category_name"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/sub_category_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"/>
 
     <TextView
         android:id="@+id/sub_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sub Category"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@id/sub_category_image"
+        app:layout_constraintEnd_toStartOf="@+id/sub_category_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sub_category_image"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/sub_category_image" />
 </android.support.constraint.ConstraintLayout>

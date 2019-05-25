@@ -20,7 +20,7 @@ public interface ProductService {
     Call<ApiResponse<List<Category>>> getCategories();
 
     @POST("/listsubcategory")
-    Call<List<SubCategory>> getSubCategory(@Query("category") String category);
+    Call<ApiResponse<List<SubCategory>>> getSubCategory(@Query("category") String category);
 
     @GET("/product/getall")
     Call<ApiResponse<List<Product>>> getAllProducts();

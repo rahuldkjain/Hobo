@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.SubCategoryAdapter;
+import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.services.ProductService;
 
@@ -62,15 +63,15 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
 
 
         service.getSubCategory(category)
-                .enqueue(new Callback<List<SubCategory>>() {
+                .enqueue(new Callback<ApiResponse<List<SubCategory>>>() {
 
                     @Override                              //hover over the enqueue method to check what this is
-                    public void onResponse(Call<List<SubCategory>> call, Response<List<SubCategory>> response) {
+                    public void onResponse(Call<ApiResponse<List<SubCategory>>> call, Response<ApiResponse<List<SubCategory>>> response) {
 
                         //List<Category> categoryList = new ArrayList<>();
 
                         if(response.body() != null){
-                            boolean b = subCategoryList.addAll(response.body());
+                            boolean b = subCategoryList.addAll(response.body().getData());
                             Log.d("HOBOLandingPage",response.body().toString()+" "+b);
 
 
@@ -84,7 +85,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                     } //even 404 response from api it's success here because the api is connected and responding
 
                     @Override
-                    public void onFailure(Call<List<SubCategory>> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<SubCategory>>> call, Throwable t) {
                         Toast.makeText(CategoryActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
                         Log.d("HOBOLandingPage",t.getMessage()+" failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)

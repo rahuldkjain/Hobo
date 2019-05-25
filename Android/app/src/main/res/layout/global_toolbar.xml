@@ -43,7 +43,7 @@
             android:layout_height="50dp"
             app:layout_constraintHorizontal_weight="5"
             android:background="#FFFFFF"
-            android:textColorHint="@color/gray"
+            android:textColorHint="#727272"
             android:textColor="#000000"
             android:hint="Search any product"
             app:layout_constraintBottom_toBottomOf="@+id/logoTextView"
