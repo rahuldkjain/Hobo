@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:hapticFeedbackEnabled="true"
-        android:background="@color/gray"
+        android:background="#FFFFFF"
         tools:srcCompat="@tools:sample/backgrounds/scenic"
         />
 
@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="25sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/landing_product_image" />
