@@ -9,22 +9,17 @@ import com.example.hoboandroid.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        int SPLASH_TIME_OUT = 1000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Start your app main activity
-                Log.d("ABCD","Enteredrun successfully");
                 Intent i = new Intent(SplashActivity.this, LandingPageActivity.class);
                 startActivity(i);
-
-                // close this activity
                 finish();
             }
         }, SPLASH_TIME_OUT);

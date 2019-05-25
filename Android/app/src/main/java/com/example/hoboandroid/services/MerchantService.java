@@ -4,6 +4,8 @@ import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Merchant;
 import com.example.hoboandroid.models.MerchantProduct;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -15,8 +17,8 @@ public interface MerchantService {
     @GET("/merchant/getProductRating")
     Call<ApiResponse<MerchantProduct>> getProductRating(@Query("productId") String productId);
 
-    @GET("/merchant/getallmerchant")
-    Call<MerchantProduct> getAllMerchants(@Query("productId") String productId);
+    @GET("/merchantproduct/productmerchants")
+    Call<ApiResponse<List<MerchantProduct>>> getAllMerchants(@Query("productId") Integer productId);
 
 
     @GET("/merchant/getallmerchant")

@@ -142,5 +142,6 @@
             app:layout_constraintStart_toEndOf="@+id/addToCartButton"
             app:layout_constraintTop_toTopOf="@+id/addToCartButton"
             app:layout_constraintVertical_bias="0.0" />
+
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

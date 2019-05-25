@@ -65,11 +65,10 @@ public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageP
                     //rating.setRating(Float.parseFloat(product.getProductRating()));
                     //rating.setEnabled(false);
 
-
-                            Glide.with(itemView.getContext())
-                                    .load( product.getProductImage().get(0))
-                                    .apply(new RequestOptions().override(500,500))
-                                    .into((ImageView) itemView.findViewById(R.id.landing_product_image));
+                    Glide.with(itemView.getContext())
+                          .load( product.getProductImage().get(0))
+                           .apply(new RequestOptions().override(500,500))
+                            .into((ImageView) itemView.findViewById(R.id.landing_product_image));
 
 
             }
