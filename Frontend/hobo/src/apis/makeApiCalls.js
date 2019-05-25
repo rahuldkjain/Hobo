@@ -5,8 +5,8 @@ export default {
             .then(callback)
             .catch((error) => { console.log(error) })
     },
-    makePostRequest(path, callback) {
-        axios.post(path)
+    makePostRequest(path, callback, payload) {
+        axios.post(path, payload)
             .then(callback)
             .catch((error) => { console.log(error) })
     },

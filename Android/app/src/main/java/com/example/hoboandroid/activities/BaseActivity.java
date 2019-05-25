@@ -41,10 +41,12 @@ import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.NavigationAdapter;
+import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
+import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BaseActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener {
+public class BaseActivity extends AppCompatActivity {
 
 
     private DrawerLayout drawerLayout;
@@ -68,7 +70,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
     public ViewGroup fullLayout;
     public FrameLayout frameLayout;
-    ProductListFragment productsFragment;
 
 
     private List<String> categoryItems = new ArrayList<>();
@@ -164,7 +165,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         });
 
 
-        getCategories();
         //makeSearchButton(toolbarView.findViewById(R.id.globalSearch));
 
 
@@ -192,10 +192,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                     //Bundle bundle = new Bundle();
                     //bundle.putString("SearchQuery", searchText);
                     //productsFragment.setArguments(bundle);
-                    productsFragment =  new ProductListFragment();
+                    ProductListFragment productsFragment = new ProductListFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                            .add(productsFragment,"ProductsFragment")
+                            /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                            .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
                             .commit();
                     productsFragment.getSearchedProducts(searchText);
 
@@ -213,6 +213,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                 startActivity(intent);
             }
         });
+        getCategories();
 
 
     }
@@ -226,13 +227,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         ProductService service = retrofit.create(ProductService.class);
 
 
-
-
         service.getCategories().enqueue(new Callback<ApiResponse<List<Category>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<Category>>> call, Response<ApiResponse<List<Category>>> response) {
 
-                if(response.body() != null){
+                if (response.body() != null) {
 
                     for (Category category : response.body().getData()) {
                         categoryItems.add(category.getCategoryName());
@@ -247,13 +246,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                 }
 
             }
+
             @Override
             public void onFailure(Call<ApiResponse<List<Category>>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Check your connection", Toast.LENGTH_LONG).show();
-                Log.d("HOBOLandingPage", t.getMessage() + " failure");
+                Log.d("BaseActivity", t.getMessage() + " failure");
             }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
         });
-
 
 
     }
@@ -316,7 +315,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+            Log.d("BaseActivity",item.getTitle().toString());
+            Bundle bundle = new Bundle();
+            bundle.putString("Category",item.getTitle().toString());
+
+            CategoryFragment categoryFragment = new CategoryFragment();
+            categoryFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                    .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment")
+                    .commit();
+
         return super.onOptionsItemSelected(item);
+        //TODO profile, order history
 
     }
 
@@ -370,16 +381,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
 
+
         //        super.setContentView(fullLayout);
 
         //Your drawer content...
 
     }
 
-    @Override
-    public void onClick(View view, int position) {
-        Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
-        intent.putExtra("CategoryName", categoryItems.get(position));
-        startActivity(intent);
-    }
+
 }
