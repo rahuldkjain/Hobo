@@ -3,7 +3,7 @@
     <b-card bg-variant="light">
         <b-row >
             <b-col>
-            <h2>Your Products</h2>
+            <h2>Product</h2>
             </b-col>
         </b-row>
         <b-row>
@@ -61,9 +61,10 @@ export default {
         addToCart(pid) {
             
             if(this.getLoggedIn == false){
-                console.log("not logged in")
+                // console.log("not logged in")
                 var product_number = sessionStorage.length + 1
-                sessionStorage.setItem('product' + product_number, pid)
+                var productValues = {'pid':pid}
+                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
                 alert("the item is added")
             }
         }

@@ -1,28 +1,27 @@
 <template>
 
     <b-card bg-variant="light">
-        <b-row >
-            <b-col>
-            <h2>Your Products</h2>
-            </b-col>
-        </b-row>
-        <b-row>
-            <b-col>
-                <img :src='getProduct.productImage'>
-            </b-col>
-            <b-col>
-                <b-row>
-                <span class="texttop"><b>Product name: </b>{{getProduct.productName}}</span>
-                </b-row>
-                <b-row>
-                <span class="text"><b>Product Description:</b> {{getProduct.description}}</span>
-                </b-row>
-                <b-row>    
-                <span class="text"><b>Product Price:</b>{{product.price}}</span>
-                </b-row>
-            </b-col>
+        <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+            <div class="cartItem" id="getCartProductId[index]">
+                <img :src='getCartImage[index]'>
+                <div class="head">
+                    <h4> Name: {{product}}</h4>
+                    <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
+                    <h4>Quantity: {{getCartQuantity[index]}}</h4>
+                </div>
+                <div>
+                    <!-- <Quantity/> -->
+                    <h3> Total: {{getCartQuantity[index]*getCartProductPrice[index]}}  </h3>
+                </div>
             
+                
+            </div>
         </b-row>
+
+        <div>
+            <h2> TOTAL AMOUNT : {{getTotalAmount}} </h2>
+                
+        </div>
     </b-card>
     <!-- <h1> HELLOO </h1> -->
 </template>
@@ -32,32 +31,26 @@ export default {
     name: 'ProductDetailsShipping',
     data() {
         return {
-            product: {
-                
-                    image: 'https://i.imgur.com/VgoUWI5.jpg',
-                    name: 'product 1',
-                    price: '15000'
-                }
+            total: []
             
         }
     },
     computed: {
-        ...mapGetters(['getProduct'])
+        ...mapGetters(['getProduct','getCartQuantity','getCartProductPrice','getCartProduct','getCartImage','getCartProductId','getTotalAmount'])
+    },
+    mounted(){
+        console.log("quantity on shipping page "+this.getCartQuantity)
+        
+            for(productPrice in this.total){
+                this.totalAmount += productPrice
+            }
+            console.log("total "+this.totalAmount)
+            
+        
+    },
+    methods: {
+        
     }
-    // methods: {
-    //     func() {
-    //         console.log(this.$route.path);
-    //     }
-    // },
-    //     mounted: {
-    //         checkCurrentPath() {
-    //         console.log(this.$route.path);
-    //         if(this.$route.path == '/checkout')
-    //             return false;
-    //         else
-    //             return true;
-    //         }
-    //     }
 
     }
 
