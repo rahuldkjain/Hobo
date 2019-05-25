@@ -114,7 +114,7 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
 
 
         //TODO the merchant selection and reflecting the change caused by changing the merchant. merchant -- spinner, price- textview
-        service1.getAllMerchants(productId).enqueue(new Callback<ApiResponse<List<MerchantProduct>>>() {
+        /*service1.getAllMerchants(productId).enqueue(new Callback<ApiResponse<List<MerchantProduct>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<MerchantProduct>>> call, Response<ApiResponse<List<MerchantProduct>>> response) {
                 if(response.body() != null){
@@ -128,7 +128,7 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<ApiResponse<List<MerchantProduct>>> call, Throwable t) {
 
             }
-        });
+        });*/
 
 
     }

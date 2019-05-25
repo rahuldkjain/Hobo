@@ -31,4 +31,5 @@
     <string name="cart_item">item</string>
     <string name="merchant">Merchant</string>
     <string name="todo">TODO</string>
+    <string name="user_host_address">host_address_user</string>
 </resources>

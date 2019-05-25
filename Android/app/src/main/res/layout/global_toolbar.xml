@@ -42,7 +42,7 @@
             app:layout_constraintStart_toEndOf="@+id/drawerButton"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/globalSearch"
             style="@style/custom_style_toolbar_item"
             android:layout_width="0dp"
@@ -61,7 +61,7 @@
             android:inputType=""
             android:autofillHints="" tools:targetApi="o">
 
-        </EditText>
+        </AutoCompleteTextView>
 
         <Button
             android:id="@+id/toolbar_search_button"
