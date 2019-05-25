@@ -7,14 +7,15 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,7 +112,28 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
             }
         });
 
-        // ActionBarDrawerToggle ties together the the proper interactions
+        ActionBarDrawerToggle mActionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                drawerLayout,         /* DrawerLayout object */
+                (Toolbar) findViewById(R.id.toolbar),  /* nav drawer image to replace 'Up' caret */
+                R.string.buy_now, /* "open drawer" description for accessibility */
+                R.string.attributes_zone /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                super.onDrawerClosed(view);
+
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        drawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        //ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
 
 
@@ -129,8 +151,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
             }
         });
 
-        View toolbarView = findViewById(R.id.toolbar);
+//        View toolbarView = findViewById(R.id.toolbar);
 
+
+        getCategories();
         //makeSearchButton(toolbarView.findViewById(R.id.globalSearch));
 
 
@@ -155,7 +179,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                                 categoryItems.add(category.getCategoryName());
                             }
                             //categoryList.addAll(response.body().getData());
-                            Log.d("BaseActivity",response.body().toString());
+                            Log.d("BaseActivity ",response.body().toString());
 
 
 
