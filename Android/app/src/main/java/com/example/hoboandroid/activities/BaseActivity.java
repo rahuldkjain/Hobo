@@ -45,6 +45,7 @@ import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
+import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
@@ -164,7 +165,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         });
 
 
-        getCategories();
         //makeSearchButton(toolbarView.findViewById(R.id.globalSearch));
 
 
@@ -192,12 +192,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                     //Bundle bundle = new Bundle();
                     //bundle.putString("SearchQuery", searchText);
                     //productsFragment.setArguments(bundle);
-                    productsFragment =  new ProductListFragment();
+                    productsFragment = new ProductListFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                            .add(productsFragment,"ProductsFragment")
+                            /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                            .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
                             .commit();
-                    productsFragment.getSearchedProducts(searchText);
+                    //productsFragment.getSearchedProducts(searchText);
 
                 }
 
@@ -213,6 +213,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                 startActivity(intent);
             }
         });
+        getCategories();
 
 
     }
@@ -226,13 +227,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         ProductService service = retrofit.create(ProductService.class);
 
 
-
-
         service.getCategories().enqueue(new Callback<ApiResponse<List<Category>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<Category>>> call, Response<ApiResponse<List<Category>>> response) {
 
-                if(response.body() != null){
+                if (response.body() != null) {
 
                     for (Category category : response.body().getData()) {
                         categoryItems.add(category.getCategoryName());
@@ -247,13 +246,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
                 }
 
             }
+
             @Override
             public void onFailure(Call<ApiResponse<List<Category>>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Check your connection", Toast.LENGTH_LONG).show();
                 Log.d("HOBOLandingPage", t.getMessage() + " failure");
             }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
         });
-
 
 
     }

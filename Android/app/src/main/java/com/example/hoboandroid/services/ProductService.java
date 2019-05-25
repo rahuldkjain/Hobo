@@ -30,6 +30,6 @@ public interface ProductService {
 
 
     @GET("/get")
-    Call<Product> getProductById(@Query("productId") int productId);
+    Call<ApiResponse<Product>> getProductById(@Query("productId") int productId);
 
 }
