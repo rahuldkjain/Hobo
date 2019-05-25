@@ -8,7 +8,7 @@ export default {
         var url = '/merchantProduct/merchantproduct/productmerchants?productId=' + pid
         makeApiCalls.makeGetRequest(url, callback)
     },
-    fetchCartProduct(callback,pid) {
+    fetchCart(callback, pid) {
         var url = '/fetchCartProduct/product?productId=' + pid
         makeApiCalls.makeGetRequest(url, callback)
     }

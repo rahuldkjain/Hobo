@@ -3,12 +3,14 @@ export default {
     state: {
         product: {},
         productDetails: {},
-        cartProduct: []
+        cartProduct: [],
+        cartImage: []
     },
     getters: {
         getProduct: (state) => state.product,
         getProductDetails: (state) => state.productDetails,
-        getCartProduct: (state) => state.cartProduct
+        getCartProduct: (state) => state.cartProduct,
+        getCartImage: (state) => state.cartImage
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -17,10 +19,10 @@ export default {
         SET_PRODUCT_DETAILS: (state, result) => {
             state.productDetails = result.data
         },
-        SET_CART_PRODUCT: (state,result) => {
-            console.log("set_cart_result: "+result.data)
-            state.cartProduct.push(result)
-            console.log("mutation "+state.cartProduct.productName)
+        SET_CART_PRODUCT: (state, result) => {
+            state.cartProduct.push(result.data.productName)
+            state.cartImage.push(result.data.productImage)
+
         }
     },
     actions: {
@@ -35,7 +37,7 @@ export default {
             }, pid)
         },
         cartProduct: (context, pid) => {
-            productAPI.fetchCartProduct((result) => {
+            productAPI.fetchCart((result) => {
                 context.commit('SET_CART_PRODUCT', result.data)
             }, pid)
         }
