@@ -1,14 +1,17 @@
 package com.hobo.order.controller;
 
 
-import com.hobo.order.Exceptions.orderExceptions.OrderAlreadyExists;
-import com.hobo.order.Exceptions.orderExceptions.OrderNotFound;
+import com.hobo.order.email.OrderEmail;
+import com.hobo.order.exceptions.orderExceptions.OrderAlreadyExists;
+import com.hobo.order.exceptions.orderExceptions.OrderNotFound;
 import com.hobo.order.entity.OrderEntity;
 import com.hobo.order.model.OrderDTO;
 import com.hobo.order.service.OrderService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -101,6 +104,19 @@ public class OrderController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @GetMapping("/sendemail")
+    public JSONObject sendEmail() {
+        OrderEmail orderEmail = new OrderEmail();
+        try {
+            orderEmail.sendEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JSONObject response=getJSONResponse("");
+        response.replace("message","Email Successfully Sent");
+        return response;
     }
 
 

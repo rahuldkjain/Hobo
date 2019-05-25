@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <NavbarMerchant v-if="getMerchant" fixed="top"/>
-      <Navbar v-else fixed="top"/>
+      <!-- <NavbarMerchant fixed="top"/> -->
+      <Navbar fixed="top"/>
       <router-link to="/">Home</router-link> |
       <router-link to="/category">Category</router-link>
     </div>

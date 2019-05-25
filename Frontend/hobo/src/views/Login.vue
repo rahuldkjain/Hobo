@@ -28,7 +28,7 @@
                 <b-form-input
                 id="login-password-box"
                 type="password"
-                v-model="form.loginpswd"
+                v-model="form.loginpassword"
                 required
                 placeholder="Enter password">
             </b-form-input>
@@ -36,7 +36,7 @@
 
       
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button variant="primary" @click="onLogin">Login</b-button>
         <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
         </b-form>
       </b-card>
@@ -147,12 +147,13 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import {mapGetters, mapActions} from 'vuex';
+import { setTimeout } from 'timers';
   export default {
     data() {
       return {
         form: {
           loginemail: '',
-          loginpswd: '',
+          loginpassword: '',
           signupemail:'',
           signupname:'',
           signupphone:'',
@@ -166,32 +167,34 @@ import {mapGetters, mapActions} from 'vuex';
         
     },
     computed: {
-     ...mapGetters(['getLoggedIn']),
+     ...mapGetters(['getLoggedIn', 'getUser']),
 
-    //  nameState() {
-    //      return this.form.signupname.length > 2 ? true : false
-    //  }
-     
     },
     methods: {
-      onLogin(evt) {
-        //   console.log(evt);
-        evt.preventDefault();
-        alert(JSON.stringify(this.form));
+      onLogin() {
+        var userDetails = { 'emailId': this.form.loginemail,'password': this.form.loginpassword}
+        console.log(userDetails)
+        this.$store.dispatch('checkLogin',userDetails) 
 
-       this.$store.dispatch('checkLogin');
-       console.log("on clicking login "+ this.$store.getters.getLoggedIn);
-
-        sessionStorage.setItem('loggedInFlag',this.$store.getters.getLoggedIn);
-
-    
-        this.$router.push("/");
       },
       onSignup(evt) {
           evt.preventDefault()
         alert(JSON.stringify(this.form))
         this.$router.push("/")
       }
+    },
+    watch : {
+        getLoggedIn: function(newValue, oldValue) {
+            console.log('****:', newValue)
+            
+            localStorage.setItem("loggedIn", newValue)
+            var userDetails = JSON.stringify(this.getUser)
+            localStorage.setItem("userDetails",userDetails)
+
+            // JSON.parse(localStorage.getItem('userDetails'))
+            window.location.assign("/")
+            this.$router.push("/")
+        }
     },
     components: {
         Navbar

@@ -104,7 +104,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void getProducts(String subcategory) {
+    public void getProducts(String subcategory) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.product_host_address)+"product/category/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -113,7 +113,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
         ProductService service = retrofit.create(ProductService.class);
 
-        service.getProrductsByCatAndSub(null,subcategory)
+        service.getProductsByCatAndSub(null,subcategory)
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -164,7 +164,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                     if(response.body() != null){
                         String merchantId = response.body().getData().getMerchantId();
 
-                        //to get the price and rating for the product
                         Retrofit priceRetrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
                         merchantService.getMerchantProduct(merchantId,product.getProductId()).enqueue(new Callback<ApiResponse<MerchantProduct>>() {
                             @Override
@@ -209,16 +208,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if(hidden){
-            //TODO what happens when fragment goes hidden
 
-        }else{
-
-
-        }
-    }
 }
 

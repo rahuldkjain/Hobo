@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.hoboandroid.R;
+import com.example.hoboandroid.activities.LandingPageActivity;
 import com.example.hoboandroid.models.product.Product;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageProductAdapter.RecyclerViewHolder> {
 
         List<Product> list;
+        LandingPageActivity landingPageActivity = new LandingPageActivity();
 
         public LandingPageProductAdapter(List<Product> list){
                 this.list = list;
@@ -30,6 +32,7 @@ public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageP
         public LandingPageProductAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
                 View view =  LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.landing_page_product_item,viewGroup,false);
+                view.setOnClickListener(landingPageActivity);
                 return new RecyclerViewHolder(view);
         }
         
@@ -55,7 +58,8 @@ public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageP
                     // productRating = itemView.findViewById(R.id.productItemRating);
                     //productName.setText(product.getProductName());
 
-                    //TextView productPrice = itemView.findViewById(R.id.productItemPrice);
+                    TextView productId = itemView.findViewById(R.id.landing_product_id);
+                    productId.setText(product.getProductId());
 
                     //RatingBar  rating = itemView.findViewById(R.id.productItemRating);
                     //rating.setRating(Float.parseFloat(product.getProductRating()));

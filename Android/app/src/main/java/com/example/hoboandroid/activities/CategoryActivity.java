@@ -24,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
+public class CategoryActivity extends BaseActivity implements View.OnClickListener {
 
     List<SubCategory> subCategoryList;
     SubCategoryAdapter subCategoryRecyclerViewAdapter;

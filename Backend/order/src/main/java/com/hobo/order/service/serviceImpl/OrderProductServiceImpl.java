@@ -1,9 +1,6 @@
 package com.hobo.order.service.serviceImpl;
 
-import com.hobo.order.Exceptions.orderExceptions.OrderAlreadyExists;
-import com.hobo.order.Exceptions.orderExceptions.OrderNotFound;
-import com.hobo.order.Exceptions.orderProductExceptions.OrderProductAlreadyExists;
-import com.hobo.order.Exceptions.orderProductExceptions.OrderProductNotFound;
+import com.hobo.order.exceptions.orderProductExceptions.OrderProductAlreadyExists;
 import com.hobo.order.entity.OrderProductEntity;
 import com.hobo.order.model.OrderProductDTO;
 import com.hobo.order.repository.OrderProductRepository;

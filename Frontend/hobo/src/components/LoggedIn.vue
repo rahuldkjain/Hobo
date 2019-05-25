@@ -1,11 +1,11 @@
 <template>
 <div>
-    <div v-if="getLoggedIn">
+    <div v-if="checkLogIn">
         <b-navbar-nav>
-            <b-nav-item class="login"><router-link to="/profile"> Profile</router-link></b-nav-item>
+            <b-nav-item class="login"><router-link to="/profile"> {{userDetails.name}}</router-link></b-nav-item>
             <b-nav-item class="login"><router-link to="/cart"><img class="cartIcon" src="https://i.imgur.com/8zfcGiW.png"></router-link></b-nav-item>
         
-            <b-nav-item href="/" class="login">Logout</b-nav-item>
+            <b-button @click="logoutFunction" class="login">Logout</b-button>
         </b-navbar-nav>
     </div>
     <div v-else>
@@ -20,27 +20,44 @@
 import {mapGetters, mapActions} from 'vuex';
 export default {
     name: 'LoggedIn',
-    method: {
-        
+    data() {
+        return {
+        checkLogIn: false,
+        userDetails: {}
+        }
+    },
+    methods: {
+        logoutFunction: function() {
+            console.log("in logout")
+            this.checkLogIn = false
+            this.userDetails = {}
+            localStorage.setItem("loggedIn",false)
+            localStorage.removeItem("userDetails")
+            this.$store.dispatch('checkLogout')
+
+            window.location.assign("/")
+            // this.$router.push('/')
+        }
     },
     computed: {
-        ...mapGetters(['getLoggedIn'])
+        ...mapGetters(['getLoggedIn','getUser','getMerchant'])
         
     },
-//     mounted: function () {
-//   this.$nextTick(function () {
-//     // Code that will run only after the
-//     // entire view has been rendered
-//     console.log(this.$store.getters.getLoggedIn);
-//     localStorage.setItem('loggedInFlag',this.$store.getters.getLoggedIn);
-//   })
-//     },
 
 watch: {
     //  console.log(this.$store.getters.getLoggedIn);
     getLoggedIn : function(newVal,oldVal){
         console.log("new value " + newVal);
-    } 
+        
+        window.location.reload()
+        
+    }
+
+},
+mounted() {
+   
+    this.checkLogIn = localStorage.getItem("loggedIn")  
+    this.userDetails = JSON.parse(localStorage.getItem("userDetails"))
 }
 }
 </script>
