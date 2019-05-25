@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
@@ -160,9 +161,18 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         Toast.makeText(view.getContext(), "A Product is clicked", Toast.LENGTH_LONG).show();
         //opening a category page
         Intent intent = new Intent(view.getContext(),ProductInfoActivity.class);
-        intent.putExtra("Product",1);
+        intent.putExtra("Product",((TextView)view.findViewById(R.id.landing_product_id)).getText().toString());
         //intent.putExtra("Category Object",item.getCategoryName());
         view.getContext().startActivity(intent);
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 }

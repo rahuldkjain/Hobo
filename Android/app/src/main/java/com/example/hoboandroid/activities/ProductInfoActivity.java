@@ -49,14 +49,13 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
         final TextView productName=findViewById(R.id.productInfoName);
         final TextView productAttributes=findViewById(R.id.attributes2);
         final TextView productPrice=findViewById(R.id.productInfoPrice);
-        service.getProductById(1)
+        service.getProductById(Integer.parseInt(getIntent().getStringExtra("Product")))
                 .enqueue(new Callback<ApiResponse<Product>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<Product>> call, Response<ApiResponse<Product>> response) {
                         //Log.e("Hello","hi");
                         //Log.e("Hello",response.message());
                         if(response.body() != null){
-                            Log.e("Hello","hi");
                             Log.e("ProductInfoPage",response.body().toString());
                             productName.setText(response.body().getData().getProductName());
                             productDesc.setText(response.body().getData().getDescription());
@@ -79,12 +78,13 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
+
         MerchantService service1=retrofit1.create(MerchantService.class);
-        service1.getTopProductMerchant(getIntent().getIntExtra("Product",1))
+        Log.d("LandingPageActivity","Sub "+getIntent().getStringExtra("Product"));
+        service1.getTopProductMerchant(Integer.parseInt(getIntent().getStringExtra("Product")))
                 .enqueue(new Callback<ApiResponse<MerchantProduct>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<MerchantProduct>> call, Response<ApiResponse<MerchantProduct>> response1) {
-                        Log.e("hhhj","hi");
                         if(response1.body() != null){
                             Log.e("gygu",response1.body().toString());
                             Log.e("Inmerchant",response1.body().getData().getPrice()+"");
@@ -100,7 +100,14 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
     }
     @Override
     public void onClick(View view) {
-        //if(view.getId() == R.id.add_cart_button)
+        if(view.getId() == R.id.addToCartButton){
+            Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+            view.getContext().startActivity(intent);
+        }
+        else if(view.getId() == R.id.buyNowButton ){
+            Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+            view.getContext().startActivity(intent);
+        }
         //Intent intent = new Intent(ProductInfoActivity.this,CartActivity.class);
     }
 }

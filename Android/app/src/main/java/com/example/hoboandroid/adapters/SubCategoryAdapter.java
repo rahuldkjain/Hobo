@@ -1,7 +1,9 @@
 package com.example.hoboandroid.adapters;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,14 +18,15 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.activities.CategoryActivity;
 import com.example.hoboandroid.fragments.CategoryFragment;
+import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.SubCategory;
 
 import java.util.List;
 
-public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.RecyclerViewHolder>{
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.RecyclerViewHolder> implements View.OnClickListener {
 
     private List<SubCategory> list;
-    CategoryFragment fragment = new CategoryFragment();
+
 
     public SubCategoryAdapter(List<SubCategory> list){
         this.list = list;
@@ -36,7 +39,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     public SubCategoryAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view =  LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.sub_category_list_item,viewGroup,false);
-        view.setOnClickListener(fragment);
+        view.setOnClickListener(this);
         return new SubCategoryAdapter.RecyclerViewHolder(view);
     }
 
@@ -51,6 +54,11 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         else return 0;
     }
 
+    @Override
+    public void onClick(View v) {
+
+
+    }
 
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder{
