@@ -201,4 +201,19 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         }
         return totalRating;
     }
+
+    @Override
+    public MerchantProductDTO findByMerchantProductId(Integer merchantId, Integer productId) throws MerchantProductNotFound {
+        MerchantProductDTO merchantProductDTO=null;
+        List<MerchantProduct> merchantProducts=readMerchantProductById(merchantId);
+        for (MerchantProduct merchantProduct:merchantProducts) {
+            if (merchantProduct.getProductId()==productId)
+            {
+                merchantProductDTO =new MerchantProductDTO();
+                BeanUtils.copyProperties(merchantProduct,merchantProductDTO);
+            }
+        }
+
+        return merchantProductDTO;
+    }
 }

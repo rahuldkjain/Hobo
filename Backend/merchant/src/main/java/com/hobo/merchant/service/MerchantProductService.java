@@ -19,4 +19,6 @@ public interface MerchantProductService {
     List<MerchantProduct> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound;
     float getProductRating(Integer productId) throws MerchantProductNotFound;
 
+    MerchantProductDTO findByMerchantProductId(Integer merchantId, Integer productId) throws MerchantProductNotFound;
+
 }

@@ -139,6 +139,19 @@ public class MerchantProductController {
         return null;
     }
 
+    @GetMapping("getByIds")
+    public JSONObject findByMerchantProductId(@RequestParam Integer merchantId, @RequestParam Integer productId) throws MerchantProductNotFound{
+        try {
+            MerchantProductDTO merchantProductDTO=merchantProductService.findByMerchantProductId(merchantId,productId);
+            JSONObject respone=getJSONResponse(merchantProductDTO);
+            return respone;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public JSONObject getJSONResponse(Object data){
         JSONObject response = new JSONObject();
         response.put("code", "200");
