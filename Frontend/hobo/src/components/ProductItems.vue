@@ -79,6 +79,7 @@ export default {
     },
     mounted() {
         console.log("before mount")
+        // localStorage.setItem("loggedIn", false)
         this.$store.dispatch('allProducts');
     }    
 }

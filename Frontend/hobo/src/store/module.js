@@ -16,24 +16,36 @@ export default {
     },
     mutations: {
         SET_LOGIN: (state, result) => {
-            state.loggedin = true
-            state.user = result
+            if(result.data != null){
+                state.loggedin = true
+                state.user = result.data
+                
+            }
         },
         MERCHANT_LOGIN: (state, result) => {
             state.loggedin = true
             state.merchant = result
+        },
+        USER_LOGOUT: (state) => {
+            state.loggedin = false
+            state.user = {}
         }
     },
     actions: {
         checkLogin: (context, payload) => {
-            userApis.getUser((result) => {
+            console.log('data in action'+payload)
+            userApis.getUserDetails((result) => {
                 context.commit('SET_LOGIN', result.data)
             }, payload)
         },
         merchantLogin: (context, payload) => {
-            userApis.getMerchant((result) => {
+            
+            userApis.getMerchantDetails((result) => {
                 context.commit('MERCHANT_LOGIN', result.data)
             }, payload)
+        },
+        checkLogout: (context) => {
+            context.commit('USER_LOGOUT')
         }
     }
 }
