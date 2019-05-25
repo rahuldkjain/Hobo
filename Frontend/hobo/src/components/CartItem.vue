@@ -30,8 +30,7 @@ export default {
     name: 'CartItem',
     data() {
         return {
-            products: [{}],
-            productDetails: [{}]
+            
         }
     },
     methods:{
@@ -43,6 +42,11 @@ export default {
                     sessionStorage.removeItem(key)
                 }
             })
+            this.forceRerender();
+        },
+        forceRerender() {
+           
+            window.location.reload()
         }
 
     },
@@ -53,6 +57,7 @@ export default {
         Quantity
     },
     mounted() {
+        console.log("in mounted ")
         if(this.getLoggedIn == false){
             var keys = Object.keys(sessionStorage)
             keys.forEach(key => {
