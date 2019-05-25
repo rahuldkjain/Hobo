@@ -114,10 +114,10 @@ export default {
         onSubmit(evt) {
              evt.preventDefault();
         var today = new Date();
-        var orderDate = today.getDate() + '/' + today.getMonth() + '/' +today.getFullYear()
+        var orderDate = today.getFullYear() + '-' + today.getMonth() + '-' +today.getDate()
         var deliveryDate = new Date(today)
         deliveryDate.setDate(deliveryDate.getDate()+4)
-        deliveryDate = deliveryDate.getDate() + '/' + deliveryDate.getMonth() + '/' + deliveryDate.getFullYear()
+        deliveryDate = deliveryDate.getFullYear() + '-' + deliveryDate.getMonth() + '-' + deliveryDate.getDate()
 
         var guestDetails = {}
         guestDetails["userId"] = 0

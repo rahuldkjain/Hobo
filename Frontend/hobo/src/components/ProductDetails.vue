@@ -67,6 +67,9 @@ export default {
                 sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
                 alert("the item is added")
             }
+            else{
+                
+            }
         }
     }
 
