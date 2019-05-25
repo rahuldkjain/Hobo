@@ -87,12 +87,14 @@
        </b-col>
        <b-col>
         <ProductDetailsShipping/>
+    
         </b-col>
 </b-row>
 </template>
 <script>
 import ProductDetails from '@/components/ProductDetails';
 import ProductDetailsShipping from '@/components/ProductDetailsShipping';
+import {mapGetters, mapActions} from 'vuex'; 
 export default {
     data() {
       return {
@@ -136,13 +138,36 @@ export default {
         
         this.$store.dispatch("createOrder",guestDetails)
         
-        this.$router.push("/success");
+        // this.$router.push("/success");
         }
+    },
+    computed: {
+        ...mapGetters(['getOrderId','getCartQuantity','getOrder'])
     },
     components: {
         ProductDetails,
         ProductDetailsShipping
-    }
+    },
+    watch: {
+        getOrder: function(newValue, oldValue) {
+                console.log('order:', newValue)
+            
+            var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
+
+            for(var index=0;index<this.getCartQuantity.length;index++){
+                
+                var payload ={}
+                payload["productId"] = orderDetails["pid"]
+                payload["merchantId"] = orderDetails["merchantId"]
+                payload["quantity"] = this.getCartQuantity[index]
+                payload["productPrice"] = orderDetails["price"]
+
+                 this.$store.dispatch('createProductOrder',payload)
+            }
+
+        }
+
+    },
 
 }
 </script>
