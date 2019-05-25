@@ -4,13 +4,18 @@ export default {
         product: {},
         productDetails: {},
         cartProduct: [],
-        cartImage: []
+        cartProductId: [],
+        cartImage: [],
+        cartProductPrice: []
     },
     getters: {
         getProduct: (state) => state.product,
         getProductDetails: (state) => state.productDetails,
         getCartProduct: (state) => state.cartProduct,
-        getCartImage: (state) => state.cartImage
+        getCartImage: (state) => state.cartImage,
+        getCartProductPrice: (state) => state.cartProductPrice,
+        getCartProductId: (state) => state.cartProductId
+
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -21,8 +26,13 @@ export default {
         },
         SET_CART_PRODUCT: (state, result) => {
             state.cartProduct.push(result.data.productName)
+            state.cartProductId.push(result.data.productId)
             state.cartImage.push(result.data.productImage)
-
+        },
+        SET_CART_PRODUCT_PRICE: (state, result) => {
+            console.log('result price:' + result.data[0].price)
+            state.cartProductPrice.push(result.data[0].price)
+            console.log('cartProductPrice: ' + state.cartProductPrice)
         }
     },
     actions: {
@@ -39,6 +49,11 @@ export default {
         cartProduct: (context, pid) => {
             productAPI.fetchCart((result) => {
                 context.commit('SET_CART_PRODUCT', result.data)
+            }, pid)
+        },
+        cartProductPrice: (context, pid) => {
+            productAPI.getProductDetails((result) => {
+                context.commit('SET_CART_PRODUCT_PRICE', result.data)
             }, pid)
         }
     }

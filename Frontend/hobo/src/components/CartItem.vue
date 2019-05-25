@@ -2,17 +2,18 @@
 
     <b-card bg-variant="light">
         <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
-            <div class="cartItem">
+            <div class="cartItem" id="getCartProductId[index]">
                 <img :src='getCartImage[index]'>
                 <div class="head">
                     <h3> name: {{product}}</h3>
+                    <h3> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h3>
 
                 </div>
                 <div class="quantity">
                     <Quantity/>
                 </div>
                 <div class="button">
-                    <b-button variant="danger">Remove Item</b-button>
+                    <b-button @click="removeCartItem(getCartProductId[index])" variant="danger">Remove Item</b-button>
                 </div>
             </div>
         </b-row>
@@ -33,23 +34,34 @@ export default {
             productDetails: [{}]
         }
     },
+    methods:{
+        removeCartItem: function(pid){
+            var keys = Object.keys(sessionStorage)
+            console.log(keys)
+            keys.forEach(key => {
+                if(sessionStorage.getItem(key) == pid){
+                    sessionStorage.removeItem(key)
+                }
+            })
+        }
+
+    },
     computed: {
-        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage'])
+        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId'])
     },
     components: {
         Quantity
     },
     mounted() {
         if(this.getLoggedIn == false){
-            var len = sessionStorage.length;
-            console.log(len)
-            for(var i = 1; i <= len; i++ ){
-                var pid = sessionStorage.getItem("product"+ i)
+            var keys = Object.keys(sessionStorage)
+            keys.forEach(key => {
+                var pid = sessionStorage.getItem(key)
                 console.log("pid: " + pid)
                 this.$store.dispatch('cartProduct', pid)
+                this.$store.dispatch('cartProductPrice', pid)
+            })
             }
-            }
-        
         }
     }
 </script>
@@ -78,7 +90,7 @@ img{
     float:left;
 }
 .quantity{
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 5%;
     margin-right: 5%;
     float:left;
