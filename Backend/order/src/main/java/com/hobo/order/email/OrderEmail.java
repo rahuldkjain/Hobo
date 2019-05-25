@@ -7,7 +7,7 @@ import java.io.IOException;
 public class OrderEmail {
 
     public void sendEmail() throws IOException {
-        Email from = new Email("support@hobo.com");
+        /*Email from = new Email("support@hobo.com");
         String subject = "HoBo : Order";
         Email to = new Email("okjoshiji@gmail.com");
         Content content = new Content("text/plain", "Your Order have been successfully placed...");
