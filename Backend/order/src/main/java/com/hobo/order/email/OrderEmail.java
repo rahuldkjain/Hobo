@@ -13,7 +13,7 @@ public class OrderEmail {
         Content content = new Content("text/plain", "Your Order have been successfully placed...");
         Mail mail = new Mail(from, subject, to, content);
 
-        SendGrid sg = new SendGrid("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");
+        SendGrid sg = new SendGrid("sdasdasd");
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
@@ -28,7 +28,7 @@ public class OrderEmail {
         }
 
         /*try {
-            SendGrid sg = new SendGrid("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");
+            SendGrid sg = new SendGrid();
             Request request = new Request();
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
