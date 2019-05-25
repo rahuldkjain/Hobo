@@ -15,7 +15,7 @@
         <include layout="@layout/global_toolbar" android:id="@+id/toolbar"/>
 
         <FrameLayout
-            android:id="@+id/base_activity_drawer_frame"
+            android:id="@+id/base_activity_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

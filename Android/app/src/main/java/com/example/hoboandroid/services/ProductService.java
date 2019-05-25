@@ -1,5 +1,7 @@
 package com.example.hoboandroid.services;
 
+import com.example.hoboandroid.models.ApiResponse;
+import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.models.product.ResponseProductsList;
@@ -13,14 +15,15 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ProductService {
+
     @GET("/listcategory")
-    Call<ResponseCategory> getCategories();
+    Call<ApiResponse<List<Category>>> getCategories();
 
     @POST("/listsubcategory")
     Call<List<SubCategory>> getSubCategory(@Query("category") String category);
 
     @GET("/product/getall")
-    Call<ResponseProductsList> getAllProducts();
+    Call<ApiResponse<List<Product>>> getAllProducts();
 
     @GET("/category")
     Call<List<Product>> getProrductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);

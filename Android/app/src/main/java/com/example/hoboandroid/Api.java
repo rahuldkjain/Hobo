@@ -15,13 +15,13 @@ public class Api {
   //final static String BASE_URL = "http://172.16.20.53:8080/";
     static Retrofit retrofit1=null;
 
-    public static Retrofit getclient(String BASE_URL) {
+    public static Retrofit getclient(String BASE_URL,String endPoint) {
         if(retrofit1==null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(BODY));
 
             retrofit1 = new Retrofit.Builder()
-                    .baseUrl("http://172.16.20.80:8080/"+BASE_URL)
+                    .baseUrl(BASE_URL+endPoint)
                     .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                     .build();

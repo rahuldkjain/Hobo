@@ -1,5 +1,6 @@
 package com.example.hoboandroid.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.example.hoboandroid.adapters.LandingPageProductAdapter;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -30,9 +32,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProductListFragment extends Fragment implements View.OnClickListener{
     RecyclerView productRecyclerView;
     LandingPageProductAdapter landingPageProductAdapter;
-    List<Product> productList;
+    List<Product> productList = new ArrayList<>();
     String type;
-
 
 
 
@@ -48,17 +49,12 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         return inflater.inflate(R.layout.activity_product_list, container, false);
     }
 
-    public void search(){
-
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        productRecyclerView =view.findViewById(R.id.recyclerView);
-
+        productRecyclerView = view.findViewById(R.id.products_recycler_view);
         landingPageProductAdapter = new LandingPageProductAdapter(productList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -71,15 +67,16 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         productRecyclerView.setOnClickListener(this);
 
 
+
     }
 
     public void getSearchedProducts(String searchQuery) {
-
+        Log.d("ProductListFragment",searchQuery);
     }
 
     private void getProducts(String subcategory) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.product_api))
+                .baseUrl(getString(R.string.category_api))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
@@ -123,6 +120,18 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+            //TODO what happens when fragment goes hidden
+
+        }else{
+
+
+        }
     }
 }
 
