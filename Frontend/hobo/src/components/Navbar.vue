@@ -10,10 +10,10 @@
         <!-- <b-nav-item href="#">Link</b-nav-item> -->
         <b-link href="/category" class="category">
             <b-nav-item-dropdown text="All Categories" class="dropdown" center fluid>
-                <b-dropdown-item href="#">EN</b-dropdown-item>
-                <b-dropdown-item href="#">ES</b-dropdown-item>
-                <b-dropdown-item href="#">RU</b-dropdown-item>
-                <b-dropdown-item href="#">FA</b-dropdown-item>
+                <b-dropdown-item href="#">Clothing</b-dropdown-item>
+                <b-dropdown-item href="#">Electronics</b-dropdown-item>
+                <b-dropdown-item href="#">Sports</b-dropdown-item>
+                <!-- <b-dropdown-item href="#">FA</b-dropdown-item> -->
             </b-nav-item-dropdown>
         </b-link>
         <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
