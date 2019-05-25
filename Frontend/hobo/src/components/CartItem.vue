@@ -60,6 +60,7 @@ export default {
         console.log("in mounted ")
         if(this.getLoggedIn == false){
             var keys = Object.keys(sessionStorage)
+            console.log(keys)
             keys.forEach(key => {
                 var pid = sessionStorage.getItem(key)
                 console.log("pid: " + pid)

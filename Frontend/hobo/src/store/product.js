@@ -25,13 +25,16 @@ export default {
             state.productDetails = result.data
         },
         SET_CART_PRODUCT: (state, result) => {
-            state.cartProduct.push(result.data.productName)
-            state.cartProductId.push(result.data.productId)
-            state.cartImage.push(result.data.productImage)
+            if(!state.cartProductId.includes(result.data.productId)){
+                state.cartProduct.push(result.data.productName)
+                state.cartProductId.push(result.data.productId)
+                state.cartImage.push(result.data.productImage)
+            }
         },
         SET_CART_PRODUCT_PRICE: (state, result) => {
             console.log('result price:' + result.data[0].price)
-            state.cartProductPrice.push(result.data[0].price)
+            if(!state.cartProductPrice.includes(result.data[0].price))
+                state.cartProductPrice.push(result.data[0].price)
             console.log('cartProductPrice: ' + state.cartProductPrice)
         }
     },
