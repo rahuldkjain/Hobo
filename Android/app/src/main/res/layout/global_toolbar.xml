@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/drawerButton"
+            android:id="@+id/global_drawerButton"
             android:layout_width="32dp"
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/logoTextView"
+            android:id="@+id/global_logoTextView"
             style="@style/custom_style_toolbar_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,11 +39,11 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/drawerButton"
+            app:layout_constraintStart_toEndOf="@+id/global_drawerButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/globalSearch"
+            android:id="@+id/global_search_input"
             style="@style/custom_style_toolbar_item"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -55,7 +55,7 @@
             android:textColorHint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="5"
-            app:layout_constraintStart_toEndOf="@+id/logoTextView"
+            app:layout_constraintStart_toEndOf="@+id/global_logoTextView"
             app:layout_constraintTop_toTopOf="parent"
             android:inputType=""
             android:autofillHints="" tools:targetApi="o">
@@ -63,7 +63,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/toolbar_search_button"
+            android:id="@+id/global_search_button"
             android:layout_width="45dp"
             android:layout_height="47dp"
             android:layout_marginStart="8dp"

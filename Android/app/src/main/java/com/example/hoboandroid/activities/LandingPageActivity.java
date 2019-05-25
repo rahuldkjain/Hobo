@@ -53,6 +53,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
 
+
         //loadSlidingImages();
 
         //categoryList = new ArrayList<>();
