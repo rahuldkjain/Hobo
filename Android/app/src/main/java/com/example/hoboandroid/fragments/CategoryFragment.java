@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
@@ -34,6 +36,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     List<SubCategory> itemsList = new ArrayList<>();
     RecyclerView recyclerView;
     SubCategoryAdapter subCategoryAdapter;
+    TextView textView;
 
 
 
@@ -55,6 +58,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
 
+        textView = view.findViewById(R.id.category_name_fragment);
         recyclerView = view.findViewById(R.id.recyclerView);
 
         subCategoryAdapter = new SubCategoryAdapter(itemsList);
@@ -67,8 +71,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(subCategoryAdapter);
         recyclerView.setOnClickListener(this);
 
-        Bundle bundle = new Bundle();
+        Bundle bundle = getArguments();
         String category = bundle.getString("Category");
+        Log.d("CategoryFragment",category);
+        textView.setText(category);
 
         Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address));
 
@@ -97,14 +103,19 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private void getCategories() {
 
-
-
     }
 
 
     @Override
     public void onClick(View v) {
-       // ProductListFragment productListFragment = new ProductListFragment();
-       // FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().add(R.id.base_activity_frame,v.)
+
+
+        ProductListFragment productsFragment = new ProductListFragment();
+        getFragmentManager().beginTransaction()
+                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
+                .commit();
+         productsFragment.getProducts(((TextView)v.findViewById(R.id.category_name)).getText().toString());
+
     }
 }

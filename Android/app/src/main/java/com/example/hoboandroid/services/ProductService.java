@@ -19,17 +19,16 @@ public interface ProductService {
     @GET("/listcategory")
     Call<ApiResponse<List<Category>>> getCategories();
 
-    @POST("/listsubcategory")
-    Call<ApiResponse<List<SubCategory>>> getSubCategory(@Query("category") String category);
+    @GET("/listsubcategory")
+    Call<ApiResponse<List<SubCategory>>> getSubCategory(@Query("parentCategory") String category);
 
     @GET("/product/getall")
     Call<ApiResponse<List<Product>>> getAllProducts();
 
     @GET("/category")
-    Call<List<Product>> getProrductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
+    Call<List<Product>> getProductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
 
-
-    @GET("/get")
-    Call<ApiResponse<Product>> getProductById(@Query("productId") int productId);
+    @GET("/product")
+    Call<ApiResponse<Product>> getProductById(@Query("productId") Integer productId);
 
 }

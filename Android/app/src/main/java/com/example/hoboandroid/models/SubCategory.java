@@ -4,34 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class SubCategory {
 
-    @SerializedName("sub_category_id")
-    private int subCategoryId;
-
-    @SerializedName("sub_category_name")
-    private String subCategoryName;
-
-    @SerializedName("parent_category")
-    private String parentCategory;
-
-    @SerializedName("sub_category_image")
+    @SerializedName("subCategoryImage")
     private String subCategoryImage;
 
+    @SerializedName("parentCategory")
+    private String parentCategory;
 
-    public int getSubCategoryId() {
-        return subCategoryId;
-    }
+    @SerializedName("subCategoryId")
+    private String subCategoryId;
 
-    public void setSubCategoryId(int subCategoryId) {
-        this.subCategoryId = subCategoryId;
-    }
+    @SerializedName("subCategoryName")
+    private String subCategoryName;
 
-    public String getSubCategoryName() {
-        return subCategoryName;
-    }
-
-    public void setSubCategoryName(String subCategoryName) {
-        this.subCategoryName = subCategoryName;
-    }
+    @SerializedName("attributes")
+    private Attributes attributes;
 
     public String getSubCategoryImage() {
         return subCategoryImage;
@@ -47,5 +33,29 @@ public class SubCategory {
 
     public void setParentCategory(String parentCategory) {
         this.parentCategory = parentCategory;
+    }
+
+    public String getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(String subCategoryId) {
+        this.subCategoryId = subCategoryId;
+    }
+
+    public String getSubCategoryName() {
+        return subCategoryName;
+    }
+
+    public void setSubCategoryName(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
+    }
+
+    public Attributes getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Attributes attributes) {
+        this.attributes = attributes;
     }
 }

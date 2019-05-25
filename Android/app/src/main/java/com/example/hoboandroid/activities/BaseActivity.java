@@ -57,7 +57,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private DrawerLayout drawerLayout;
@@ -91,6 +91,14 @@ public class BaseActivity extends AppCompatActivity {
         navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
         searchButton = toolbar.findViewById(R.id.toolbar_search_button);
         cartButton = toolbar.findViewById(R.id.toolbar_cart_button);
+
+
+
+
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
 
 /*      productsFragment = new ProductListFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -197,7 +205,7 @@ public class BaseActivity extends AppCompatActivity {
                             /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
                             .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
                             .commit();
-                    productsFragment.getSearchedProducts(searchText);
+                    //productsFragment.getSearchedProducts(searchText);
 
                 }
 
@@ -315,16 +323,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-            Log.d("BaseActivity",item.getTitle().toString());
-            Bundle bundle = new Bundle();
-            bundle.putString("Category",item.getTitle().toString());
-
-            CategoryFragment categoryFragment = new CategoryFragment();
-            categoryFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                    .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment")
-                    .commit();
 
         return super.onOptionsItemSelected(item);
         //TODO profile, order history
@@ -389,4 +387,19 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Log.d("BaseActivity",menuItem.getTitle().toString());
+        Bundle bundle = new Bundle();
+        bundle.putString("Category",menuItem.getTitle().toString());
+
+        CategoryFragment categoryFragment = new CategoryFragment();
+        categoryFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment")
+                .commit();
+
+        return true;
+    }
 }

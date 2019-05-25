@@ -117,6 +117,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
         productRecyclerView.setLayoutManager(linearLayoutManager);
+        productRecyclerView.setOnClickListener(this);
 
 
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
@@ -150,22 +151,18 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void loadSlidingImages() {
-
-    }
-
-
 
     @Override
     public void onClick(View view) {
 
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);
-        Toast.makeText(LandingPageActivity.this, "A category is clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(view.getContext(), "A Product is clicked", Toast.LENGTH_LONG).show();
         //opening a category page
-        Intent intent = new Intent(LandingPageActivity.this,CategoryActivity.class);
+        Intent intent = new Intent(view.getContext(),ProductInfoActivity.class);
+        intent.putExtra("Product",1);
         //intent.putExtra("Category Object",item.getCategoryName());
-        startActivity(intent);
+        view.getContext().startActivity(intent);
 
     }
 }

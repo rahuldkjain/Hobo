@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:id="@+id/category_name_fragment"
+        android:text="Category Name"/>
 <android.support.v7.widget.RecyclerView
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:id="@+id/recyclerView"
@@ -7,3 +17,4 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content">
 
 </android.support.v7.widget.RecyclerView>
+</FrameLayout>
