@@ -1,66 +1,107 @@
 <template>
 
     <b-card bg-variant="light">
-      
-        <b-row id="products" v-for="(product,index) in getCardProduct" :key="index"> 
-        
-            <div class="cartItem">
-                <img :src='product.image'>
+        <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+            <div class="cartItem" id="getCartProductId[index]">
+                <img :src='getCartImage[index]'>
                 <div class="head">
-                    <h3>name {{product.productName}}</h3>
-                    <!-- <h3>price {{productDetails[index].price}}</h3> -->
-                
+                    <h3> name: {{product}}</h3>
+                    <h3> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h3>
+
                 </div>
                 <div class="quantity">
-                    <Quantity/>
+                    <!-- <Quantity/> -->
+
+                    <b-form-group>
+                        <b-form-select v-model="quantity[index]" class="mb-3">
+                        <!-- <option :value="null">Quantity</option> -->
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </b-form-select>
+            
+                    </b-form-group>
+
                 </div>
                 <div class="button">
-                    <b-button variant="danger">Remove Item </b-button>
-                    {{getCartProduct}}
+                    <b-button @click="removeCartItem(getCartProductId[index],index)" variant="danger">Remove Item</b-button>
                 </div>
             </div>
-            
         </b-row>
         
-        <b-button class="success" variant="danger"><router-link to="/checkout">Checkout</router-link></b-button>
+        <b-button class="success" @click="checkoutFunction" variant="danger">Checkout</b-button>
     </b-card>
 
 </template>
 <script>
+
 import Quantity from '@/components/Quantity.vue'
 import {mapGetters, mapActions} from 'vuex'; 
 export default {
     name: 'CartItem',
     data() {
         return {
-            products: [{}],
-            productDetails: [{}]
+            quantity: [],
+            total: [],
+            totalAmount: 0
         }
     },
+    methods:{
+        removeCartItem: function(pid,index){
+            var keys = Object.keys(sessionStorage)
+            // console.log(keys)
+            keys.forEach(key => {
+                if(JSON.parse(sessionStorage.getItem(key)).pid == pid){
+                    sessionStorage.removeItem(key)
+                    this.quantity.splice(index,1)
+                }
+            })
+            this.forceRerender();
+        },
+        forceRerender() {
+           
+            window.location.reload()
+        },
+        checkoutFunction() {
+            // console.log("quantity on checkout "+this.quantity)
+            // console.log("price "+this.getCartProductPrice)
+
+            this.$store.dispatch('cartQuantity',this.quantity)
+
+            for(var i=0;i<this.getCartQuantity.length;i++){
+                var totalPrice = this.getCartQuantity[i]*this.getCartProductPrice[i]
+                this.total.push(totalPrice)
+            }
+            
+            this.total.forEach(price => {
+                this.totalAmount += price
+            })
+            this.$store.dispatch('checkoutAmount',this.totalAmount)
+
+            this.$router.push('/checkout')
+        }
+
+    },
     computed: {
-        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails'])
+        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity'])
     },
     components: {
         Quantity
     },
     mounted() {
+        console.log("in mounted ")
         if(this.getLoggedIn == false){
-            for(var i=1; i<=sessionStorage.length;i++){
-                var pid = sessionStorage.getItem("product"+i)
-                console.log("pid: " +  pid)
+            var keys = Object.keys(sessionStorage)
+            console.log(keys)
+            keys.forEach(key => {
+                var pid = JSON.parse(sessionStorage.getItem(key)).pid
+                console.log("pid: " + pid)
                 this.$store.dispatch('cartProduct', pid)
-                this.$store.dispatch('productDetails', pid)
-                console.log("getCartProduct: " + this.getCartProduct)
-                //this.products.push(this.getCartProduct)
-                //console.log("cart products"+this.getCartProduct.productName)
-                //this.productDetails.push(this.getProductDetails) 
-                //console.log("products"+this.products)
-                //console.log("productDetails"+this.productDetails)
+                this.$store.dispatch('cartProductPrice', pid)
+            })
             }
-        
         }
     }
-}
 </script>
 <style scoped>
 a{
@@ -87,7 +128,7 @@ img{
     float:left;
 }
 .quantity{
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 5%;
     margin-right: 5%;
     float:left;

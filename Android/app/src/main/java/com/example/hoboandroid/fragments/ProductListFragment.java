@@ -1,5 +1,6 @@
 package com.example.hoboandroid.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,13 +11,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.LandingPageProductAdapter;
+import com.example.hoboandroid.models.ApiResponse;
+import com.example.hoboandroid.models.Merchant;
+import com.example.hoboandroid.models.MerchantProduct;
 import com.example.hoboandroid.models.product.Product;
+import com.example.hoboandroid.models.product.ProductListItem;
+import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.ProductService;
+import com.example.hoboandroid.services.SearchService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -30,9 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProductListFragment extends Fragment implements View.OnClickListener{
     RecyclerView productRecyclerView;
     LandingPageProductAdapter landingPageProductAdapter;
-    List<Product> productList;
-    String type;
-
+    List<Product> productList = new ArrayList<>();
+    List<ProductListItem> productListItems = new ArrayList<>();
 
 
 
@@ -48,45 +57,63 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         return inflater.inflate(R.layout.activity_product_list, container, false);
     }
 
-    public void search(){
-
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        productRecyclerView =view.findViewById(R.id.recyclerView);
-
+        productRecyclerView = view.findViewById(R.id.products_recycler_view);
         landingPageProductAdapter = new LandingPageProductAdapter(productList);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        productRecyclerView.setLayoutManager(linearLayoutManager);
-
 
         productRecyclerView.setAdapter(landingPageProductAdapter);
 
         productRecyclerView.setOnClickListener(this);
 
 
+
     }
 
     public void getSearchedProducts(String searchQuery) {
+        Log.d("ProductListFragment",searchQuery);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.search_port_address)+"search/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client( new OkHttpClient())
+                .build();
+
+        SearchService service = retrofit.create(SearchService.class);
+
+        service.searchQuery(searchQuery).enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                productList.addAll(response.body());
+                landingPageProductAdapter.notifyDataSetChanged();
+                Log.e("ProductListActivity",response.body().toString());
+
+                getOtherAttributes();
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+
+            }
+        });
+
+
+
 
     }
 
-    private void getProducts(String subcategory) {
+    public void getProducts(String subcategory) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.product_api))
+                .baseUrl(getResources().getString(R.string.product_host_address)+"product/category/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
 
         ProductService service = retrofit.create(ProductService.class);
 
-        service.getProrductsByCatAndSub(null,subcategory)
+        service.getProductsByCatAndSub(null,subcategory)
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -97,7 +124,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                             landingPageProductAdapter.notifyDataSetChanged();
                             Log.e("ProductListActivity",response.body().toString());
 
-                            getRatings();
+                            getOtherAttributes();
 
                         }
 
@@ -117,12 +144,70 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void getRatings() {
+    private void getOtherAttributes() {
+
+        for(final Product product: productList){
+
+            final ProductListItem productListItem = new ProductListItem(
+                    product.getProductId(),
+                    product.getProductName(),
+                    product.getProductImage().get(0));
+
+            //To get the top rated product
+            Retrofit retrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
+
+            final MerchantService merchantService =  retrofit.create(MerchantService.class);
+
+            merchantService.getTopMerchant(Integer.parseInt(product.getProductId())).enqueue(new Callback<ApiResponse<Merchant>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<Merchant>> call, Response<ApiResponse<Merchant>> response) {
+                    if(response.body() != null){
+                        String merchantId = response.body().getData().getMerchantId();
+
+                        Retrofit priceRetrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
+                        merchantService.getMerchantProduct(merchantId,product.getProductId()).enqueue(new Callback<ApiResponse<MerchantProduct>>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse<MerchantProduct>> call, Response<ApiResponse<MerchantProduct>> response) {
+                                if(response.body() != null) {
+                                        float merchantId = response.body().getData().getProductRating();
+                                        int price = response.body().getData().getPrice();
+
+                                        productListItem.setRating(merchantId);
+                                        productListItem.setProductPrice(price);
+
+
+                                        productListItems.add(productListItem);
+
+                                    }
+
+                                }
+
+                            @Override
+                            public void onFailure(Call<ApiResponse<MerchantProduct>> call, Throwable t) {
+
+                            }
+                        });
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse<Merchant>> call, Throwable t) {
+
+                }
+            });
+
+
+
+        }
     }
 
     @Override
     public void onClick(View v) {
 
     }
+
+
 }
 

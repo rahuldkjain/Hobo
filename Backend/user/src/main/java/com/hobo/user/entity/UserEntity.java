@@ -20,7 +20,16 @@ public class UserEntity {
    private String address1;
    private String address2;
    private String city;
+   private String state;
    private Integer pincode;
+
+   public String getState() {
+      return state;
+   }
+
+   public void setState(String state) {
+      this.state = state;
+   }
 
    public Integer getUserId() {
       return userId;
@@ -123,6 +132,7 @@ public class UserEntity {
               ", address1='" + address1 + '\'' +
               ", address2='" + address2 + '\'' +
               ", city='" + city + '\'' +
+              ", state='" + state + '\'' +
               ", pincode=" + pincode +
               '}';
    }

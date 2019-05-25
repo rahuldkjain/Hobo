@@ -3,12 +3,23 @@ export default {
     state: {
         product: {},
         productDetails: {},
-        cartProduct: []
+        cartProduct: [],
+        cartProductId: [],
+        cartImage: [],
+        cartProductPrice: [],
+        cartQuantity: [],
+        totalAmount: 0
     },
     getters: {
         getProduct: (state) => state.product,
         getProductDetails: (state) => state.productDetails,
-        getCartProduct: (state) => state.cartProduct
+        getCartProduct: (state) => state.cartProduct,
+        getCartImage: (state) => state.cartImage,
+        getCartProductPrice: (state) => state.cartProductPrice,
+        getCartProductId: (state) => state.cartProductId,
+        getCartQuantity: (state) => state.cartQuantity,
+        getTotalAmount: (state) => state.totalAmount
+
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -17,10 +28,24 @@ export default {
         SET_PRODUCT_DETAILS: (state, result) => {
             state.productDetails = result.data
         },
-        SET_CART_PRODUCT: (state,result) => {
-            console.log("set_cart_result: "+result.data)
-            state.cartProduct.push(result)
-            console.log("mutation "+state.cartProduct.productName)
+        SET_CART_PRODUCT: (state, result) => {
+            if(!state.cartProductId.includes(result.data.productId)){
+                state.cartProduct.push(result.data.productName)
+                state.cartProductId.push(result.data.productId)
+                state.cartImage.push(result.data.productImage)
+            }
+        },
+        SET_CART_PRODUCT_PRICE: (state, result) => {
+            console.log('result price:' + result.data[0].price)
+            if(!state.cartProductPrice.includes(result.data[0].price))
+                state.cartProductPrice.push(result.data[0].price)
+            console.log('cartProductPrice: ' + state.cartProductPrice)
+        },
+        SET_CART_QUANTITY: (state, result) => {
+            state.cartQuantity = result;
+        },
+        SET_TOTAL_AMOUNT: (state, result) => {
+            state.totalAmount = result;
         }
     },
     actions: {
@@ -35,9 +60,21 @@ export default {
             }, pid)
         },
         cartProduct: (context, pid) => {
-            productAPI.fetchCartProduct((result) => {
+            productAPI.fetchCart((result) => {
                 context.commit('SET_CART_PRODUCT', result.data)
             }, pid)
+        },
+        cartProductPrice: (context, pid) => {
+            productAPI.getProductDetails((result) => {
+                context.commit('SET_CART_PRODUCT_PRICE', result.data)
+            }, pid)
+        },
+        cartQuantity: (context,quantity) => {
+            
+            context.commit('SET_CART_QUANTITY',quantity)
+        },
+        checkoutAmount: (context,total) => {
+            context.commit('SET_TOTAL_AMOUNT',total)
         }
     }
 }

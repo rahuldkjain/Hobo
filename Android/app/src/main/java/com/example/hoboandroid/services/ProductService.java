@@ -1,5 +1,7 @@
 package com.example.hoboandroid.services;
 
+import com.example.hoboandroid.models.ApiResponse;
+import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.models.product.ResponseProductsList;
@@ -13,20 +15,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ProductService {
-    @GET("/listcategory")
-    Call<ResponseCategory> getCategories();
 
-    @POST("/listsubcategory")
-    Call<List<SubCategory>> getSubCategory(@Query("category") String category);
+    @GET("/listcategory")
+    Call<ApiResponse<List<Category>>> getCategories();
+
+    @GET("/listsubcategory")
+    Call<ApiResponse<List<SubCategory>>> getSubCategory(@Query("parentCategory") String category);
 
     @GET("/product/getall")
-    Call<ResponseProductsList> getAllProducts();
+    Call<ApiResponse<List<Product>>> getAllProducts();
 
     @GET("/category")
-    Call<List<Product>> getProrductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
+    Call<List<Product>> getProductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
 
-
-    @GET("/get")
-    Call<Product> getProductById(@Query("productId") int productId);
+    @GET("/product")
+    Call<ApiResponse<Product>> getProductById(@Query("productId") Integer productId);
 
 }

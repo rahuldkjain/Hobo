@@ -35,6 +35,20 @@ module.exports = {
                 pathRewrite: {
                     '^/fetchCartProduct': ''
                 }
+            },
+            '/user': {
+                target: 'http://172.16.20.84:8081/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/user': ''
+                }
+            },
+            '/merchant': {
+                target: 'http://172.16.20.84:8081/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/merchant': ''
+                }
             }
         }
     }

@@ -6,12 +6,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.LandingPageProductAdapter;
+import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
@@ -74,14 +76,14 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         categoryRecyclerView.setAdapter(categoryAdapter);
 
-        Retrofit retrofit = Api.getclient("product/listcategory/");
+        Retrofit retrofit = Api.getclient("http://172.16.20.80:8080/","product/listcategory/");
 
         ProductService service = retrofit.create(ProductService.class);
 
         service.getCategories()
-                .enqueue(new Callback<ResponseCategory>() {
+                .enqueue(new Callback<ApiResponse<List<Category>>>() {
                     @Override
-                    public void onResponse(Call<ResponseCategory> call, Response<ResponseCategory> response) {
+                    public void onResponse(Call<ApiResponse<List<Category>>> call, Response<ApiResponse<List<Category>>> response) {
 
                         if(response.body() != null){
                             categoryList.addAll(response.body().getData());
@@ -94,7 +96,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
                     }
                     @Override
-                    public void onFailure(Call<ResponseCategory> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<Category>>> call, Throwable t) {
                         Toast.makeText(LandingPageActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
                         Log.d("HOBOLandingPage",t.getMessage()+" failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
@@ -116,18 +118,19 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
         productRecyclerView.setLayoutManager(linearLayoutManager);
+        productRecyclerView.setOnClickListener(this);
 
 
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
 
-        Retrofit retrofit = Api.getclient("/product/getall/");
+        Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address),"/product/getall/");
 
         ProductService service = retrofit.create(ProductService.class);
 
         service.getAllProducts()
-                .enqueue(new Callback<ResponseProductsList>() {
+                .enqueue(new Callback<ApiResponse<List<Product>>>() {
                     @Override
-                    public void onResponse(Call<ResponseProductsList> call, Response<ResponseProductsList> response) {
+                    public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
 
                         if(response.body() != null){
                             productList.addAll(response.body().getData());
@@ -140,16 +143,11 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
                     }
                     @Override
-                    public void onFailure(Call<ResponseProductsList> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
                         Toast.makeText(LandingPageActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
                         Log.d("HOBOLandingPage",t.getMessage()+" failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
                 });
-
-    }
-
-
-    private void loadSlidingImages() {
 
     }
 
@@ -160,11 +158,21 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);
-        Toast.makeText(LandingPageActivity.this, "A category is clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(view.getContext(), "A Product is clicked", Toast.LENGTH_LONG).show();
         //opening a category page
-        Intent intent = new Intent(LandingPageActivity.this,CategoryActivity.class);
+        Intent intent = new Intent(view.getContext(),ProductInfoActivity.class);
+        intent.putExtra("Product",((TextView)view.findViewById(R.id.landing_product_id)).getText().toString());
         //intent.putExtra("Category Object",item.getCategoryName());
-        startActivity(intent);
+        view.getContext().startActivity(intent);
 
+    }
+    @Override
+    public void onBackPressed()
+    {
+
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 }

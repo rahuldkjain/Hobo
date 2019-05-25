@@ -1,12 +1,15 @@
 package com.example.hoboandroid.activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -36,8 +41,12 @@ import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.NavigationAdapter;
+import com.example.hoboandroid.fragments.CategoryFragment;
+import com.example.hoboandroid.fragments.ProductListFragment;
+import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
+import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;
@@ -48,17 +57,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BaseActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private DrawerLayout drawerLayout;
     NavigationView navigationView;
 
     private TextView logoTextView;
+    private EditText searchEditText;
+    private Button navigationDrawerButton, searchButton, cartButton;
 
 
     public ViewGroup fullLayout;
     public FrameLayout frameLayout;
+
 
     private List<String> categoryItems = new ArrayList<>();
 
@@ -68,25 +80,39 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_base);
         drawerLayout = findViewById(R.id.drawer_layout);
-        logoTextView = findViewById(R.id.logoTextView);
-        //Log.d("BaseActivity",drawerLayout.toString());
-
-
-
         navigationView = findViewById(R.id.base_nav_view);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        logoTextView = findViewById(R.id.logoTextView);
+
+        View toolbar = (Toolbar) findViewById(R.id.toolbar);
+        searchEditText = findViewById(R.id.globalSearch);
+
+        navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
+        searchButton = toolbar.findViewById(R.id.toolbar_search_button);
+        cartButton = toolbar.findViewById(R.id.toolbar_cart_button);
+
+
+
+
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+
+/*      productsFragment = new ProductListFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.base_activity_frame, productsFragment, "ProductsFragment");
+        fragmentTransaction.hide(productsFragment);
+        fragmentTransaction.commit();
+*/
+
+        //Log.d("BaseActivity",drawerLayout.toString());
 
 
         // set up the drawer's list view with items and click listener
 //        drawerList.setAdapter(new NavigationAdapter(mPlanetTitles, this));
 
-        logoTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.START, true);
-            }
-        });
 
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -115,7 +141,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         ActionBarDrawerToggle mActionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 drawerLayout,         /* DrawerLayout object */
-                (Toolbar) findViewById(R.id.toolbar),  /* nav drawer image to replace 'Up' caret */
+                (Toolbar) toolbar,  /* nav drawer image to replace 'Up' caret */
                 R.string.buy_now, /* "open drawer" description for accessibility */
                 R.string.attributes_zone /* "close drawer" description for accessibility */
         ) {
@@ -137,25 +163,65 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         // between the sliding drawer and the action bar app icon
 
 
-
-
-
-
-
         View header = getLayoutInflater().inflate(R.layout.activity_login, null);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-//        View toolbarView = findViewById(R.id.toolbar);
 
-
-        getCategories();
         //makeSearchButton(toolbarView.findViewById(R.id.globalSearch));
+
+
+        navigationDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO animation for drawer
+                drawerLayout.openDrawer(Gravity.START, true);
+            }
+        });
+
+        logoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement in such a way that landing page is shown if not present
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String searchText = searchEditText.getText().toString();
+                if (!searchText.equals("")) {
+                    //Bundle bundle = new Bundle();
+                    //bundle.putString("SearchQuery", searchText);
+                    //productsFragment.setArguments(bundle);
+                    ProductListFragment productsFragment = new ProductListFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                            .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
+                            .commit();
+                    //productsFragment.getSearchedProducts(searchText);
+
+                }
+
+
+            }
+        });
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO goto cart activity
+
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(intent);
+            }
+        });
+        getCategories();
 
 
     }
@@ -164,37 +230,37 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
     private void getCategories() {
 
 
-        Retrofit retrofit = Api.getclient(getString(R.string.category_api)+ "product/listcategory/");
+        Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address), "product/listcategory/");
 
         ProductService service = retrofit.create(ProductService.class);
 
-        service.getCategories()
-                .enqueue(new Callback<ResponseCategory>() {
-                    @Override
-                    public void onResponse(Call<ResponseCategory> call, Response<ResponseCategory> response) {
 
-                        if(response.body() != null){
+        service.getCategories().enqueue(new Callback<ApiResponse<List<Category>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<Category>>> call, Response<ApiResponse<List<Category>>> response) {
 
-                            for(Category category:response.body().getData()){
-                                categoryItems.add(category.getCategoryName());
-                            }
-                            //categoryList.addAll(response.body().getData());
-                            Log.d("BaseActivity ",response.body().toString());
+                if (response.body() != null) {
 
-
-
-
-                        }
-
+                    for (Category category : response.body().getData()) {
+                        categoryItems.add(category.getCategoryName());
                     }
-                    @Override
-                    public void onFailure(Call<ResponseCategory> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
-                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
-                });
+                    //categoryList.addAll(response.body().getData());
+                    Log.d("BaseActivity ", response.body().toString());
 
 
+                    setMenuItems();
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<Category>>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Check your connection", Toast.LENGTH_LONG).show();
+                Log.d("BaseActivity", t.getMessage() + " failure");
+            }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
+        });
 
 
     }
@@ -257,7 +323,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         return super.onOptionsItemSelected(item);
+        //TODO profile, order history
 
     }
 
@@ -272,11 +340,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
     }
 
-    public void setMenuItems(){
+    public void setMenuItems() {
 
         Menu menu = navigationView.getMenu();
 
-        for(String category:categoryItems){
+        for (String category : categoryItems) {
             menu.add(category);
         }
 
@@ -303,14 +371,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
         });*/
 
 
-
     @Override
     public void setContentView(int layoutResID) {
 
         fullLayout = (ViewGroup) getWindow().getDecorView();
-        frameLayout = (FrameLayout) fullLayout.findViewById(R.id.base_activity_drawer_frame);
+        frameLayout = (FrameLayout) fullLayout.findViewById(R.id.base_activity_frame);
 
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
+
 
         //        super.setContentView(fullLayout);
 
@@ -318,10 +386,20 @@ public class BaseActivity extends AppCompatActivity implements NavigationAdapter
 
     }
 
+
     @Override
-    public void onClick(View view, int position) {
-        Intent intent = new Intent(getApplicationContext(),CategoryActivity.class);
-        intent.putExtra("CategoryName",categoryItems.get(position));
-        startActivity(intent);
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Log.d("BaseActivity",menuItem.getTitle().toString());
+        Bundle bundle = new Bundle();
+        bundle.putString("Category",menuItem.getTitle().toString());
+
+        CategoryFragment categoryFragment = new CategoryFragment();
+        categoryFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment")
+                .commit();
+
+        return true;
     }
 }

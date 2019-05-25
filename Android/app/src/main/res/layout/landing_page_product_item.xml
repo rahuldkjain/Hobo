@@ -18,6 +18,14 @@
         />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/landing_product_id"
+        app:layout_constraintBottom_toTopOf="@id/landing_product_image"
+        app:layout_constraintStart_toStartOf="@id/landing_product_image"
+        app:layout_constraintEnd_toStartOf="@id/landing_product_image"
+        app:layout_constraintTop_toTopOf="@id/landing_product_image"/>
+    <TextView
         android:id="@+id/landing_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

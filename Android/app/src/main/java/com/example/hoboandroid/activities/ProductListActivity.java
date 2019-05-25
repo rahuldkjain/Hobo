@@ -39,8 +39,8 @@ public class ProductListActivity extends AppCompatActivity{
         fragment.setArguments(bundle);
 
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().add(R.id.product_list_fragment, fragment,"ProductListFragment");
-        fragmentTransaction.commit();
+        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().add(R.id.product_list_fragment, fragment,"ProductListFragment");
+        //fragmentTransaction.commit();
 
         //TODO how to give the query
         ((ProductListFragment) fragment).getSearchedProducts("Query");
