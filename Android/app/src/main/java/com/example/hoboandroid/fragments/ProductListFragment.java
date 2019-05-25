@@ -164,7 +164,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                     if(response.body() != null){
                         String merchantId = response.body().getData().getMerchantId();
 
-                        //to get the price and rating for the product
                         Retrofit priceRetrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
                         merchantService.getMerchantProduct(merchantId,product.getProductId()).enqueue(new Callback<ApiResponse<MerchantProduct>>() {
                             @Override
@@ -209,16 +208,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if(hidden){
-            //TODO what happens when fragment goes hidden
 
-        }else{
-
-
-        }
-    }
 }
 

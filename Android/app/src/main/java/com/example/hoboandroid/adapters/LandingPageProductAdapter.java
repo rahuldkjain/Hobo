@@ -58,7 +58,8 @@ public class LandingPageProductAdapter extends RecyclerView.Adapter<LandingPageP
                     // productRating = itemView.findViewById(R.id.productItemRating);
                     //productName.setText(product.getProductName());
 
-                    //TextView productPrice = itemView.findViewById(R.id.productItemPrice);
+                    TextView productId = itemView.findViewById(R.id.landing_product_id);
+                    productId.setText(product.getProductId());
 
                     //RatingBar  rating = itemView.findViewById(R.id.productItemRating);
                     //rating.setRating(Float.parseFloat(product.getProductRating()));
