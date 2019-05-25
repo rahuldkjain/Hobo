@@ -1,4 +1,4 @@
-package com.hobo.order.exceptions.orderProductExceptions;
+package com.hobo.order.Exceptions.orderProductExceptions;
 
 
 import org.json.simple.JSONObject;
