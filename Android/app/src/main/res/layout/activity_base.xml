@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/global_toolbar" android:id="@+id/toolbar"/>
+        <include layout="@layout/global_toolbar"
+            android:id="@+id/toolbar"/>
 
         <FrameLayout
             android:id="@+id/base_activity_frame"

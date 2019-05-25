@@ -15,4 +15,5 @@
     <string name="add_to_cart">Add To Cart</string>
     <string name="buy_now">Buy Now</string>
     <string name="product_host_address">http://172.16.20.80:8080/</string>
+    <string name="search_any_product">Search any product</string>
 </resources>
