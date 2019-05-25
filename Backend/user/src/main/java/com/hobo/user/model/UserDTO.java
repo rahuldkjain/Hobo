@@ -14,7 +14,16 @@ public class UserDTO {
     private String address1;
     private String address2;
     private String city;
+    private String state;
     private Integer pincode;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getEmailId() {
         return emailId;
@@ -99,7 +108,7 @@ public class UserDTO {
     @Override
     public String toString() {
         return "UserDTO{" +
-                ", emailId='" + emailId + '\'' +
+                "emailId='" + emailId + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber=" + phoneNumber +
@@ -108,6 +117,7 @@ public class UserDTO {
                 ", address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +
                 ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
                 ", pincode=" + pincode +
                 '}';
     }

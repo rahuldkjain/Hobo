@@ -1,6 +1,6 @@
 package com.hobo.order.controller;
 
-import com.hobo.order.Exceptions.orderProductExceptions.OrderProductAlreadyExists;
+import com.hobo.order.exceptions.orderProductExceptions.OrderProductAlreadyExists;
 import com.hobo.order.entity.OrderProductEntity;
 import com.hobo.order.model.OrderProductDTO;
 import com.hobo.order.service.OrderProductService;
