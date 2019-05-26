@@ -48,6 +48,7 @@ import com.example.hoboandroid.adapters.NavigationAdapter;
 import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.ApiResponse;
+import com.example.hoboandroid.models.cart.CartItem;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
@@ -102,6 +103,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+/*
+
+        TextView textView = findViewById(R.id.login_button);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            }
+        });
+*/
 
 
         if (navigationView != null) {
@@ -180,14 +191,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        View header = getLayoutInflater().inflate(R.layout.activity_login, null);
-        header.setOnClickListener(new View.OnClickListener() {
+        /*View header = ((View) navigationView) .findViewById(R.id.login_button);
+        TextView textView = header.findViewById(R.id.login_button);
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         //makeSearchButton(toolbarView.findViewById(R.id.globalSearch));
@@ -341,7 +353,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
         return super.onOptionsItemSelected(item);
         //TODO profile, order history
 
@@ -416,27 +427,60 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Log.d("BaseActivity",menuItem.getTitle().toString());
-        Bundle bundle = new Bundle();
-        bundle.putString("Category",menuItem.getTitle().toString());
+
+        switch(menuItem.getTitle().toString()) {
+
+            case "Login":
+                if(isLoggedIn())
+                    Toast.makeText(getApplicationContext(),"Already logged in",Toast.LENGTH_SHORT).show();
+                else{
+
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+                break;
+
+            case "Order History":
+                if(isLoggedIn())
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+                else{
+
+                    Toast.makeText(getApplicationContext(),"Please log in and then continue",Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+            case "Log out":
+                if(isLoggedIn()){
+                    getSharedPreferences("Users",MODE_PRIVATE).edit().clear().apply();
+                    getSharedPreferences("Cart",MODE_PRIVATE).edit().clear().apply();
+                    Toast.makeText(getApplicationContext(),"Logged out successfully",Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Please log in and then continue",Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+
+
+
+            default:
+            Bundle bundle = new Bundle();
+            bundle.putString("Category", menuItem.getTitle().toString());
+
+
+            //TODO onclick for the categories
+            Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        }
+
 
         //closing the drawer
         closeDrawer();
-
-        //TODO onclick for the categories
-        Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
-/*
-        CategoryFragment categoryFragment = new CategoryFragment();
-        categoryFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                */
-/*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
-
-                .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment"+menuItem.getTitle().toString())
-                .commit();
-*/
 
         return true;
     }
@@ -449,8 +493,27 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         String userId = sharedPreferences.getString("UserId","");
 
         return !userId.equals("");
-
     }
+
+    public String getUserEmailId(){
+        String userId = "";
+        if(isLoggedIn()) {
+            SharedPreferences sharedPreferences = getSharedPreferences("Users", MODE_PRIVATE);
+            userId = sharedPreferences.getString("UserId", "");
+        }
+        return userId;
+    }
+
+    //TODO guest cart saving list items
+    /*public List<CartItem> getCartItemsPreferences(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Cart",MODE_PRIVATE);
+        List<CartItem> cartItems = null;
+        if(isLoggedIn()) {
+           cartItems = sharedPreferences.getString("UserId", "");
+        }
+        return cartItems;
+    }*/
+
     public void loginToContinue(){
 
         Toast.makeText(getApplicationContext(),"Please Login to Continue",Toast.LENGTH_LONG).show();

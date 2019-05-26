@@ -26,6 +26,7 @@ import com.example.hoboandroid.services.ProductService;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
     List<MerchantProduct> merchantProductObject;
     Integer merchantid,productId;
     ImageView productImage;
+    String productStringImage;
     TextView productDesc,productName,productAttributes,productPrice;
 
     @Override
@@ -81,6 +83,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             Glide.with(productImage.getContext())
                                     .load(response.body().getData().getProductImage().get(1))
                                     .into((productImage));
+                            productStringImage = response.body().getData().getProductImage().get(1);
                         }
                     }
                     @Override
@@ -128,7 +131,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         orderService.getOrderById(1)
                 .enqueue(new Callback<ApiResponse<Order>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Order>> call, Response<ApiResponse<Order>> response) {
+            public void onResponse(Call<ApiResponse<Order>> call, CartItem<ApiResponse<Order>> response) {
                 Log.e("ProductInfoActivity",response.body().getData().toString());
             }
 
@@ -140,7 +143,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         //TODO the merchant selection and reflecting the change caused by changing the merchant. merchant -- spinner, price- textview
         /*service1.getAllMerchants(productId).enqueue(new Callback<ApiResponse<List<MerchantProduct>>>() {
             @Override
-            public void onResponse(Call<ApiResponse<List<MerchantProduct>>> call, Response<ApiResponse<List<MerchantProduct>>> response) {
+            public void onResponse(Call<ApiResponse<List<MerchantProduct>>> call, CartItem<ApiResponse<List<MerchantProduct>>> response) {
                 if(response.body() != null){
                     merchantProductObject.addAll(response.body().getData());
 
@@ -153,6 +156,9 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
             }
         });*/
+
+        final LocalDate orderDate=java.time.LocalDate.now();
+        final LocalDate deliveryDate=orderDate.plusDays(5);
 
 
         final Button buyNow=findViewById(R.id.buyNowButton);
@@ -171,8 +177,8 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     jsonParams.put("address1", "daf");
                     jsonParams.put("address2", "asdfa");
                     jsonParams.put("city", "chirala");
-                    jsonParams.put("deliveryDate", "2018-12-13");
-                    jsonParams.put("orderDate", "2019-06-2");
+                    jsonParams.put("deliveryDate", deliveryDate);
+                    jsonParams.put("orderDate", orderDate);
                     jsonParams.put("orderPrice", "8400");
                     jsonParams.put("pincode", "9090");
                     jsonParams.put("userEmailId", "mehak@gmail.com");
@@ -245,9 +251,13 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         if(view.getId() == R.id.addToCartButton){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);
             Bundle bundle =  new  Bundle();
-            bundle.putString("ProductId",((TextView)((getWindow().getDecorView()).findViewById(R.id.productInfoName))).getText().toString());
+            bundle.putInt("ProductId",Integer.parseInt(((TextView)((getWindow().getDecorView()).findViewById(R.id.productInfoName))).getText().toString()));
             bundle.putInt("MerchantId",merchantid);
-                    //((ViewGroup)((View)view.getParent()).getParent()).findViewById()
+            bundle.putString("ProductName",productName.getText().toString());
+            bundle.putString("ProductImage",productStringImage);
+            bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));
+
+            //((ViewGroup)((View)view.getParent()).getParent()).findViewById()
 
             intent.putExtra("AddToCart",bundle);
             view.getContext().startActivity(intent);

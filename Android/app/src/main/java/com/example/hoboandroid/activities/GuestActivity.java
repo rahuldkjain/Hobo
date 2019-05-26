@@ -17,6 +17,7 @@ import com.example.hoboandroid.services.OrderService;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -47,6 +48,11 @@ public class GuestActivity extends BaseActivity {
         guest_city=findViewById(R.id.guest_city);
         guest_pincode=findViewById(R.id.guest_pincode);
 
+
+        final LocalDate orderDate=java.time.LocalDate.now();
+        final LocalDate deliveryDate=orderDate.plusDays(5);
+
+
         final Button submit=findViewById(R.id.guest_submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +63,7 @@ public class GuestActivity extends BaseActivity {
 
                 if(guest_email.getText().toString().trim().matches(emailPattern) & address1>1 & address2>1 & city >1) {
 
+                    submit.setEnabled(false);
                     Retrofit retrofit3 = new Retrofit.Builder()
                             .baseUrl("http://172.16.20.84:8082/")
                             .client(new OkHttpClient())
@@ -67,8 +74,8 @@ public class GuestActivity extends BaseActivity {
                     jsonParams.put("address1", guest_address1.getText().toString());
                     jsonParams.put("address2", guest_address2.getText().toString());
                     jsonParams.put("city", guest_city.getText().toString());
-                    jsonParams.put("deliveryDate", "2018-12-13");
-                    jsonParams.put("orderDate", "2019-06-2");
+                    jsonParams.put("deliveryDate", deliveryDate);
+                    jsonParams.put("orderDate", orderDate);
                     jsonParams.put("orderPrice", intent.getIntExtra("ProductPrice", 8500));
                     jsonParams.put("pincode", guest_pincode.getText().toString());
                     jsonParams.put("userEmailId", guest_email.getText().toString());
@@ -122,9 +129,10 @@ public class GuestActivity extends BaseActivity {
                             });
 
 
+
                     Intent intent = new Intent(getApplicationContext(), CheckoutPromptActivity.class);
                     startActivity(intent);
-
+                    finish();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Invalid Details", Toast.LENGTH_SHORT).show();

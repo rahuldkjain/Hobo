@@ -3,6 +3,7 @@ package com.example.hoboandroid.services;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Order;
 import com.example.hoboandroid.models.OrderedProduct;
+import com.example.hoboandroid.models.cart.CartItem;
 import com.example.hoboandroid.models.order.OrderProductMe;
 import com.example.hoboandroid.models.order.OrderMe;
 
@@ -36,6 +37,9 @@ public interface OrderService {
     @POST("/orderproduct")
     Call<OrderProductMe> saveProduct(@Body RequestBody params);
 
+    @POST("/cart/create")
+    Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody params);
 
-
+    @GET("/cart/usercart")
+    Call<ApiResponse<List<CartItem>>> getCartItems(@Query("emailId")String userEmailId);
 }
