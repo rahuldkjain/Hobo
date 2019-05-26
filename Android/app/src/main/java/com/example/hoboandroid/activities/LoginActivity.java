@@ -1,103 +1,117 @@
 package com.example.hoboandroid.activities;
 
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
+import com.example.hoboandroid.RetrofitClient;
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.User;
-import com.example.hoboandroid.models.category.Category;
-import com.example.hoboandroid.services.ProductService;
+import com.example.hoboandroid.models.LoginData;
 import com.example.hoboandroid.services.UserService;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
 
-    EditText username,password;
-    Button login;
+
+    private EditText email;
+    private EditText password;
+    private Button login;
+    private LoginData loginData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        username = findViewById(R.id.login_username);
-        password = findViewById(R.id.login_password);
-        login = findViewById(R.id.login);
-
-
-
-        login.setOnClickListener(this);
-
+        init();
     }
 
-    @Override
-    public void onClick(View v) {
-        //TODO user login preferences
-/*        if(username.getText().toString().equals("")|| password.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"Enter valid login details",Toast.LENGTH_LONG).show();
-        }
-        else{
+    private void init() {
 
-            if(isLoggedIn()){
-                Retrofit retrofit = Api.getclient(getResources().getString(R.string.user_host_address),"product/listcategory/");
-
-                UserService service = retrofit.create(UserService.class);
+        email = findViewById(R.id.login_username);
+        password = findViewById(R.id.login_password);
+        login = findViewById(R.id.login_button);
 
 
-                service.loginByEmailAndPassword(username.getText().toString(),password.getText().toString())
-                        .enqueue(new Callback<ApiResponse<User>>() {
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+
+                loginData = new LoginData();
+                loginData.setEmailId(email.getText().toString());
+                loginData.setPassword(password.getText().toString());
+
+                if (email.getText().toString().trim().matches(emailPattern))
+                {
+                    if(password.getText().toString().length()>8) {
+                        userVerify();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Password size should be >8", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Invalid email address", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+
+
+    private void userVerify() {
+
+        Retrofit retrofit = RetrofitClient.getRetrofitClient();
+        UserService api = retrofit.create(UserService.class);
+
+        Log.d("ABCD", "getName api built");
+
+        api.loginByEmailAndPassword(loginData)
+                .enqueue(new Callback<ApiResponse>() {
+
                     @Override
-                    public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
+                    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
-                        //TODO email and password entered aren't valid
-                        if (response.body() != null) {
-                            response.body().getMessage() != "verification fail,successful"
-                            //sharedPreferences.edit().putString("userId",response.body().getData().getUserId());
-                            //SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+                        Log.d("ABCD", "On response");
 
+                        if(response.body()!=null) {
+
+                            ApiResponse apiResponse = response.body();
+                            Log.d("ABCD", response.body().toString());
+                            Toast.makeText(getApplicationContext(), apiResponse.getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+
+                            //TODO
+                            // GO to the profile screen or landing page
+                            // and take response.body().getData().getEmailId()
                         }
+                        else {
+                            Log.e("ABCD","Response body is null");
+                        }
+                    }
 
-                        SharedPreferences cartPreferences = getSharedPreferences("Cart",MODE_PRIVATE);
-
-                        //TODO if the cart items are present and should be added to his cart, else check every time going into cart for the user presence or show no items
+                    @Override
+                    public void onFailure(Call<ApiResponse> call, Throwable t) {
+                        Log.e("ABCD", t.getMessage());
+                        Log.e("ABCD", "Failure Occurred");
 
                     }
-                    @Override
-                    public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Check your connection", Toast.LENGTH_LONG).show();
-                        Log.d("Login Activity", t.getMessage() + " failure");
-                    }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
                 });
-            }
-            else{
-                Log.d("LoginActivity","User already logged in");
-                Toast.makeText(getApplicationContext(),"Already Logged in",Toast.LENGTH_LONG).show();
-            }
 
-
-        }
-*/
-
-    }
-    public boolean isLoggedIn(){
-        SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
-        String userId = sharedPreferences.getString("UserId","");
-
-        return !userId.equals("");
 
     }
 }
