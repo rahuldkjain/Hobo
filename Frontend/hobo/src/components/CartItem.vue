@@ -43,7 +43,8 @@ export default {
         return {
             quantity: [],
             total: [],
-            totalAmount: 0
+            totalAmount: 0,
+            orderDetails: []
         }
     },
     methods:{
@@ -76,14 +77,32 @@ export default {
             this.total.forEach(price => {
                 this.totalAmount += price
             })
+            console.log(this.totalAmount)
             this.$store.dispatch('checkoutAmount',this.totalAmount)
+            
+            // add orderDetails to the session storage
+           
+
+            for(var index=0;index<=this.getCartQuantity.length;index++){
+                var dummyProduct = {}
+                dummyProduct["userId"] = 0
+                dummyProduct["pid"] = this.getCartProductId[index]
+                dummyProduct["pname"] = this.getCartProduct[index]
+                dummyProduct["price"] = this.getCartProductPrice[index]
+                dummyProduct["image"] = this.getCartImage[index]
+                dummyProduct["merchantId"] = this.getCartProductMerchantId[index]
+
+                this.orderDetails.push(dummyProduct)
+            }
+
+            sessionStorage.setItem("orderDetails",JSON.stringify(this.orderDetails))
 
             this.$router.push('/checkout')
         }
 
     },
     computed: {
-        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity'])
+        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity','getCartProductMerchantId'])
     },
     components: {
         Quantity

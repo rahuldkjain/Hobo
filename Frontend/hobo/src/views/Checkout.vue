@@ -4,7 +4,7 @@
     <b-card bg-variant="light" class="text-center formcard">
                 <h4>Shipping Details</h4>
                 
-                <b-form @submit="onSubmit" v-if="show">
+                <b-form v-if="show">
                 <b-form-group
                     id="email"
                     label="Email address:"
@@ -21,15 +21,7 @@
 
             </b-form-group>
 
-            <b-form-group id="password" label="Your Password:" label-for="password-box">
-                <b-form-input
-                id="password-box"
-                type="password"
-                v-model="form.password"
-                required
-                placeholder="Enter password">
-            </b-form-input>
-            </b-form-group>
+           
             <b-form-group id="name" label="Your Name:" label-for="name-box">
                 <b-form-input
                 id="name-box"
@@ -39,16 +31,43 @@
                 placeholder="Enter name">
             </b-form-input>
             </b-form-group>
-            <b-form-group id="address" label="Your Address:" label-for="address-box">
+            <b-form-group id="address1" label="Address 1:" label-for="address1-box">
                 <b-form-input
-                id="address-box"
+                id="address1-box"
                 type="text"
-                v-model="form.address"
+                v-model="form.address1"
                 required
-                placeholder="Enter Address">
+                placeholder="Enter Address1">
             </b-form-input>
             </b-form-group>
-            <b-form-group id="phone" label="Your Phone No:" label-for="phone-box">
+            <b-form-group id="address2" label="Address 2:" label-for="address2-box">
+                <b-form-input
+                id="address2-box"
+                type="text"
+                v-model="form.address2"
+                required
+                placeholder="Enter Address2">
+            </b-form-input>
+            </b-form-group>
+            <b-form-group id="city" label="City" label-for="city-box">
+                <b-form-input
+                id="city-box"
+                type="text"
+                v-model="form.city"
+                required
+                placeholder="Enter City">
+            </b-form-input>
+            </b-form-group>
+            <b-form-group id="pincode" label="Pin Code" label-for="pincode-box">
+                <b-form-input
+                id="pincode-box"
+                type="text"
+                v-model="form.pincode"
+                required
+                placeholder="Enter Pin Code">
+            </b-form-input>
+            </b-form-group>
+            <!-- <b-form-group id="phone" label="Your Phone No:" label-for="phone-box">
                 <b-form-input
                 id="phone-box"
                 type="text"
@@ -56,11 +75,11 @@
                 required
                 placeholder="Enter phone no">
             </b-form-input>
-            </b-form-group>
+            </b-form-group> -->
 
       
 
-        <b-button type="submit" variant="primary" class="checkoutButton">Submit</b-button>
+        <b-button variant="primary" @click="onSubmit" class="checkoutButton">Buy</b-button>
         <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
         </b-form>
                
@@ -68,12 +87,14 @@
        </b-col>
        <b-col>
         <ProductDetailsShipping/>
+    
         </b-col>
 </b-row>
 </template>
 <script>
 import ProductDetails from '@/components/ProductDetails';
 import ProductDetailsShipping from '@/components/ProductDetailsShipping';
+import {mapGetters, mapActions} from 'vuex'; 
 export default {
     data() {
       return {
@@ -81,7 +102,10 @@ export default {
           email: '',
           password: '',
           name: '',
-          address:''
+          address1:'',
+          address2:'',
+          city:'',
+          pincode:''
           
         },
         logIn: false,
@@ -91,15 +115,59 @@ export default {
     methods: {
         onSubmit(evt) {
              evt.preventDefault();
+        var today = new Date();
+        var orderDate = today.getFullYear() + '-' + today.getMonth() + '-' +today.getDate()
+        var deliveryDate = new Date(today)
+        deliveryDate.setDate(deliveryDate.getDate()+4)
+        deliveryDate = deliveryDate.getFullYear() + '-' + deliveryDate.getMonth() + '-' + deliveryDate.getDate()
+
+        var guestDetails = {}
+        guestDetails["userId"] = 0
+        guestDetails["userEmailId"] = this.form.email
+        guestDetails["orderDate"] = orderDate
+        guestDetails["deliveryDate"] = deliveryDate
+        guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails"))[0].price
+        guestDetails["address1"] = this.form.address1
+        guestDetails["address2"] = this.form.address2
+        guestDetails["city"] = this.form.city
+        guestDetails["pincode"] = this.form.pincode
+
+        console.log(guestDetails)
+
         alert(JSON.stringify(this.form));
-        console.log(this.$store.getters.getLoggedIn);
-        this.$router.push("/success");
+        
+        this.$store.dispatch("createOrder",guestDetails)
+        
+        // this.$router.push("/success");
         }
+    },
+    computed: {
+        ...mapGetters(['getOrderId','getCartQuantity','getOrder'])
     },
     components: {
         ProductDetails,
         ProductDetailsShipping
-    }
+    },
+    watch: {
+        getOrder: function(newValue, oldValue) {
+                console.log('order:', newValue)
+            
+            var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
+
+            for(var index=0;index<this.getCartQuantity.length;index++){
+                
+                var payload ={}
+                payload["productId"] = orderDetails["pid"]
+                payload["merchantId"] = orderDetails["merchantId"]
+                payload["quantity"] = this.getCartQuantity[index]
+                payload["productPrice"] = orderDetails["price"]
+
+                 this.$store.dispatch('createProductOrder',payload)
+            }
+
+        }
+
+    },
 
 }
 </script>

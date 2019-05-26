@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -64,8 +66,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
 
     private TextView logoTextView;
-    private EditText searchEditText;
+    private AutoCompleteTextView autoTextView;
     private Button navigationDrawerButton, searchButton, cartButton;
+    List<String> searchAutoTextList = new ArrayList<>();
 
 
     public ViewGroup fullLayout;
@@ -86,7 +89,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         logoTextView = findViewById(R.id.logoTextView);
 
         View toolbar = (Toolbar) findViewById(R.id.toolbar);
-        searchEditText = findViewById(R.id.globalSearch);
+        //searchEditText = findViewById(R.id.globalSearch);
 
         navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
         searchButton = toolbar.findViewById(R.id.toolbar_search_button);
@@ -99,6 +102,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+
+/*
+        autoTextView = (AppCompatAutoCompleteTextView) findViewById(R.id.auto);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (getApplicationContext(), android.R.layout.select_dialog_item, searchAutoTextList);
+        autoTextView.setThreshold(4); //will start working from first character
+       autoTextView.setAdapter(adapter);
 
 /*      productsFragment = new ProductListFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -191,21 +202,30 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String searchText = searchEditText.getText().toString();
+                String searchText = autoTextView.getText().toString();
                 if (!searchText.equals("")) {
                     //Bundle bundle = new Bundle();
                     //bundle.putString("SearchQuery", searchText);
                     //productsFragment.setArguments(bundle);
-                    ProductListFragment productsFragment = new ProductListFragment();
+
+                    /*ProductListFragment productsFragment = new ProductListFragment();
                     getSupportFragmentManager().beginTransaction()
-                            /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                            *//*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
                             .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
                             .commit();
+                    */
+
                     //productsFragment.getSearchedProducts(searchText);
+                    Intent intent  =  new Intent(getApplicationContext(),ProductInfoActivity.class);
+                    intent.putExtra("type","Search");
+                    intent.putExtra("SearchQuery",searchText);
+                    startActivity(intent);
+
 
                 }
 

@@ -8,6 +8,7 @@ export default {
         cartImage: [],
         cartProductPrice: [],
         cartQuantity: [],
+        cartProductMerchantId: [],
         totalAmount: 0
     },
     getters: {
@@ -18,7 +19,8 @@ export default {
         getCartProductPrice: (state) => state.cartProductPrice,
         getCartProductId: (state) => state.cartProductId,
         getCartQuantity: (state) => state.cartQuantity,
-        getTotalAmount: (state) => state.totalAmount
+        getTotalAmount: (state) => state.totalAmount,
+        getCartProductMerchantId: (state) => state.cartProductMerchantId
 
     },
     mutations: {
@@ -37,9 +39,11 @@ export default {
         },
         SET_CART_PRODUCT_PRICE: (state, result) => {
             console.log('result price:' + result.data[0].price)
-            if(!state.cartProductPrice.includes(result.data[0].price))
+            if(!state.cartProductPrice.includes(result.data[0].price)){
                 state.cartProductPrice.push(result.data[0].price)
-            console.log('cartProductPrice: ' + state.cartProductPrice)
+                state.cartProductMerchantId.push(result.data[0].merchantId)
+            }
+            // console.log('cartProductPrice: ' + state.cartProductPrice)
         },
         SET_CART_QUANTITY: (state, result) => {
             state.cartQuantity = result;
@@ -76,5 +80,6 @@ export default {
         checkoutAmount: (context,total) => {
             context.commit('SET_TOTAL_AMOUNT',total)
         }
+        
     }
 }

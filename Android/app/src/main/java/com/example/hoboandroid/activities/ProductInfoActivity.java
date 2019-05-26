@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,9 @@ import com.example.hoboandroid.models.MerchantProduct;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.ProductService;
+
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -33,6 +37,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 public class ProductInfoActivity extends AppCompatActivity implements View.OnClickListener{
+
+
+    List<MerchantProduct> merchantProductObject;
+    Integer merchantid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +58,11 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
         final TextView productName=findViewById(R.id.productInfoName);
         final TextView productAttributes=findViewById(R.id.attributes2);
         final TextView productPrice=findViewById(R.id.productInfoPrice);
-        service.getProductById(Integer.parseInt(getIntent().getStringExtra("Product")))
+
+        int productId = Integer.parseInt(getIntent().getStringExtra("Product"));
+
+
+        service.getProductById(productId)
                 .enqueue(new Callback<ApiResponse<Product>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<Product>> call, Response<ApiResponse<Product>> response) {
@@ -81,14 +94,15 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
 
         MerchantService service1=retrofit1.create(MerchantService.class);
         Log.d("LandingPageActivity","Sub "+getIntent().getStringExtra("Product"));
-        service1.getTopProductMerchant(Integer.parseInt(getIntent().getStringExtra("Product")))
+        service1.getTopProductMerchant(productId)
                 .enqueue(new Callback<ApiResponse<MerchantProduct>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<MerchantProduct>> call, Response<ApiResponse<MerchantProduct>> response1) {
                         if(response1.body() != null){
-                            Log.e("gygu",response1.body().toString());
                             Log.e("Inmerchant",response1.body().getData().getPrice()+"");
                             productPrice.setText(response1.body().getData().getPrice()+"");
+                            merchantid = response1.body().getData().getMerchantId();
+                            //productMerchantName.setText(response1.body().getData().getMerchantId())
                         }
                     }
                     @Override
@@ -97,12 +111,39 @@ public class ProductInfoActivity extends AppCompatActivity implements View.OnCli
                         Log.e("HOBOLandingPage",t.getMessage()+" failure");
                     }
                 });
+
+
+        //TODO the merchant selection and reflecting the change caused by changing the merchant. merchant -- spinner, price- textview
+        /*service1.getAllMerchants(productId).enqueue(new Callback<ApiResponse<List<MerchantProduct>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<MerchantProduct>>> call, Response<ApiResponse<List<MerchantProduct>>> response) {
+                if(response.body() != null){
+                    merchantProductObject.addAll(response.body().getData());
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<MerchantProduct>>> call, Throwable t) {
+
+            }
+        });*/
+
+
     }
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.addToCartButton){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+            Bundle bundle =  new  Bundle();
+            bundle.putString("ProductId",((TextView)((getWindow().getDecorView()).findViewById(R.id.productInfoName))).getText().toString());
+            bundle.putInt("MerchantId",merchantid);
+                    //((ViewGroup)((View)view.getParent()).getParent()).findViewById()
+
+            intent.putExtra("AddToCart",bundle);
             view.getContext().startActivity(intent);
+
         }
         else if(view.getId() == R.id.buyNowButton ){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);

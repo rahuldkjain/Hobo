@@ -4,6 +4,7 @@ import module from './module.js'
 import searchmodule from './searchmodule.js'
 import allProductsModule from './allProductsModule.js'
 import product from './product.js'
+import order from './order.js'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         module,
         searchmodule,
         allProductsModule,
-        product
+        product,
+        order
     }
 })

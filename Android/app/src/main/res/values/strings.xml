@@ -33,4 +33,5 @@
     <string name="todo">TODO</string>
     <string name="e_mail">E-mail</string>
     <string name="button">Button</string>
+    <string name="user_host_address">host_address_user</string>
 </resources>

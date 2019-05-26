@@ -49,6 +49,20 @@ module.exports = {
                 pathRewrite: {
                     '^/merchant': ''
                 }
+            },
+            '/order': {
+                target: 'http://172.16.20.84:8082/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/order': ''
+                }
+            },
+            '/orderProduct': {
+                target: 'http://172.16.20.84:8082/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/orderProduct': ''
+                }
             }
         }
     }

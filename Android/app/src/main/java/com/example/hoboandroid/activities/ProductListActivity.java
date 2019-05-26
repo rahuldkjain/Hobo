@@ -9,7 +9,7 @@ import android.os.Bundle;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.fragments.ProductListFragment;
 
-public class ProductListActivity extends AppCompatActivity{
+public class ProductListActivity extends BaseActivity{
 
 
     @Override
@@ -35,16 +35,17 @@ public class ProductListActivity extends AppCompatActivity{
 
         bundle.putString("type",intent.getStringExtra("type"));
 
-        Fragment fragment = new ProductListFragment();
-        fragment.setArguments(bundle);
 
+        ProductListFragment productsFragment = new ProductListFragment();
+        getSupportFragmentManager().beginTransaction()
+                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
+                .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
+                .commit();
 
         //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().add(R.id.product_list_fragment, fragment,"ProductListFragment");
         //fragmentTransaction.commit();
 
         //TODO how to give the query
-        ((ProductListFragment) fragment).getSearchedProducts("Query");
-
 
 
     }
