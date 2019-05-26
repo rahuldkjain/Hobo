@@ -1,15 +1,13 @@
 package com.hobo.order.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cart")
 public class CartEntity {
 
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemId;
     private int userId;
     private int productId;

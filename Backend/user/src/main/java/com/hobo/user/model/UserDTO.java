@@ -15,7 +15,7 @@ public class UserDTO {
     private String address2;
     private String city;
     private String state;
-    private Integer pincode;
+    private int pincode;
 
     public String getState() {
         return state;
@@ -97,11 +97,11 @@ public class UserDTO {
         this.city = city;
     }
 
-    public Integer getPincode() {
+    public int getPincode() {
         return pincode;
     }
 
-    public void setPincode(Integer pincode) {
+    public void setPincode(int pincode) {
         this.pincode = pincode;
     }
 

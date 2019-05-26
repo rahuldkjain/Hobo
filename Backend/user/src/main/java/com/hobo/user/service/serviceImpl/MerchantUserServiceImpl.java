@@ -1,11 +1,14 @@
 package com.hobo.user.service.serviceImpl;
 
 import com.hobo.user.entity.MerchantUserEntity;
+import com.hobo.user.exceptions.merchantuser.MerchantUserAlreadyExists;
+import com.hobo.user.exceptions.merchantuser.MerchantUserNotFound;
 import com.hobo.user.model.MerchantUserDTO;
 import com.hobo.user.repository.MerchantUserRepository;
 import com.hobo.user.service.MerchantUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,9 +17,18 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     @Autowired
     private MerchantUserRepository merchantUserRepository;
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public MerchantUserServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
-    public MerchantUserDTO getUser(Integer id) {
-        MerchantUserEntity result = merchantUserRepository.findOne(id);
+    public MerchantUserDTO getUser(String email) throws MerchantUserNotFound {
+        if(!merchantUserRepository.existsByEmailId(email)) {
+            throw new MerchantUserNotFound("Data not found");
+        }
+        MerchantUserEntity result = merchantUserRepository.findByEmailId(email);
         MerchantUserDTO resultDTO = new MerchantUserDTO();
         BeanUtils.copyProperties(result, resultDTO);
         resultDTO.setPassword("");
@@ -24,9 +36,9 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
-    public MerchantUserDTO deleteUser(Integer id) {
-        MerchantUserEntity result = merchantUserRepository.findOne(id);
-        merchantUserRepository.delete(id);
+    public MerchantUserDTO deleteUser(String email) {
+        MerchantUserEntity result = merchantUserRepository.findByEmailId(email);
+        merchantUserRepository.delete(result.getMerchantId());
         MerchantUserDTO resultDTO = new MerchantUserDTO();
         BeanUtils.copyProperties(result, resultDTO);
         resultDTO.setPassword("");
@@ -34,7 +46,10 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
-    public MerchantUserDTO putUser(MerchantUserDTO merchantUserDTO) {
+    public MerchantUserDTO putUser(MerchantUserDTO merchantUserDTO) throws MerchantUserNotFound {
+        if(!merchantUserRepository.existsByEmailId(merchantUserDTO.getEmailId())) {
+            throw new MerchantUserNotFound("Data not found");
+        }
         MerchantUserEntity user = new MerchantUserEntity();
         BeanUtils.copyProperties(merchantUserDTO, user);
         MerchantUserEntity result = merchantUserRepository.save(user);
@@ -45,12 +60,13 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
-    public MerchantUserDTO saveUser(MerchantUserDTO merchantUserDTO) {
+    public MerchantUserDTO saveUser(MerchantUserDTO merchantUserDTO) throws MerchantUserAlreadyExists {
+        if(merchantUserRepository.existsByEmailId(merchantUserDTO.getEmailId())) {
+            throw new MerchantUserAlreadyExists("Data already exists");
+        }
         MerchantUserEntity user = new MerchantUserEntity();
         BeanUtils.copyProperties(merchantUserDTO, user);
-        if( merchantUserRepository.existsByEmailId(user.getEmailId())) {
-            throw new RuntimeException();
-        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         MerchantUserEntity result = merchantUserRepository.save(user);
         MerchantUserDTO resultDTO = new MerchantUserDTO();
         BeanUtils.copyProperties(result,resultDTO);
@@ -63,7 +79,7 @@ public class MerchantUserServiceImpl implements MerchantUserService {
         MerchantUserDTO merchantUserDTO= new MerchantUserDTO();
         if(merchantUserRepository.existsByEmailId(email)) {
             MerchantUserEntity result = merchantUserRepository.findByEmailId(email);
-            if (password.equals(result.getPassword())) {
+            if (bCryptPasswordEncoder.matches(password,result.getPassword())) {
                 BeanUtils.copyProperties(result, merchantUserDTO);
                 merchantUserDTO.setPassword("");
             }

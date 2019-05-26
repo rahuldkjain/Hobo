@@ -1,7 +1,7 @@
 package com.hobo.merchant.controller;
 
-import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantAlreadyExists;
-import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantNotFound;
+import com.hobo.merchant.exceptions.merchantexceptions.MerchantAlreadyExists;
+import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
 import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;

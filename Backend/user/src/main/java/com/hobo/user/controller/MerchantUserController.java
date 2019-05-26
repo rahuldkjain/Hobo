@@ -1,6 +1,8 @@
 package com.hobo.user.controller;
 
 
+import com.hobo.user.exceptions.merchantuser.MerchantUserAlreadyExists;
+import com.hobo.user.exceptions.merchantuser.MerchantUserNotFound;
 import com.hobo.user.model.MerchantUserDTO;
 import com.hobo.user.service.MerchantUserService;
 import org.json.simple.JSONObject;
@@ -27,15 +29,15 @@ public class MerchantUserController {
     }
 
     @GetMapping("/merchantuser")
-    public JSONObject getUser (@RequestParam Integer id) {
-        MerchantUserDTO merchantUserDTO = merchantUserService.getUser(id);
+    public JSONObject getUser (@RequestParam String emailId) throws MerchantUserNotFound {
+        MerchantUserDTO merchantUserDTO = merchantUserService.getUser(emailId);
         JSONObject response = getJSONResponse(merchantUserDTO);
         response.replace("message", "success", "fetching successful");
         return response;
     }
 
     @PostMapping(value="/merchantuser", consumes = {"application/json"})
-    public JSONObject saveUser(@RequestBody MerchantUserDTO merchantUserDTO) {
+    public JSONObject saveUser(@RequestBody MerchantUserDTO merchantUserDTO) throws MerchantUserAlreadyExists {
         MerchantUserDTO result = merchantUserService.saveUser(merchantUserDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "adding successful");
@@ -43,7 +45,7 @@ public class MerchantUserController {
     }
 
     @PutMapping(value="/merchantuser", consumes = {"application/json"})
-    public JSONObject updateUser(@RequestBody MerchantUserDTO merchantUserDTO) {
+    public JSONObject updateUser(@RequestBody MerchantUserDTO merchantUserDTO) throws MerchantUserNotFound {
         MerchantUserDTO result = merchantUserService.putUser(merchantUserDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "updating successful");
@@ -51,8 +53,8 @@ public class MerchantUserController {
     }
 
     @DeleteMapping("/merchantuser")
-    public JSONObject updateUser(@RequestParam Integer id) {
-        MerchantUserDTO merchantUserDTO = merchantUserService.deleteUser(id);
+    public JSONObject updateUser(@RequestParam String emailId) {
+        MerchantUserDTO merchantUserDTO = merchantUserService.deleteUser(emailId);
         JSONObject response = getJSONResponse(merchantUserDTO);
         response.replace("message", "success", "deleting successful");
         return response;

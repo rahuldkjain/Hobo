@@ -1,13 +1,14 @@
 package com.hobo.merchant.model;
 
 public class MerchantDTO {
-    int merchantId;
-    String merchantName;
-    float merchantRating;
-    String description;
-    String address;
-    String email;
-    long phoneNumber;
+
+    private int merchantId;
+    private String merchantName;
+    private float merchantRating;
+    private String description;
+    private String address;
+    private String email;
+    private long phoneNumber;
 
     public int getMerchantId() {
         return merchantId;

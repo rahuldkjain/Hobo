@@ -1,15 +1,14 @@
 package com.hobo.merchant.service.implementation;
 
-import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantAlreadyExists;
-import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantNotFound;
-import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductAlreadyExists;
-import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductNotFound;
+import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
+import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductAlreadyExists;
+import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductNotFound;
+import com.hobo.merchant.entity.Merchant;
 import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.repository.MerchantProductRepository;
 import com.hobo.merchant.repository.MerchantRepository;
 import com.hobo.merchant.service.MerchantProductService;
-import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,27 +20,18 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     @Autowired
     private MerchantProductRepository merchantProductRepository;
 
-    @Autowired MerchantRepository merchantRepository;
+    @Autowired
+    private MerchantRepository merchantRepository;
 
     @Override
     public MerchantProductDTO createMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductAlreadyExists, MerchantNotFound {
 
         if(merchantProductRepository.exists(merchantProductDTO.getIndexx())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content Already Exists");
-            error.put("message", "Content you are inserting is already present in the database");
-            throw new MerchantProductAlreadyExists(error);
+            throw new MerchantProductAlreadyExists("Data already exists");
         }
 
         if (!merchantRepository.exists(merchantProductDTO.getMerchantId())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantNotFound(error);
+            throw new MerchantNotFound("Merchant not found");
         }
         MerchantProductDTO merchantProductDTO1=null;
         MerchantProduct merchantProduct=new MerchantProduct();
@@ -56,12 +46,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     @Override
     public MerchantProductDTO readMerchantProduct(Integer index) throws MerchantProductNotFound{
         if(!merchantProductRepository.exists(index)){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         MerchantProduct merchantProduct= merchantProductRepository.findOne(index);
         MerchantProductDTO merchantProductDTO=new MerchantProductDTO();
@@ -73,25 +58,17 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     public MerchantProductDTO updateMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductNotFound, MerchantNotFound{
         if(!merchantProductRepository.exists(merchantProductDTO.getIndexx()))
         {
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         if (!merchantRepository.exists(merchantProductDTO.getMerchantId())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantNotFound(error);
+            throw new MerchantNotFound("Merchant not found");
         }
         MerchantProduct merchantProduct =merchantProductRepository.findOne(merchantProductDTO.getIndexx());
         MerchantProduct merchantProduct1=new MerchantProduct();
         BeanUtils.copyProperties(merchantProductDTO,merchantProduct1);
         merchantProductRepository.save(merchantProduct1);
+        //UpdateScore
+        calculateScore(merchantProduct1.getIndexx());
         return merchantProductDTO;
     }
 
@@ -109,7 +86,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         MerchantProductDTO merchantProductDTO=new MerchantProductDTO();
         List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(producctId);
 
-        float merchantScore=0;
+        double merchantScore=0;
         for (MerchantProduct merchantProduct:merchantProducts) {
             if(merchantProduct.getMerchantScore()>=merchantScore){
                 merchantScore=merchantProduct.getMerchantScore();
@@ -118,12 +95,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         }
         if(merchantProductDTO.getIndexx()==0)
         {
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         return merchantProductDTO;
     }
@@ -133,12 +105,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(productId);
         if(merchantProducts==null)
         {
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
 
         return merchantProducts;
@@ -148,18 +115,12 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     public MerchantProductDTO updateProductRating(Integer index, float productRating) throws MerchantProductNotFound,MerchantNotFound{
         if(!merchantProductRepository.exists(index))
         {
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         MerchantProductDTO merchantProductDTO=readMerchantProduct(index);
         merchantProductDTO.setProductRating(productRating);
         MerchantProductDTO merchantProductDTO1=new MerchantProductDTO();
         merchantProductDTO1=updateMerchantProduct(merchantProductDTO);
-
         return merchantProductDTO1;
     }
 
@@ -168,12 +129,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         MerchantProductDTO merchantProductDTO=null;
         List<MerchantProduct> merchantProduct=merchantProductRepository.findByMerchantId(merchantId);
         if(merchantProduct==null){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         return merchantProduct;
     }
@@ -182,12 +138,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     public float getProductRating(Integer productId) throws MerchantProductNotFound{
         List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(productId);
         if(merchantProducts==null){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content not found");
-            error.put("message", "Content you are looking for is not present in the database");
-            throw new MerchantProductNotFound(error);
+            throw new MerchantProductNotFound("Data not found");
         }
         float totalRating=0;
         float rating=0;
@@ -215,5 +166,21 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         }
 
         return merchantProductDTO;
+    }
+
+    @Override
+    public void calculateScore(int indexx) {
+        MerchantProduct merchantProduct = merchantProductRepository.findOne(indexx);
+        double updateScore;
+        Integer productSold = merchantProduct.getProductsSold();
+        Integer productStock  = merchantProduct.getStock();
+        Merchant merchant = merchantRepository.findOne(merchantProduct.getMerchantId());
+        float merchantRating = merchant.getMerchantRating();
+        float price = merchantProduct.getPrice();
+        float productRating = merchantProduct.getProductRating();
+
+        updateScore = 0.25*productSold+0.1*productStock+0.2*merchantRating+0.2*productRating-0.25*price;
+        merchantProduct.setMerchantScore(updateScore);
+        merchantProductRepository.save(merchantProduct);
     }
 }

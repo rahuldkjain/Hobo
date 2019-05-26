@@ -1,16 +1,18 @@
 package com.hobo.user.service;
 
+import com.hobo.user.exceptions.user.UserAlreadyExists;
+import com.hobo.user.exceptions.user.UserNotFound;
 import com.hobo.user.model.UserDTO;
 
 public interface UserService {
 
-    UserDTO getUser(Integer id);
+    UserDTO getUser(String email) throws UserNotFound;
 
-    UserDTO deleteUser(Integer id);
+    UserDTO deleteUser(String email);
 
-    UserDTO putUser(UserDTO userDTO);
+    UserDTO putUser(UserDTO userDTO) throws UserNotFound;
 
-    UserDTO saveUser(UserDTO userDTO);
+    UserDTO saveUser(UserDTO userDTO) throws UserAlreadyExists;
 
     UserDTO loginCheck(String email, String password);
 

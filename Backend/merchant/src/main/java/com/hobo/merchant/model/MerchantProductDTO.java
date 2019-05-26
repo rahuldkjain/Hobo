@@ -1,14 +1,15 @@
 package com.hobo.merchant.model;
 
 public class MerchantProductDTO {
-    int indexx;
-    int merchantId;
-    int productId;
-    int stock;
-    float price;
-    float productRating;
-    int productsSold;
-    int merchantScore;
+
+    private int indexx;
+    private int merchantId;
+    private int productId;
+    private int stock;
+    private float price;
+    private float productRating;
+    private int productsSold;
+    private int merchantScore;
 
 
     public int getIndexx() {

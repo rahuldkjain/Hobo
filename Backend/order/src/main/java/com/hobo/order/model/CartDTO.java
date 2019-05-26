@@ -2,7 +2,7 @@ package com.hobo.order.model;
 
 public class CartDTO {
 
-    private Integer cartItemId;
+    private int cartItemId;
     private int userId;
     private int productId;
     private int merchantId;
@@ -10,11 +10,11 @@ public class CartDTO {
     private float productPrice;
 
 
-    public Integer getCartItemId() {
+    public int getCartItemId() {
         return cartItemId;
     }
 
-    public void setCartItemId(Integer cartItemId) {
+    public void setCartItemId(int cartItemId) {
         this.cartItemId = cartItemId;
     }
 
@@ -66,7 +66,7 @@ public class CartDTO {
                 ", productId=" + productId +
                 ", merchantId=" + merchantId +
                 ", quantity=" + quantity +
-                ", productPrice='" + productPrice + '\'' +
+                ", productPrice=" + productPrice +
                 '}';
     }
 }

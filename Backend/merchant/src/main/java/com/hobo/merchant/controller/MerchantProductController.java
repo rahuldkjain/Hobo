@@ -1,8 +1,8 @@
 package com.hobo.merchant.controller;
 
-import com.hobo.merchant.Exceptions.MerchantExceptions.MerchantNotFound;
-import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductAlreadyExists;
-import com.hobo.merchant.Exceptions.MerchantProductExceptions.MerchantProductNotFound;
+import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
+import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductAlreadyExists;
+import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductNotFound;
 import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.service.MerchantProductService;

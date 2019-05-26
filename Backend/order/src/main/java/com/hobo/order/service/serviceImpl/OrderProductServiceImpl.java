@@ -21,17 +21,12 @@ public class OrderProductServiceImpl implements OrderProductService {
     @Override
     public OrderProductDTO createOrderProduct(OrderProductDTO orderProductDTO) throws OrderProductAlreadyExists {
         if(orderProductRepository.exists(orderProductDTO.getIndexx())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content Already Exists");
-            error.put("message", "Content you are inserting is already present in the database");
-            throw new OrderProductAlreadyExists(error);
+            throw new OrderProductAlreadyExists("Data already exists");
         }
         OrderProductEntity orderProductEntity=new OrderProductEntity();
         BeanUtils.copyProperties(orderProductDTO,orderProductEntity);
-        OrderProductEntity orderProductEntity1=orderProductRepository.save(orderProductEntity);
-
+        orderProductEntity=orderProductRepository.save(orderProductEntity);
+        BeanUtils.copyProperties(orderProductEntity,orderProductDTO);
         return orderProductDTO;
     }
 
