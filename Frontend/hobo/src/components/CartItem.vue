@@ -6,7 +6,7 @@
                 <img :src='getCartImage[index]'>
                 <div class="head">
                     <h3> name: {{product}}</h3>
-                    <h3> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h3>
+                    <h3> price: {{getCartProductPrice[index] ? getCartProductPrice[index] : '' }}</h3>
 
                 </div>
                 <div class="quantity">
@@ -117,6 +117,7 @@ export default {
                 console.log("pid: " + pid)
                 this.$store.dispatch('cartProduct', pid)
                 this.$store.dispatch('cartProductPrice', pid)
+
             })
             }
         }

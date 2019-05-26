@@ -3,12 +3,12 @@ export default {
     state: {
         order: {},
         orderId: '',
-        orderProduct: {}
+        orderProductNum: 0
     },
     getters: {
         getOrder: (state) => state.order,
         getOrderId: (state) => state.orderId,
-        getOrderProduct: (state) => state.orderProduct
+        getOrderProductNum: (state) => state.orderProductNum
     },
     mutations: {
         SET_ORDER: (state, result) => {
@@ -19,7 +19,7 @@ export default {
         },
         SET_PRODUCT_ORDER: (state, result) => {
             if (result.data != null) {
-                state.orderProduct = result.data
+                state.orderProductNum += 1
             }
         }
     },

@@ -36,6 +36,13 @@ module.exports = {
                     '^/fetchCartProduct': ''
                 }
             },
+            '/fetchBuyNowProduct': {
+                target: 'http://172.16.20.80:8080/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/fetchBuyNowProduct': ''
+                }
+            },
             '/user': {
                 target: 'http://172.16.20.84:8081/',
                 changeOrigin: true,
