@@ -1,6 +1,8 @@
 package com.hobo.search.service;
 
 import com.hobo.search.model.ProductDTO;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
 
 import java.util.List;
 
@@ -16,5 +18,7 @@ public interface ProductServiceImpl {
 
     List<ProductDTO> getAllProduct ();
 
-    List<List<ProductDTO>> query(String query);
+    JSONArray query(String query) throws ParseException;
+
+    List<List<ProductDTO>> result(String query);
 }
