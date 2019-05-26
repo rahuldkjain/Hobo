@@ -3,6 +3,7 @@ package com.example.hoboandroid.services;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Merchant;
 import com.example.hoboandroid.models.MerchantProduct;
+import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface MerchantService {
     Call<ApiResponse<MerchantProduct>> getMerchantProduct(@Query("merchantId") String merchantId,@Query("productId") String productId);
 
     @GET("/merchantproduct/gettopproductmerchant")
-    Call<ApiResponse<MerchantProduct>> getTopProductMerchant(@Query("productId") Integer productId);
+    Call<ApiResponse<MerchantProductResponse>> getTopProductMerchant(@Query("productId") Integer productId);
 }

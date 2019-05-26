@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.hoboandroid.R;
 
-public class CheckoutPromptActivity extends AppCompatActivity {
+public class CheckoutPromptActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

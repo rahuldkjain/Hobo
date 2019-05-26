@@ -77,6 +77,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         categoryRecyclerView.setAdapter(categoryAdapter);
 
+
         Retrofit retrofit = Api.getclient("http://172.16.20.80:8080/","product/listcategory/");
 
         ProductService service = retrofit.create(ProductService.class);
@@ -157,14 +158,10 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
+        //TODO differentiate for category activity and product activity
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);
-        Toast.makeText(view.getContext(), "A Product is clicked", Toast.LENGTH_LONG).show();
-        //opening a category page
-        Intent intent = new Intent(view.getContext(),ProductInfoActivity.class);
-        intent.putExtra("Product",((TextView)view.findViewById(R.id.landing_product_id)).getText().toString());
-        //intent.putExtra("Category Object",item.getCategoryName());
-        view.getContext().startActivity(intent);
+
 
     }
     @Override

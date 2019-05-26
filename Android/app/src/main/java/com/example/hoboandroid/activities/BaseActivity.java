@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.NavigationAdapter;
@@ -50,6 +51,8 @@ import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.category.ResponseCategory;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +93,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         View toolbar = (Toolbar) findViewById(R.id.toolbar);
         //searchEditText = findViewById(R.id.globalSearch);
+
 
         navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
         searchButton = toolbar.findViewById(R.id.toolbar_search_button);
@@ -199,6 +203,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 //TODO implement in such a way that landing page is shown if not present
+                v.getContext().startActivity(new Intent(getApplicationContext(),LandingPageActivity.class));
             }
         });
 
@@ -250,7 +255,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private void getCategories() {
 
 
-        Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address), "product/listcategory/");
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL, "product/listcategory/");
 
         ProductService service = retrofit.create(ProductService.class);
 
@@ -421,5 +426,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 .commit();
 
         return true;
+    }
+    public void closeDrawer(){
+        drawerLayout.closeDrawer(Gravity.START,true);
     }
 }

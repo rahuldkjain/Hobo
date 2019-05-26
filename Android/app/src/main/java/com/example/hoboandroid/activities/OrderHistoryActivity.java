@@ -14,6 +14,7 @@ import com.example.hoboandroid.adapters.OrderAdapter;
 import com.example.hoboandroid.models.Order;
 import com.example.hoboandroid.services.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +28,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
     RecyclerView orderHistoryRecyclerView;
     OrderAdapter orderAdapter;
-    List<Order> orderList;
+    List<Order> orderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,10 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
         orderAdapter = new OrderAdapter(orderList);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderHistoryActivity.this);
+     /*   LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderHistoryActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderHistoryRecyclerView.setLayoutManager(linearLayoutManager);
-
+*/
 
         orderHistoryRecyclerView.setAdapter(orderAdapter);
         
@@ -105,7 +106,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(OrderHistoryActivity.this, "A Order is clicked for details", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(OrderHistoryActivity.this,OrderedProductsActivity.class);
-        intent.putExtra("OrderId",orderItem.getOrderId());
+        //intent.putExtra("OrderId",orderItem.get());
         startActivity(intent);
 
     }

@@ -3,6 +3,7 @@ package com.example.hoboandroid.models;
 import com.google.gson.annotations.SerializedName;
 
 public class MerchantProduct {
+
     @SerializedName("productId")
     private int productId;
 

@@ -37,6 +37,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
         //getting the intent to retrieve attributes
         Intent intent = getIntent();
         String category = intent.getStringExtra("Category Object");
+        subCategoryRecyclerView = findViewById(R.id.reusable_recycler_view);
 
         subCategoryRecyclerViewAdapter = new SubCategoryAdapter(subCategoryList);
 
@@ -104,7 +105,8 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
 
         //opening a sub category activity
         Intent intent = new Intent(CategoryActivity.this,ProductListActivity.class);
-        intent.putExtra("Sub Category Object",item.getSubCategoryName());
-        startActivity(intent);
+        intent.putExtra("type","SubCategory");
+        intent.putExtra("SubCategory",item.getSubCategoryName());
+        view.getContext().startActivity(intent);
     }
 }

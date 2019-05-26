@@ -47,15 +47,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         //TODO user login preferences
-        /*if(username.getText().toString().equals("")|| password.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"Enter valid input",Toast.LENGTH_LONG).show();
+/*        if(username.getText().toString().equals("")|| password.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(),"Enter valid login details",Toast.LENGTH_LONG).show();
         }
         else{
-            final SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
-            String userId = sharedPreferences.getString("userId","");
-            //SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
 
-            if(userId.equals("")){
+            if(isLoggedIn()){
                 Retrofit retrofit = Api.getclient(getResources().getString(R.string.user_host_address),"product/listcategory/");
 
                 UserService service = retrofit.create(UserService.class);
@@ -66,20 +63,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
 
+                        //TODO email and password entered aren't valid
                         if (response.body() != null) {
-                            sharedPreferences.edit().putString("userId",User)
+                            response.body().getMessage() != "verification fail,successful"
+                            //sharedPreferences.edit().putString("userId",response.body().getData().getUserId());
+                            //SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
 
                         }
+
+                        SharedPreferences cartPreferences = getSharedPreferences("Cart",MODE_PRIVATE);
+
+                        //TODO if the cart items are present and should be added to his cart, else check every time going into cart for the user presence or show no items
+
                     }
                     @Override
                     public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Check your connection", Toast.LENGTH_LONG).show();
-                        Log.d("BaseActivity", t.getMessage() + " failure");
+                        Log.d("Login Activity", t.getMessage() + " failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
                 });
             }
+            else{
+                Log.d("LoginActivity","User already logged in");
+                Toast.makeText(getApplicationContext(),"Already Logged in",Toast.LENGTH_LONG).show();
+            }
 
 
-        }*/
+        }
+*/
+
+    }
+    public boolean isLoggedIn(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
+        String userId = sharedPreferences.getString("UserId","");
+
+        return !userId.equals("");
+
     }
 }

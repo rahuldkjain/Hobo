@@ -17,7 +17,7 @@
     <string name="product_host_address">http://172.16.20.80:8080/</string>
     <string name="search_any_product">Search any product</string>
     <string name="search_port_address">search_port_address</string>
-    <string name="merchant_host_address">merchantdbase_address</string>
+    <string name="merchant_host_address">http://172.16.20.101:8080/</string>
     <string name="welcome">Welcome, Happy Shopping!</string>
     <string name="thisprice">thisprice</string>
     <string name="delete_all">Delete All</string>
@@ -31,5 +31,7 @@
     <string name="cart_item">item</string>
     <string name="merchant">Merchant</string>
     <string name="todo">TODO</string>
+    <string name="e_mail">E-mail</string>
+    <string name="button">Button</string>
     <string name="user_host_address">host_address_user</string>
 </resources>

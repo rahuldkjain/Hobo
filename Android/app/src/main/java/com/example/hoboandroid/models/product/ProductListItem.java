@@ -7,24 +7,34 @@ import java.util.List;
 
 public class ProductListItem {
 
-    private String productId;
+    private int productId;
     private String productName;
     private int productPrice;
     private float rating;
     private String image;
 
-    public ProductListItem(String productId, String productName, String image) {
+    public ProductListItem(int productId, String productName, String image) {
         this.productName = productName;
         this.productId = productId;
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "ProductListItem{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", rating=" + rating +
+                ", image='" + image + '\'' +
+                '}';
+    }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
