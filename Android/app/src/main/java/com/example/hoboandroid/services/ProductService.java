@@ -25,8 +25,11 @@ public interface ProductService {
     @GET("/product/getall")
     Call<ApiResponse<List<Product>>> getAllProducts();
 
-    @GET("/category")
-    Call<List<Product>> getProductsByCatAndSub(@Query("category") String category,@Query("subCategory") String subCategory);
+    @GET("/product/category")
+    Call<ApiResponse<List<Product>>> getProductsByCat(@Query("category") String category);
+
+    @GET("/product/subcategory")
+    Call<ApiResponse<List<Product>>> getProductsBySubCat(@Query("subCategory") String subCategory);
 
     @GET("/product")
     Call<ApiResponse<Product>> getProductById(@Query("productId") Integer productId);

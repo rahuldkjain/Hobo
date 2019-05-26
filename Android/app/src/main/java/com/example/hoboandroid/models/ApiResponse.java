@@ -50,4 +50,14 @@ public class ApiResponse<T> {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "ApiResponse{" +
+                "code='" + code + '\'' +
+                ", data=" + data +
+                ", error='" + error + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

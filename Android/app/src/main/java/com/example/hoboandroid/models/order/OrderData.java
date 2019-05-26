@@ -1,26 +1,17 @@
-package com.example.hoboandroid.models;
+package com.example.hoboandroid.models.order;
+
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
-public class Order{
+public class OrderData {
 
     @SerializedName("pincode")
-    private Integer pincode;
-
-    @SerializedName("orderId")
-    private Integer orderId;
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
+    private int pincode;
 
     @SerializedName("userEmailId")
     private String userEmailId;
+
+    @SerializedName("orderId")
+    private int orderId;
 
     @SerializedName("address2")
     private String address2;
@@ -31,87 +22,112 @@ public class Order{
     @SerializedName("address1")
     private String address1;
 
-
     @SerializedName("orderPrice")
-    private Integer orderPrice;
+    private int orderPrice;
 
     @SerializedName("deliveryDate")
-    private Date deliveryDate;
-
-
-    @SerializedName("orderDate")
-    private Date orderDate;
+    private long deliveryDate;
 
     @SerializedName("userId")
-    private Integer userId;
+    private int userId;
 
-    public void setPincode(Integer pincode){
+    @SerializedName("orderDate")
+    private long orderDate;
+
+    public void setPincode(int pincode){
         this.pincode = pincode;
     }
-    public Integer getPincode(){
+
+    public int getPincode(){
         return pincode;
     }
+
     public void setUserEmailId(String userEmailId){
         this.userEmailId = userEmailId;
     }
+
     public String getUserEmailId(){
         return userEmailId;
     }
+
+    public void setOrderId(int orderId){
+        this.orderId = orderId;
+    }
+
+    public int getOrderId(){
+        return orderId;
+    }
+
     public void setAddress2(String address2){
         this.address2 = address2;
     }
+
     public String getAddress2(){
         return address2;
     }
+
     public void setCity(String city){
         this.city = city;
     }
+
     public String getCity(){
         return city;
     }
+
     public void setAddress1(String address1){
         this.address1 = address1;
     }
+
     public String getAddress1(){
         return address1;
     }
-    public void setOrderPrice(Integer orderPrice){
+
+    public void setOrderPrice(int orderPrice){
         this.orderPrice = orderPrice;
     }
-    public Integer getOrderPrice(){
+
+    public int getOrderPrice(){
         return orderPrice;
     }
-    public void setDeliveryDate(Date deliveryDate){
+
+    public void setDeliveryDate(long deliveryDate){
         this.deliveryDate = deliveryDate;
     }
-    public Date getDeliveryDate(){
+
+    public long getDeliveryDate(){
         return deliveryDate;
     }
-    public void setOrderDate(Date orderDate){
-        this.orderDate = orderDate;
-    }
-    public Date getOrderDate(){
-        return orderDate;
-    }
-    public void setUserId(Integer userId){
+
+    public void setUserId(int userId){
         this.userId = userId;
     }
-    public Integer getUserId(){
+
+    public int getUserId(){
         return userId;
     }
+
+    public void setOrderDate(long orderDate){
+        this.orderDate = orderDate;
+    }
+
+    public long getOrderDate(){
+        return orderDate;
+    }
+
     @Override
     public String toString(){
         return
-                "Order{" +
+                "Data{" +
                         "pincode = '" + pincode + '\'' +
                         ",userEmailId = '" + userEmailId + '\'' +
+                        ",orderId = '" + orderId + '\'' +
                         ",address2 = '" + address2 + '\'' +
                         ",city = '" + city + '\'' +
                         ",address1 = '" + address1 + '\'' +
                         ",orderPrice = '" + orderPrice + '\'' +
                         ",deliveryDate = '" + deliveryDate + '\'' +
-                        ",orderDate = '" + orderDate + '\'' +
                         ",userId = '" + userId + '\'' +
+                        ",orderDate = '" + orderDate + '\'' +
                         "}";
     }
 }

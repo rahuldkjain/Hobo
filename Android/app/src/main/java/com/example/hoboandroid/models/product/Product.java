@@ -14,7 +14,7 @@ public class Product{
 	private List<String> productImage;
 
 	@SerializedName("productId")
-	private String productId;
+	private int productId;
 
 	@SerializedName("productBrand")
 	private String productBrand;
@@ -47,11 +47,11 @@ public class Product{
 		this.productImage = productImage;
 	}
 
-	public String getProductId(){
+	public int getProductId(){
 		return productId;
 	}
 
-	public void setProductId(String productId){
+	public void setProductId(int productId){
 		this.productId = productId;
 	}
 
