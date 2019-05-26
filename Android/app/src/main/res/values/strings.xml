@@ -31,4 +31,6 @@
     <string name="cart_item">item</string>
     <string name="merchant">Merchant</string>
     <string name="todo">TODO</string>
+    <string name="e_mail">E-mail</string>
+    <string name="button">Button</string>
 </resources>
