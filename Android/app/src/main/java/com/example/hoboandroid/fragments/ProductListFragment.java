@@ -1,6 +1,5 @@
 package com.example.hoboandroid.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,18 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hoboandroid.Api;
 import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.activities.ProductInfoActivity;
 import com.example.hoboandroid.adapters.ProductItemAdapter;
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.Merchant;
-import com.example.hoboandroid.models.MerchantProduct;
 import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.models.product.ProductListItem;
@@ -73,21 +67,21 @@ public class ProductListFragment extends Fragment{
 
         Bundle bundle = getArguments();
         switch (bundle.getString("type")){
-            case "Search":
+            case "SearchQuery":
 
                 getSearchedProducts(bundle.getString("SearchQuery"));
-                subCatName.setText(bundle.getString("SearchQuery"));
+                subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
 
                 break;
             case "SubCategory":
-                Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
+                //Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
                 getProducts(bundle.getString("SubCategory"));
                 subCatName.setText(bundle.getString("SubCategory"));
 
                 break;
         }
 
-        Log.e("ProductListFragment","Inside OnviewCreated method");
+        //Log.e("ProductListFragment","Inside OnviewCreated method");
 
 
         productRecyclerView = view.findViewById(R.id.recyclerView);
@@ -120,20 +114,24 @@ public class ProductListFragment extends Fragment{
 
         SearchService service = retrofit.create(SearchService.class);
 
-        service.searchQuery(searchQuery).enqueue(new Callback<List<Product>>() {
+        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<List<Product>>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                productList.addAll(response.body());
-                Log.e("ProductListActivity",response.body().toString());
+            public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
+                if(response.body() != null) {
+                    productList.addAll(response.body().getData());
+                    Log.d("ProductListFragment","product list response body "+response.body().toString());
 
-                getOtherAttributes();
+                    getOtherAttributes();
+                }
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
 
             }
         });
+
+
 
 
 
@@ -158,7 +156,7 @@ public class ProductListFragment extends Fragment{
                         if(response.body() != null){
 
                             productList.addAll(response.body().getData());
-                            Log.e("ProductListFragment11",response.body().toString());
+                            Log.d("ProductListFragment","product list response body"+response.body().toString());
 
                             getOtherAttributes();
 

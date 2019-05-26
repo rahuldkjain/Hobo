@@ -24,6 +24,7 @@ public  class MerchantServiceImpl implements MerchantService {
 
         Merchant merchant=new Merchant();
         BeanUtils.copyProperties(merchantDTO,merchant);
+        merchant.setMerchantRating(0);
         Merchant merchant1=merchantRepository.save(merchant);
 
         MerchantDTO merchantDTO1=new MerchantDTO();
@@ -75,9 +76,11 @@ public  class MerchantServiceImpl implements MerchantService {
 
     @Override
     public MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating) throws MerchantNotFound {
-        MerchantDTO merchantDTO=readMerchantById(merchantId);
-        merchantDTO.setMerchantRating(merchantRating);
-        MerchantDTO merchantDTO1=updateMerchant(merchantDTO);
-        return merchantDTO1;
+        Merchant merchant = merchantRepository.findOne(merchantId);
+        merchant.setMerchantRating(merchantRating);
+        merchant = merchantRepository.save(merchant);
+        MerchantDTO result = new MerchantDTO();
+        BeanUtils.copyProperties(merchant,result);
+        return result;
     }
 }

@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.SubCategoryAdapter;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.services.ProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -26,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CategoryActivity extends BaseActivity implements View.OnClickListener {
 
-    List<SubCategory> subCategoryList;
+    List<SubCategory> subCategoryList  = new ArrayList<>();
     SubCategoryAdapter subCategoryRecyclerViewAdapter;
     RecyclerView subCategoryRecyclerView;
 
@@ -36,7 +38,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_sub_category);
         //getting the intent to retrieve attributes
         Intent intent = getIntent();
-        String category = intent.getStringExtra("Category Object");
+        String category = intent.getStringExtra("Category");
         subCategoryRecyclerView = findViewById(R.id.reusable_recycler_view);
 
         subCategoryRecyclerViewAdapter = new SubCategoryAdapter(subCategoryList);
@@ -55,7 +57,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
     }
     private void getSubCategories(String category) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(String.valueOf(R.string.category_api))
+                .baseUrl(CONSTANTS.PRODUCT_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
@@ -72,8 +74,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
                         //List<Category> categoryList = new ArrayList<>();
 
                         if(response.body() != null){
-                            boolean b = subCategoryList.addAll(response.body().getData());
-                            Log.d("HOBOLandingPage",response.body().toString()+" "+b);
+                            subCategoryList.addAll(response.body().getData());
 
 
                             subCategoryRecyclerViewAdapter.notifyDataSetChanged();

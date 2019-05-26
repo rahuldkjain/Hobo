@@ -69,9 +69,9 @@ public class CartController {
     }
 
     @GetMapping("/usercart")
-    public  JSONObject userCart(@RequestParam Integer userId){
+    public  JSONObject userCart(@RequestParam String emailId){
         try {
-            List<CartEntity> cartEntities=cartService.userCart(userId);
+            List<CartEntity> cartEntities=cartService.userCart(emailId);
             JSONObject response=getJSONResponse(cartEntities);
             return response;
         }
@@ -83,9 +83,9 @@ public class CartController {
     }
 
     @DeleteMapping("deleteallcart")
-    public JSONObject delteCart(@RequestParam Integer userId){
+    public JSONObject delteCart(@RequestParam String emailId){
         try {
-            List<CartEntity> cartEntities=cartService.deleteCart(userId);
+            List<CartEntity> cartEntities=cartService.deleteCart(emailId);
             JSONObject response=getJSONResponse(cartEntities);
             return response;
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -178,6 +179,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // between the sliding drawer and the action bar app icon
 
 
+
         View header = getLayoutInflater().inflate(R.layout.activity_login, null);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,21 +216,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
                 String searchText = autoTextView.getText().toString();
                 if (!searchText.equals("")) {
-                    //Bundle bundle = new Bundle();
-                    //bundle.putString("SearchQuery", searchText);
-                    //productsFragment.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type","Search");
+                    bundle.putString("SearchQuery",searchText);
 
-                    /*ProductListFragment productsFragment = new ProductListFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            *//*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
-                            .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
-                            .commit();
-                    */
 
-                    //productsFragment.getSearchedProducts(searchText);
                     Intent intent  =  new Intent(getApplicationContext(),ProductInfoActivity.class);
-                    intent.putExtra("type","Search");
-                    intent.putExtra("SearchQuery",searchText);
                     startActivity(intent);
 
 
@@ -255,7 +248,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private void getCategories() {
 
 
-        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL, "product/listcategory/");
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL);
 
         ProductService service = retrofit.create(ProductService.class);
 
@@ -411,6 +404,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -418,16 +419,43 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Bundle bundle = new Bundle();
         bundle.putString("Category",menuItem.getTitle().toString());
 
+        //closing the drawer
+        closeDrawer();
+
+        //TODO onclick for the categories
+        Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+/*
         CategoryFragment categoryFragment = new CategoryFragment();
         categoryFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
-                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
-                .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment")
+                */
+/*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
+
+                .add(R.id.base_activity_frame, categoryFragment, "CategoryFragment"+menuItem.getTitle().toString())
                 .commit();
+*/
 
         return true;
     }
     public void closeDrawer(){
         drawerLayout.closeDrawer(Gravity.START,true);
+    }
+
+    public boolean isLoggedIn(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
+        String userId = sharedPreferences.getString("UserId","");
+
+        return !userId.equals("");
+
+    }
+    public void loginToContinue(){
+
+        Toast.makeText(getApplicationContext(),"Please Login to Continue",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this,LandingPageActivity.class));
+        finish();
+
     }
 }

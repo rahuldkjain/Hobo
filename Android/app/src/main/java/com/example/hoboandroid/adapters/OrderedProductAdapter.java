@@ -7,7 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.hoboandroid.R;
+import com.example.hoboandroid.activities.CategoryActivity;
+import com.example.hoboandroid.activities.OrderedProductsActivity;
+import com.example.hoboandroid.activities.ProductInfoActivity;
 import com.example.hoboandroid.models.OrderedProduct;
 
 import java.util.List;
@@ -25,7 +30,7 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
     @Override
     public OrderedProductAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view =  LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.category_list_item,viewGroup,false);
+                inflate(R.layout.ordered_product_list_item,viewGroup,false);
         return new OrderedProductAdapter.RecyclerViewHolder(view);
     }
 
@@ -41,9 +46,10 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
     }
 
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder{
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
         public RecyclerViewHolder(View itemView){
             super(itemView);
+            itemView.setOnClickListener(this);
         }
         public void bind(OrderedProduct order){
 
@@ -55,12 +61,6 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
 
 
 
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int i = getAdapterPosition();
-                }
-            });
 
             //TODO ratings and product info button
 
@@ -73,6 +73,17 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
 
 
 
+        }
+        @Override
+        public void onClick(View view) {
+            int itemPosition = getAdapterPosition();
+            OrderedProduct item = list.get(itemPosition);
+            Toast.makeText(view.getContext(), "A Ordered Product is clicked", Toast.LENGTH_LONG).show();
+            //opening a product Page
+            Intent intent = new Intent(view.getContext(), ProductInfoActivity.class);
+            //TODO check the objects inserted into database and retrieved here
+            intent.putExtra("Product",item.getProductId());
+            view.getContext().startActivity(intent);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.hoboandroid.models;
+package com.example.hoboandroid.models.merchantproduct;
 
 import com.google.gson.annotations.SerializedName;
 

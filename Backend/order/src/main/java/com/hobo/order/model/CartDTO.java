@@ -3,7 +3,7 @@ package com.hobo.order.model;
 public class CartDTO {
 
     private int cartItemId;
-    private int userId;
+    private String userEmail;
     private int productId;
     private int merchantId;
     private int quantity;
@@ -18,12 +18,24 @@ public class CartDTO {
         this.cartItemId = cartItemId;
     }
 
-    public int getUserId() {
-        return userId;
+    @Override
+    public String toString() {
+        return "CartDTO{" +
+                "cartItemId=" + cartItemId +
+                ", userEmail='" + userEmail + '\'' +
+                ", productId=" + productId +
+                ", merchantId=" + merchantId +
+                ", quantity=" + quantity +
+                ", productPrice=" + productPrice +
+                '}';
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public int getProductId() {
@@ -58,15 +70,4 @@ public class CartDTO {
         this.productPrice = productPrice;
     }
 
-    @Override
-    public String toString() {
-        return "CartDTO{" +
-                "cartItemId=" + cartItemId +
-                ", userId=" + userId +
-                ", productId=" + productId +
-                ", merchantId=" + merchantId +
-                ", quantity=" + quantity +
-                ", productPrice=" + productPrice +
-                '}';
-    }
 }

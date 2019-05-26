@@ -48,6 +48,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.RecyclerView
         public void bind(Order order){
 
 
+
+
             //TODO bind the respective list item with a row in recyler view
 
             //Loading image from below url into imageView

@@ -1,64 +1,71 @@
 package com.example.hoboandroid.models;
 import com.google.gson.annotations.SerializedName;
+
 public class OrderedProduct{
+
     @SerializedName("quantity")
-    private String quantity;
+    private int quantity;
+
     @SerializedName("productId")
-    private String productId;
+    private int productId;
+
     @SerializedName("orderId")
-    private String orderId;
+    private int orderId;
+
     @SerializedName("merchantId")
-    private String merchantId;
+    private int merchantId;
+
     @SerializedName("productPrice")
-    private String productPrice;
+    private int productPrice;
+
     @SerializedName("indexx")
-    private String indexx;
-    public void setQuantity(String quantity){
-        this.quantity = quantity;
-    }
-    public String getQuantity(){
+    private int indexx;
+
+    public int getQuantity() {
         return quantity;
     }
-    public void setProductId(String productId){
-        this.productId = productId;
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
-    public String getProductId(){
+
+    public int getProductId() {
         return productId;
     }
-    public void setOrderId(String orderId){
-        this.orderId = orderId;
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
-    public String getOrderId(){
+
+    public int getOrderId() {
         return orderId;
     }
-    public void setMerchantId(String merchantId){
-        this.merchantId = merchantId;
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
-    public String getMerchantId(){
+
+    public int getMerchantId() {
         return merchantId;
     }
-    public void setProductPrice(String productPrice){
-        this.productPrice = productPrice;
+
+    public void setMerchantId(int merchantId) {
+        this.merchantId = merchantId;
     }
-    public String getProductPrice(){
+
+    public int getProductPrice() {
         return productPrice;
     }
-    public void setIndexx(String indexx){
-        this.indexx = indexx;
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
     }
-    public String getIndexx(){
+
+    public int getIndexx() {
         return indexx;
     }
-    @Override
-    public String toString(){
-        return
-                "OrderedProduct{" +
-                        "quantity = '" + quantity + '\'' +
-                        ",productId = '" + productId + '\'' +
-                        ",orderId = '" + orderId + '\'' +
-                        ",merchantId = '" + merchantId + '\'' +
-                        ",productPrice = '" + productPrice + '\'' +
-                        ",indexx = '" + indexx + '\'' +
-                        "}";
+
+    public void setIndexx(int indexx) {
+        this.indexx = indexx;
     }
 }

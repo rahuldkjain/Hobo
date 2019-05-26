@@ -17,12 +17,12 @@ import retrofit2.http.Query;
 
 public interface OrderService {
 
-    @GET("/order/getall")
-    Call<List<Order>> getOrders(@Query("userId") String userId);
+    @GET("/orders/getall")
+    Call<ApiResponse<List<Order>>> getOrders(@Query("userId") String userId);
 
 
-    @GET("/order/getorderdetails")
-    Call<List<OrderedProduct>> getOrderDetails(@Query("orderId") Integer orderId,@Query("userId") Integer userId);
+    @GET("/orders/getorderdetails")
+    Call<ApiResponse<List<OrderedProduct>>> getOrderDetails(@Query("orderId") Integer orderId,@Query("userId") String userId);
 
     //@GET("/orders")
     //Call<ApiResponse<Order>> getOrderById(@Query("orderId") Integer orderId);

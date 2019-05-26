@@ -9,11 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.OrderAdapter;
+import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Order;
 import com.example.hoboandroid.services.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +30,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
     RecyclerView orderHistoryRecyclerView;
     OrderAdapter orderAdapter;
-    List<Order> orderList;
+    List<Order> orderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,10 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
         orderAdapter = new OrderAdapter(orderList);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderHistoryActivity.this);
+     /*   LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderHistoryActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         orderHistoryRecyclerView.setLayoutManager(linearLayoutManager);
-
+*/
 
         orderHistoryRecyclerView.setAdapter(orderAdapter);
         
@@ -53,7 +56,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
     private void getOrders() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(String.valueOf(R.string.category_api))
+                .baseUrl(CONSTANTS.ORDER_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
@@ -64,31 +67,16 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
         //TODO login flag and session management
 
-        service.getOrders("userId")
-                .enqueue(new Callback<List<Order>>() {
-
+        service.getOrders("aman@gmail.com")
+                .enqueue(new Callback<ApiResponse<List<Order>>>() {
                     @Override
-                    public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                    public void onResponse(Call<ApiResponse<List<Order>>> call, Response<ApiResponse<List<Order>>> response) {
 
-                        //List<Category> categoryList = new ArrayList<>();
-
-                        if(response.body() != null){
-                            boolean b = orderList.addAll(response.body());
-                            Log.d("HOBOLandingPage",response.body().toString()+" "+b);
-
-
-                            orderAdapter.notifyDataSetChanged();
-
-                        }
                     }
 
-
-
-
                     @Override
-                    public void onFailure(Call<List<Order>> call, Throwable t) {
-                        Toast.makeText(OrderHistoryActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
+                    public void onFailure(Call<ApiResponse<List<Order>>> call, Throwable t) {
+
                     }
                 });
 

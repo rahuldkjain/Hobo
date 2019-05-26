@@ -64,14 +64,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartEntity> userCart(Integer userId) {
-        List<CartEntity> cartEntities=cartRepository.findByUserId(userId);
+    public List<CartEntity> userCart(String emailId) {
+        List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
         return cartEntities;
     }
 
     @Override
-    public List<CartEntity> deleteCart(Integer userId) {
-        List<CartEntity> cartEntities=cartRepository.findByUserId(userId);
+    public List<CartEntity> deleteCart(String emailId) {
+        List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
         for (CartEntity cartEntity:cartEntities) {
             cartRepository.delete(cartEntity);
         }
