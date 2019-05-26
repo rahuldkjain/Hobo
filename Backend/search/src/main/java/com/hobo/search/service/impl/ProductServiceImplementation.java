@@ -6,11 +6,12 @@ import com.hobo.search.repository.ProductRepositoryImpl;
 import com.hobo.search.service.ProductServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.image.BandCombineOp;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,16 @@ public class ProductServiceImplementation implements ProductServiceImpl {
 
     @Autowired
     private ProductRepositoryImpl productRepository;
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+
+    @PostConstruct
+    public void before() {
+        elasticsearchTemplate.deleteIndex(Product.class);
+        elasticsearchTemplate.createIndex(Product.class);
+        elasticsearchTemplate.putMapping(Product.class);
+        elasticsearchTemplate.refresh(Product.class);
+    }
 
     @Override
     public ProductDTO saveProduct(ProductDTO productDTO) {

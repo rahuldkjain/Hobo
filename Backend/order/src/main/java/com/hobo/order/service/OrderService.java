@@ -16,5 +16,5 @@ public interface OrderService {
     OrderDTO updateOrder(OrderDTO orderDTO) throws OrderNotFound;
     OrderDTO updateDeliveryDate(Integer orderId, Date deliveryDate) throws OrderNotFound;
 
-    List<OrderEntity> getAllOrder(Integer userId);
+    List<OrderEntity> getAllOrder(String email);
 }

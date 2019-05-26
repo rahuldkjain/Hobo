@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,13 +23,17 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDTO createCart(CartDTO cartDTO) throws CartAlreadyExists {
 
-        if(cartRepository.exists(cartDTO.getCartItemId())){
+        if(cartRepository.existsByUserEmailAndProductId(cartDTO.getUserEmail(),cartDTO.getProductId())){
             throw new CartAlreadyExists("Data already exists");
         }
         CartEntity cartEntity =new CartEntity();
         BeanUtils.copyProperties(cartDTO,cartEntity);
+        cartEntity.setProductImage(cartDTO.getProductImage().get(0));
         CartEntity cartEntityCheck=cartRepository.save(cartEntity);
         BeanUtils.copyProperties(cartEntityCheck,cartDTO);
+        ArrayList<String> tmpImage = new ArrayList<>();
+        tmpImage.add(cartEntityCheck.getProductImage());
+        cartDTO.setProductImage(tmpImage);
         return cartDTO;
     }
 

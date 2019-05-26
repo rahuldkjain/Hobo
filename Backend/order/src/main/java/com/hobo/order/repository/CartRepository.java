@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CartRepository extends CrudRepository<CartEntity, Integer> {
     List<CartEntity> findByUserEmail(String emailId);
+
+    boolean existsByUserEmailAndProductId(String userEmail, int productId);
 }

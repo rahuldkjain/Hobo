@@ -6,7 +6,6 @@ import java.util.Date;
 public class OrderDTO {
 
     private int orderId;
-    private int userId;
     private String userEmailId;
     private float orderPrice;
     private Date deliveryDate;
@@ -32,19 +31,10 @@ public class OrderDTO {
         this.orderId = orderId;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     @Override
     public String toString() {
         return "OrderDTO{" +
                 "orderId=" + orderId +
-                ", userId=" + userId +
                 ", userEmailId='" + userEmailId + '\'' +
                 ", orderPrice=" + orderPrice +
                 ", deliveryDate=" + deliveryDate +

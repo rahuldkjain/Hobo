@@ -7,6 +7,8 @@ import com.hobo.order.exceptions.orderExceptions.OrderNotFound;
 import com.hobo.order.entity.OrderEntity;
 import com.hobo.order.model.OrderDTO;
 import com.hobo.order.service.OrderService;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -94,9 +96,9 @@ public class OrderController {
     }
 
     @GetMapping("/getall")
-    public JSONObject getAll(@RequestParam Integer userId){
+    public JSONObject getAll(@RequestParam String email){
         try {
-            List<OrderEntity> orderEntities=orderService.getAllOrder(userId);
+            List<OrderEntity> orderEntities=orderService.getAllOrder(email);
             JSONObject response=getJSONResponse(orderEntities);
             return response;
         }
@@ -111,7 +113,9 @@ public class OrderController {
         OrderEmail orderEmail = new OrderEmail();
         try {
             orderEmail.sendEmail();
-        } catch (IOException e) {
+        } catch (MailjetSocketTimeoutException e) {
+            e.printStackTrace();
+        } catch (MailjetException e) {
             e.printStackTrace();
         }
         JSONObject response=getJSONResponse("");

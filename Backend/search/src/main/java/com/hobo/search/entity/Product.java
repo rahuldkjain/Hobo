@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 
 @Document(indexName = "hobo_index", type="product")
@@ -17,7 +18,6 @@ public class Product {
     private String subCategory;
     private String productImage;
     private String productBrand;
-    @NestedField
     private JSONObject attributes;
 
     public String getProductId() {

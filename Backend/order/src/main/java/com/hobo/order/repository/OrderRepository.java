@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<OrderEntity, Integer> {
-    List<OrderEntity> findByUserId(Integer userId);
+    List<OrderEntity> findByUserEmailId(String email);
 }

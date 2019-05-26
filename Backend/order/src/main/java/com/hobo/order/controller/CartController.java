@@ -72,6 +72,7 @@ public class CartController {
     public  JSONObject userCart(@RequestParam String emailId){
         try {
             List<CartEntity> cartEntities=cartService.userCart(emailId);
+
             JSONObject response=getJSONResponse(cartEntities);
             return response;
         }
@@ -82,7 +83,7 @@ public class CartController {
 
     }
 
-    @DeleteMapping("deleteallcart")
+    @DeleteMapping("/deleteallcart")
     public JSONObject delteCart(@RequestParam String emailId){
         try {
             List<CartEntity> cartEntities=cartService.deleteCart(emailId);

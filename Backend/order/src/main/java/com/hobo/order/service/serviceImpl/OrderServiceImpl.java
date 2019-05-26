@@ -77,8 +77,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderEntity> getAllOrder(Integer userId) {
-        List<OrderEntity> orderEntities=orderRepository.findByUserId(userId);
+    public List<OrderEntity> getAllOrder(String email) {
+        List<OrderEntity> orderEntities=orderRepository.findByUserEmailId(email);
         return orderEntities;
     }
 }
