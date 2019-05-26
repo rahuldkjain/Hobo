@@ -1,100 +1,64 @@
 package com.example.hoboandroid.models;
-
-import android.widget.RatingBar;
-
 import com.google.gson.annotations.SerializedName;
-
-public class OrderedProduct {
-
-    @SerializedName("user_id")
-    private String userId;
-
-    @SerializedName("order_id")
-    private String orderId;
-
-    @SerializedName("product_id")
-    private String productId;
-
-    @SerializedName("merchant_id")
-    private String merchantId;
-
+public class OrderedProduct{
     @SerializedName("quantity")
     private String quantity;
-
-    @SerializedName("product_price")
+    @SerializedName("productId")
+    private String productId;
+    @SerializedName("orderId")
+    private String orderId;
+    @SerializedName("merchantId")
+    private String merchantId;
+    @SerializedName("productPrice")
     private String productPrice;
-
-    private RatingBar productRatingBar;
-
-    private RatingBar merchantRatingBar;
-
-    public RatingBar getProductRatingBar() {
-        return productRatingBar;
-    }
-
-    public void setProductRatingBar(RatingBar productRatingBar) {
-        this.productRatingBar = productRatingBar;
-    }
-
-    public RatingBar getMerchantRatingBar() {
-        return merchantRatingBar;
-    }
-
-    public void setMerchantRatingBar(RatingBar merchantRatingBar) {
-        this.merchantRatingBar = merchantRatingBar;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
+    @SerializedName("indexx")
+    private String indexx;
+    public void setQuantity(String quantity){
         this.quantity = quantity;
     }
-
-    public String getMerchantId() {
-        return merchantId;
+    public String getQuantity(){
+        return quantity;
     }
-
-    public void setMerchantId(String merchantId) {
+    public void setProductId(String productId){
+        this.productId = productId;
+    }
+    public String getProductId(){
+        return productId;
+    }
+    public void setOrderId(String orderId){
+        this.orderId = orderId;
+    }
+    public String getOrderId(){
+        return orderId;
+    }
+    public void setMerchantId(String merchantId){
         this.merchantId = merchantId;
     }
-
-
-
-    public String getProductPrice() {
-        return productPrice;
+    public String getMerchantId(){
+        return merchantId;
     }
-
-    public void setProductPrice(String productPrice) {
+    public void setProductPrice(String productPrice){
         this.productPrice = productPrice;
     }
-
-
-
-
+    public String getProductPrice(){
+        return productPrice;
+    }
+    public void setIndexx(String indexx){
+        this.indexx = indexx;
+    }
+    public String getIndexx(){
+        return indexx;
+    }
+    @Override
+    public String toString(){
+        return
+                "OrderedProduct{" +
+                        "quantity = '" + quantity + '\'' +
+                        ",productId = '" + productId + '\'' +
+                        ",orderId = '" + orderId + '\'' +
+                        ",merchantId = '" + merchantId + '\'' +
+                        ",productPrice = '" + productPrice + '\'' +
+                        ",indexx = '" + indexx + '\'' +
+                        "}";
+    }
 }

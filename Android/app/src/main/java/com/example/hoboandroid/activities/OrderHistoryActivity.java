@@ -105,7 +105,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(OrderHistoryActivity.this, "A Order is clicked for details", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(OrderHistoryActivity.this,OrderedProductsActivity.class);
-        intent.putExtra("OrderId",orderItem.getOrderId());
+        //intent.putExtra("OrderId",orderItem.get());
         startActivity(intent);
 
     }

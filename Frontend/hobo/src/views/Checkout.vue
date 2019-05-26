@@ -113,8 +113,7 @@ export default {
       }
     },
     methods: {
-        onSubmit(evt) {
-             evt.preventDefault();
+        onSubmit() {
         var today = new Date();
         var orderDate = today.getFullYear() + '-' + today.getMonth() + '-' +today.getDate()
         var deliveryDate = new Date(today)
@@ -126,7 +125,13 @@ export default {
         guestDetails["userEmailId"] = this.form.email
         guestDetails["orderDate"] = orderDate
         guestDetails["deliveryDate"] = deliveryDate
-        guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails"))[0].price
+        if(typeof(sessionStorage.getItem("orderDetails")) == "string"){
+            guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails")).price
+        }
+        else{
+            guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails"))[0].price
+        }
+        
         guestDetails["address1"] = this.form.address1
         guestDetails["address2"] = this.form.address2
         guestDetails["city"] = this.form.city
@@ -142,33 +147,62 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getOrderId','getCartQuantity','getOrder'])
-    },
-    components: {
-        ProductDetails,
-        ProductDetailsShipping
+        ...mapGetters(['getOrderProductNum','getOrderId','getCartQuantity','getOrder', 'getBuyNowProduct', 'getBuyNowProductQuantity'])
     },
     watch: {
-        getOrder: function(newValue, oldValue) {
-                console.log('order:', newValue)
-            
-            var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
-
-            for(var index=0;index<this.getCartQuantity.length;index++){
-                
-                var payload ={}
+        getOrderProductNum: function(newValue, oldValue){
+            var payload ={}
+            payload["orderId"] = this.getOrderId
+            if(newValue!=this.getCartQuantity.length){
+                var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))[newValue]
                 payload["productId"] = orderDetails["pid"]
                 payload["merchantId"] = orderDetails["merchantId"]
-                payload["quantity"] = this.getCartQuantity[index]
+                payload["quantity"] = this.getCartQuantity[newValue]
                 payload["productPrice"] = orderDetails["price"]
 
                  this.$store.dispatch('createProductOrder',payload)
             }
+            console.log("orderproduct payload: " + payload)
+            //order is placed!
+            this.$router.push("/success");
+        },
+        getOrderId: function(newValue, oldValue) {
+                console.log('order:', newValue)
+            
+            
+            var payload ={}
+            payload["orderId"] = newValue
+            sessionStorage.setItem("orderId", payload.orderId)
+            console.log("buyNow: "+ sessionStorage.getItem("buyNow"))
+            var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
+            if(sessionStorage.getItem("buyNow") == "true"){
+                payload["productId"] = orderDetails["pid"]
+                payload["merchantId"] = orderDetails["merchantId"]
+                payload["quantity"] = this.getBuyNowProductQuantity
+                payload["productPrice"] = orderDetails["price"]
 
+                this.$store.dispatch('createProductOrder',payload)
+                console.log("orderproduct payload: " + payload)
+                //order is placed!
+             this.$router.push("/success");
+
+            }else{
+                var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))[0]
+                payload["productId"] = orderDetails["pid"]
+                payload["merchantId"] = orderDetails["merchantId"]
+                payload["quantity"] = this.getCartQuantity[0]
+                payload["productPrice"] = orderDetails["price"]
+
+                 this.$store.dispatch('createProductOrder',payload)
+                
+            }
+            
         }
-
     },
-
+    components: {
+        ProductDetails,
+        ProductDetailsShipping
+    }
 }
 </script>
 <style scoped>

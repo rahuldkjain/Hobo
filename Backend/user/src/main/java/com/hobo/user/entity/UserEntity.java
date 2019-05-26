@@ -8,8 +8,8 @@ import java.util.Date;
 public class UserEntity {
 
    @Id
-   @GeneratedValue
-   private Integer userId;
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private int userId;
    @Column(unique = true)
    private String emailId;
    private String name;
@@ -21,7 +21,7 @@ public class UserEntity {
    private String address2;
    private String city;
    private String state;
-   private Integer pincode;
+   private int pincode;
 
    public String getState() {
       return state;
@@ -31,12 +31,38 @@ public class UserEntity {
       this.state = state;
    }
 
-   public Integer getUserId() {
+   @Override
+   public String toString() {
+      return "UserEntity{" +
+              "userId=" + userId +
+              ", emailId='" + emailId + '\'' +
+              ", name='" + name + '\'' +
+              ", password='" + password + '\'' +
+              ", phoneNumber=" + phoneNumber +
+              ", gender='" + gender + '\'' +
+              ", dateOfBirth=" + dateOfBirth +
+              ", address1='" + address1 + '\'' +
+              ", address2='" + address2 + '\'' +
+              ", city='" + city + '\'' +
+              ", state='" + state + '\'' +
+              ", pincode=" + pincode +
+              '}';
+   }
+
+   public int getUserId() {
       return userId;
    }
 
-   public void setUserId(Integer userId) {
+   public void setUserId(int userId) {
       this.userId = userId;
+   }
+
+   public int getPincode() {
+      return pincode;
+   }
+
+   public void setPincode(int pincode) {
+      this.pincode = pincode;
    }
 
    public String getEmailId() {
@@ -111,29 +137,4 @@ public class UserEntity {
       this.city = city;
    }
 
-   public Integer getPincode() {
-      return pincode;
-   }
-
-   public void setPincode(Integer pincode) {
-      this.pincode = pincode;
-   }
-
-   @Override
-   public String toString() {
-      return "UserEntity{" +
-              "userId=" + userId +
-              ", emailId='" + emailId + '\'' +
-              ", name='" + name + '\'' +
-              ", password='" + password + '\'' +
-              ", phoneNumber=" + phoneNumber +
-              ", gender='" + gender + '\'' +
-              ", dateOfBirth=" + dateOfBirth +
-              ", address1='" + address1 + '\'' +
-              ", address2='" + address2 + '\'' +
-              ", city='" + city + '\'' +
-              ", state='" + state + '\'' +
-              ", pincode=" + pincode +
-              '}';
-   }
 }

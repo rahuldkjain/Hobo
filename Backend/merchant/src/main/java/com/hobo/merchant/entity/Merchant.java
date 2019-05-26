@@ -1,24 +1,20 @@
 package com.hobo.merchant.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="merchant")
 public class Merchant {
 
     @Id
-    @Column(name = "merchantId")
-    Integer merchantId;
-
-    String merchantName;
-    float merchantRating;
-    String description;
-    String address;
-    String email;
-    long phoneNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int merchantId;
+    private String merchantName;
+    private float merchantRating;
+    private String description;
+    private String address;
+    private String email;
+    private long phoneNumber;
 
     public int getMerchantId() {
         return merchantId;

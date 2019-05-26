@@ -25,7 +25,7 @@
             <b-col >
               
                     <b-button class="button" @click="addToCart(getProduct.productId)" variant="primary">Add to Cart</b-button>
-                    <router-link to="/checkout"><b-button class="button" variant="success">Buy</b-button></router-link><br><br><br>
+                    <b-button @click="directCheckout(getProduct.productId)" class="button" variant="success">Buy</b-button><br><br><br>
                     <span class="textmerchant">Merchant Details</span>
                     <br>
                     <div v-for="(product,index) in getProductDetails" :key="index" row="text">{{product.merchantId}}</div>
@@ -55,7 +55,7 @@ export default {
            this.$store.dispatch('productDetails', this.$route.params.id)
     },
     computed: {
-        ...mapGetters(['getProduct','getProductDetails','getLoggedIn'])
+        ...mapGetters(['getProduct','getProductDetails','getLoggedIn', 'getBuyNowProductId', 'getBuyNowProductPrice'])
     },
     methods: {
         addToCart(pid) {
@@ -70,8 +70,32 @@ export default {
             else{
                 
             }
+        },
+        directCheckout(pid) {
+            if(this.getLoggedIn == false){
+                // console.log("not logged in")
+                var product_number = sessionStorage.length + 1
+                var productValues = {'pid':pid}
+                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
+                alert("direct checkout")
+
+                this.$store.dispatch('buyNowProduct', pid)
+                this.$store.dispatch('buyNowProductPrice', pid)
+
+            }
+            else{
+                
+            }
         }
-    }
+    },
+    watch: {
+        getBuyNowProductPrice: function(newValue, oldValue) {
+                console.log('buyNowProductPrice:', newValue)
+            
+            //order is placed!
+            this.$router.push("/checkout");
+        }
+    },
 
     }
 

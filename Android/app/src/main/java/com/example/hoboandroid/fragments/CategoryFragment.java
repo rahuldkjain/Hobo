@@ -32,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class CategoryFragment extends Fragment implements View.OnClickListener {
+public class CategoryFragment extends Fragment{
     List<SubCategory> itemsList = new ArrayList<>();
     RecyclerView recyclerView;
     SubCategoryAdapter subCategoryAdapter;
@@ -64,12 +64,12 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         subCategoryAdapter = new SubCategoryAdapter(itemsList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
         recyclerView.setAdapter(subCategoryAdapter);
-        recyclerView.setOnClickListener(this);
+
 
         Bundle bundle = getArguments();
         String category = bundle.getString("Category");
@@ -106,16 +106,5 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onClick(View v) {
 
-
-        ProductListFragment productsFragment = new ProductListFragment();
-        getFragmentManager().beginTransaction()
-                /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
-                .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
-                .commit();
-         productsFragment.getProducts(((TextView)v.findViewById(R.id.category_name)).getText().toString());
-
-    }
 }

@@ -1,21 +1,21 @@
 package com.hobo.merchant.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "merchantproduct")
 public class MerchantProduct {
+
     @Id
-    int indexx;
-    int merchantId;
-    int productId;
-    int stock;
-    float price;
-    float productRating;
-    int productsSold;
-    int merchantScore;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int indexx;
+    private int merchantId;
+    private int productId;
+    private int stock;
+    private float price;
+    private float productRating;
+    private int productsSold;
+    private double merchantScore;
 
 
     public int getIndexx() {
@@ -73,11 +73,12 @@ public class MerchantProduct {
     public void setProductsSold(int productsSold) {
         this.productsSold = productsSold;
     }
-    public int getMerchantScore() {
+
+    public double getMerchantScore() {
         return merchantScore;
     }
 
-    public void setMerchantScore(int merchantScore) {
+    public void setMerchantScore(double merchantScore) {
         this.merchantScore = merchantScore;
     }
 

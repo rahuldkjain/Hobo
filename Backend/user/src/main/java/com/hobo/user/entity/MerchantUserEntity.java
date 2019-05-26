@@ -8,8 +8,8 @@ import java.util.Date;
 public class MerchantUserEntity {
 
     @Id
-    @GeneratedValue
-    private Integer merchantId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int merchantId;
     @Column(unique = true)
     private String emailId;
     private String name;
@@ -19,11 +19,25 @@ public class MerchantUserEntity {
     private Date dateOfBirth;
     private String address;
 
-    public Integer getMerchantId() {
+    @Override
+    public String toString() {
+        return "MerchantUserEntity{" +
+                "merchantId=" + merchantId +
+                ", emailId='" + emailId + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", gender='" + gender + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
+    public int getMerchantId() {
         return merchantId;
     }
 
-    public void setMerchantId(Integer merchantId) {
+    public void setMerchantId(int merchantId) {
         this.merchantId = merchantId;
     }
 
@@ -83,17 +97,4 @@ public class MerchantUserEntity {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "merchantId=" + merchantId +
-                ", emailId='" + emailId + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", gender='" + gender + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

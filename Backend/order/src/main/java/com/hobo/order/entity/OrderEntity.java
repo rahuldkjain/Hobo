@@ -1,8 +1,6 @@
 package com.hobo.order.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -10,15 +8,25 @@ import java.util.Date;
 public class OrderEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
     private int userId;
-    private float order_price;
+    private String userEmailId;
+    private float orderPrice;
     private Date deliveryDate;
     private Date orderDate;
-    private String address_1;
-    private String address_2;
+    private String address1;
+    private String address2;
     private String city;
-    private int pinCode;
+    private int pincode;
+
+    public String getUserEmailId() {
+        return userEmailId;
+    }
+
+    public void setUserEmailId(String userEmailId) {
+        this.userEmailId = userEmailId;
+    }
 
     public int getOrderId() {
         return orderId;
@@ -34,14 +42,6 @@ public class OrderEntity {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public float getOrder_price() {
-        return order_price;
-    }
-
-    public void setOrder_price(float order_price) {
-        this.order_price = order_price;
     }
 
     public Date getDeliveryDate() {
@@ -60,22 +60,6 @@ public class OrderEntity {
         this.orderDate = orderDate;
     }
 
-    public String getAddress_1() {
-        return address_1;
-    }
-
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
-
-    public String getAddress_2() {
-        return address_2;
-    }
-
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
-
     public String getCity() {
         return city;
     }
@@ -84,26 +68,52 @@ public class OrderEntity {
         this.city = city;
     }
 
-    public int getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(int pinCode) {
-        this.pinCode = pinCode;
-    }
-
     @Override
     public String toString() {
-        return "OrderDTO{" +
+        return "OrderEntity{" +
                 "orderId=" + orderId +
                 ", userId=" + userId +
-                ", order_price=" + order_price +
+                ", userEmailId='" + userEmailId + '\'' +
+                ", orderPrice=" + orderPrice +
                 ", deliveryDate=" + deliveryDate +
                 ", orderDate=" + orderDate +
-                ", address_1='" + address_1 + '\'' +
-                ", address_2='" + address_2 + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
                 ", city='" + city + '\'' +
-                ", pinCode=" + pinCode +
+                ", pincode=" + pincode +
                 '}';
     }
+
+    public float getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(float orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public int getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(int pincode) {
+        this.pincode = pincode;
+    }
+
 }

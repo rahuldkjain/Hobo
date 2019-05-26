@@ -12,14 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.LandingPageProductAdapter;
+import com.example.hoboandroid.activities.ProductInfoActivity;
+import com.example.hoboandroid.adapters.ProductItemAdapter;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Merchant;
 import com.example.hoboandroid.models.MerchantProduct;
+import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.models.product.ProductListItem;
 import com.example.hoboandroid.services.MerchantService;
@@ -37,9 +41,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class ProductListFragment extends Fragment implements View.OnClickListener{
+public class ProductListFragment extends Fragment{
     RecyclerView productRecyclerView;
-    LandingPageProductAdapter landingPageProductAdapter;
+    ProductListItem productListItem;
+    ProductItemAdapter productItemAdapter;
     List<Product> productList = new ArrayList<>();
     List<ProductListItem> productListItems = new ArrayList<>();
 
@@ -54,21 +59,53 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
 
 
-        return inflater.inflate(R.layout.activity_product_list, container, false);
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
     }
+
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        productRecyclerView = view.findViewById(R.id.products_recycler_view);
-        landingPageProductAdapter = new LandingPageProductAdapter(productList);
+        TextView subCatName = view.findViewById(R.id.category_name_fragment);
 
-        productRecyclerView.setAdapter(landingPageProductAdapter);
 
-        productRecyclerView.setOnClickListener(this);
+        Bundle bundle = getArguments();
+        switch (bundle.getString("type")){
+            case "Search":
 
+                getSearchedProducts(bundle.getString("SearchQuery"));
+                subCatName.setText(bundle.getString("SearchQuery"));
+
+                break;
+            case "SubCategory":
+                Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
+                getProducts(bundle.getString("SubCategory"));
+                subCatName.setText(bundle.getString("SubCategory"));
+
+                break;
+        }
+
+        Log.e("ProductListFragment","Inside OnviewCreated method");
+
+
+        productRecyclerView = view.findViewById(R.id.recyclerView);
+
+        productItemAdapter = new ProductItemAdapter(productListItems);
+
+
+        productRecyclerView.setAdapter(productItemAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        productRecyclerView.setLayoutManager(linearLayoutManager);
+
+
+
+
+
+        //TODO create the adapter and notify the adapter when the network changes are done
 
 
     }
@@ -87,7 +124,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 productList.addAll(response.body());
-                landingPageProductAdapter.notifyDataSetChanged();
                 Log.e("ProductListActivity",response.body().toString());
 
                 getOtherAttributes();
@@ -105,24 +141,24 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     }
 
     public void getProducts(String subcategory) {
+        Log.e("ProductListFragment",subcategory);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.product_host_address)+"product/category/")
+                .baseUrl(CONSTANTS.PRODUCT_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
 
         ProductService service = retrofit.create(ProductService.class);
 
-        service.getProductsByCatAndSub(null,subcategory)
-                .enqueue(new Callback<List<Product>>() {
+        service.getProductsBySubCat(subcategory)
+                .enqueue(new Callback<ApiResponse<List<Product>>>() {
                     @Override
-                    public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                    public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
 
                         if(response.body() != null){
 
-                            productList.addAll(response.body());
-                            landingPageProductAdapter.notifyDataSetChanged();
-                            Log.e("ProductListActivity",response.body().toString());
+                            productList.addAll(response.body().getData());
+                            Log.e("ProductListFragment11",response.body().toString());
 
                             getOtherAttributes();
 
@@ -133,7 +169,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
 
                     @Override
-                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
                         Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_LONG).show();
                         Log.e("ProductListActivity", t.getMessage() + " failure");
                     }
@@ -148,65 +184,60 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
         for(final Product product: productList){
 
-            final ProductListItem productListItem = new ProductListItem(
+            productListItem = new ProductListItem(
                     product.getProductId(),
                     product.getProductName(),
                     product.getProductImage().get(0));
+            //productListItems.add(productListItem);
+
+            //productListItems.add(productListItem);
 
             //To get the top rated product
-            Retrofit retrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(CONSTANTS.MERCHANT_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
+                    .build();
 
+            Log.e("ProductListFragment","getOtherAttributes "+CONSTANTS.MERCHANT_BASE_URL + "   "+product.getProductName());
             final MerchantService merchantService =  retrofit.create(MerchantService.class);
 
-            merchantService.getTopMerchant(Integer.parseInt(product.getProductId())).enqueue(new Callback<ApiResponse<Merchant>>() {
-                @Override
-                public void onResponse(Call<ApiResponse<Merchant>> call, Response<ApiResponse<Merchant>> response) {
-                    if(response.body() != null){
-                        String merchantId = response.body().getData().getMerchantId();
-
-                        Retrofit priceRetrofit = Api.getclient(getResources().getString(R.string.merchant_host_address),"/merchantproduct/topproductmerchant/");
-                        merchantService.getMerchantProduct(merchantId,product.getProductId()).enqueue(new Callback<ApiResponse<MerchantProduct>>() {
-                            @Override
-                            public void onResponse(Call<ApiResponse<MerchantProduct>> call, Response<ApiResponse<MerchantProduct>> response) {
-                                if(response.body() != null) {
-                                        float merchantId = response.body().getData().getProductRating();
-                                        int price = response.body().getData().getPrice();
-
-                                        productListItem.setRating(merchantId);
-                                        productListItem.setProductPrice(price);
+            merchantService.getTopProductMerchant(product.getProductId())
+                    .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response) {
+                            if(response.body() != null){
+                                //Log.e("Inmerchant",response.body().getData().toString()+"");
 
 
-                                        productListItems.add(productListItem);
+                                productListItem.setProductPrice((int)Float.parseFloat(response.body().getData().getPrice()));
+                                productListItem.setRating(Float.parseFloat(response.body().getData().getProductRating()));
 
-                                    }
 
-                                }
+                                productListItems.add(productListItem);
 
-                            @Override
-                            public void onFailure(Call<ApiResponse<MerchantProduct>> call, Throwable t) {
+                                productItemAdapter.notifyDataSetChanged();
 
+                                Log.e("Inside ",productListItem.toString());
+
+                                //productMerchantName.setText(response1.body().getData().getMerchantId())
                             }
-                        });
-
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ApiResponse<Merchant>> call, Throwable t) {
-
-                }
-            });
-
+                        }
+                        @Override
+                        public void onFailure(Call<ApiResponse<MerchantProductResponse>> call, Throwable t) {
+                            Toast.makeText(getContext(),"Check your connection in merchant",Toast.LENGTH_LONG).show();
+                            Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                        }
+                    });
 
 
         }
+        Log.e("ProductListFragment",productListItems.toString());
+
+
+        
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 
 
 }

@@ -1,6 +1,8 @@
 package com.hobo.user.controller;
 
 
+import com.hobo.user.exceptions.user.UserAlreadyExists;
+import com.hobo.user.exceptions.user.UserNotFound;
 import com.hobo.user.model.UserDTO;
 import com.hobo.user.service.UserService;
 import org.json.simple.JSONObject;
@@ -27,15 +29,15 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public JSONObject getUser (@RequestParam Integer id) {
-        UserDTO userDTO = userService.getUser(id);
+    public JSONObject getUser (@RequestParam String emailId) throws UserNotFound {
+        UserDTO userDTO = userService.getUser(emailId);
         JSONObject response = getJSONResponse(userDTO);
         response.replace("message", "success", "fetching successful");
         return response;
     }
 
     @PostMapping(value="/user", consumes = {"application/json"})
-    public JSONObject saveUser(@RequestBody UserDTO userDTO) {
+    public JSONObject saveUser(@RequestBody UserDTO userDTO) throws UserAlreadyExists {
         UserDTO result = userService.saveUser(userDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "adding successful");
@@ -43,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping(value="/user", consumes = {"application/json"})
-    public JSONObject updateUser(@RequestBody UserDTO userDTO) {
+    public JSONObject updateUser(@RequestBody UserDTO userDTO) throws UserNotFound {
         UserDTO result = userService.putUser(userDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "updating successful");
@@ -51,8 +53,8 @@ public class UserController {
     }
 
     @DeleteMapping("/user")
-    public JSONObject updateUser(@RequestParam Integer id) {
-        UserDTO userDTO = userService.deleteUser(id);
+    public JSONObject deleteUser(@RequestParam String emailId) {
+        UserDTO userDTO = userService.deleteUser(emailId);
         JSONObject response = getJSONResponse(userDTO);
         response.replace("message", "success", "deleting successful");
         return response;

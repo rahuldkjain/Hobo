@@ -11,5 +11,9 @@ export default {
     fetchCart(callback, pid) {
         var url = '/fetchCartProduct/product?productId=' + pid
         makeApiCalls.makeGetRequest(url, callback)
-    }
+    },
+    fetchBuyNow(callback, pid) {
+        var url = '/fetchBuyNowProduct/product?productId=' + pid
+        makeApiCalls.makeGetRequest(url, callback)
+    },
 }

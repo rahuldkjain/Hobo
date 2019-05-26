@@ -3,26 +3,25 @@ export default {
     state: {
         order: {},
         orderId: '',
-        orderProduct: {}
+        orderProductNum: 0
     },
     getters: {
         getOrder: (state) => state.order,
         getOrderId: (state) => state.orderId,
-        getOrderProduct: (state) => state.orderProduct
+        getOrderProductNum: (state) => state.orderProductNum
     },
     mutations: {
         SET_ORDER: (state, result) => {
-            if(result.data != null){
+            if (result.data != null) {
                 state.order = result.data
                 state.orderId = result.data.orderId
             }
         },
         SET_PRODUCT_ORDER: (state, result) => {
-            if(result.data != null){
-                state.orderProduct = result.data
-                
+            if (result.data != null) {
+                state.orderProductNum += 1
             }
-        },
+        }
     },
     actions: {
         createOrder: (context, payload) => {

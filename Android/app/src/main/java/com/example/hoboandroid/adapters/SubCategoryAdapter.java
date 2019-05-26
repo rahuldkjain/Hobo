@@ -1,6 +1,7 @@
 package com.example.hoboandroid.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.activities.CategoryActivity;
+import com.example.hoboandroid.activities.ProductListActivity;
 import com.example.hoboandroid.fragments.CategoryFragment;
 import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.SubCategory;
@@ -39,7 +41,6 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     public SubCategoryAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view =  LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.sub_category_list_item,viewGroup,false);
-        view.setOnClickListener(this);
         return new SubCategoryAdapter.RecyclerViewHolder(view);
     }
 
@@ -56,14 +57,34 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
     @Override
     public void onClick(View v) {
+    //Code from Categoryfragment
+/*
 
+            ProductListFragment productsFragment = new ProductListFragment();
+            getFragmentManager().beginTransaction()
+                    */
+/*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
+
+                    .add(R.id.base_activity_frame, productsFragment, "ProductsFragment")
+                    .commit();
+            productsFragment.getProducts(((TextView)v.findViewById(R.id.category_name)).getText().toString());
+
+*/
+
+/*
+        Intent intent = new Intent(v.getContext(), ProductListActivity.class);
+        intent.putExtra("type","SubCategory");
+        intent.putExtra("SubCategory",((TextView)v.findViewById(R.id.sub_category_name)).getText().toString());
+        v.getContext().startActivity(intent);
+*/
 
     }
 
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder{
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public RecyclerViewHolder(View itemView){
             super(itemView);
+            itemView.setOnClickListener(this);
         }
         public void bind(SubCategory subCategory){
 
@@ -80,6 +101,16 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
 
 
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Intent intent = new Intent(v.getContext(), ProductListActivity.class);
+            intent.putExtra("type","SubCategory");
+            intent.putExtra("SubCategory",list.get(position).getSubCategoryName());
+            v.getContext().startActivity(intent);
 
         }
     }

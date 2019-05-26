@@ -1,22 +1,43 @@
 <template>
 
     <b-card bg-variant="light">
-        <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
-            <div class="cartItem" id="getCartProductId[index]">
-                <img :src='getCartImage[index]'>
-                <div class="head">
-                    <h4> Name: {{product}}</h4>
-                    <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
-                    <h4>Quantity: {{getCartQuantity[index]}}</h4>
-                </div>
-                <div>
-                    <!-- <Quantity/> -->
-                    <h3> Total: {{getCartQuantity[index]*getCartProductPrice[index]}}  </h3>
-                </div>
-            
+        <div v-if="!buyNow">
+            <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+                <div class="cartItem" id="getCartProductId[index]">
+                    <img :src='getCartImage[index]'>
+                    <div class="head">
+                        <h4> Name: {{product}}</h4>
+                        <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
+                        <h4>Quantity: {{getCartQuantity[index]}}</h4>
+                    </div>
+                    <div>
+                        <!-- <Quantity/> -->
+                        <h3> Total: {{getCartQuantity[index]*getCartProductPrice[index]}}  </h3>
+                    </div>
                 
-            </div>
-        </b-row>
+                    
+                </div>
+            </b-row>
+        </div>
+        <div v-else>
+            <b-row id="products" >
+                <div class="buyNowItem" id="getBuyNowProductId">
+                    <img :src='getBuyNowProductImage'>
+                    <div class="head">
+                        <h4> Name: {{getBuyNowProduct}}</h4>
+                        <h4> price: {{getBuyNowProductPrice ? getBuyNowProductPrice : '' }}</h4>
+                        <h4>Quantity: {{getBuyNowProductQuantity}}</h4>
+                    </div>
+                    <div>
+                        <!-- <Quantity/> -->
+                        <h3> Total: {{getBuyNowProductQuantity*getBuyNowProductPrice}}  </h3>
+                    </div>
+                
+                    
+                </div>
+            </b-row>
+        </div>
+        
 
         <div>
             <h2> TOTAL AMOUNT : {{getTotalAmount}} </h2>
@@ -31,20 +52,36 @@ export default {
     name: 'ProductDetailsShipping',
     data() {
         return {
-            total: []
+            total: [],
+            buyNow: false,
             
         }
     },
     computed: {
-        ...mapGetters(['getProduct','getCartQuantity','getCartProductPrice','getCartProduct','getCartImage','getCartProductId','getTotalAmount'])
+        ...mapGetters(['getProduct','getCartQuantity','getCartProductPrice','getCartProduct','getCartImage','getCartProductId','getTotalAmount', 'getBuyNowProduct', 'getBuyNowProductPrice','getBuyNowProductQuantity', 'getBuyNowProductImage', 'getBuyNowProductId', 'getBuyNowProductMerchantId'])
     },
     mounted(){
+        sessionStorage.setItem("buyNow", false)
         console.log("quantity on shipping page "+this.getCartQuantity)
-        
+        if(this.getBuyNowProduct){
+            this.buyNow = true
+            sessionStorage.setItem("buyNow", true)
+            console.log("quantity on shipping page "+this.getBuyNowProduct)
+            var Product = {}
+            Product["userId"] = 0
+            Product["pid"] = this.getBuyNowProductId
+            Product["pname"] = this.getBuyNowProduct
+            Product["price"] = this.getBuyNowProductPrice
+            Product["image"] = this.getBuyNowProductImage
+            Product["merchantId"] = this.getBuyNowProductMerchantId
+            sessionStorage.setItem("orderDetails",JSON.stringify(Product))
+        }
+        else{
             for(productPrice in this.total){
                 this.totalAmount += productPrice
             }
             console.log("total "+this.totalAmount)
+        }
             
         
     },
