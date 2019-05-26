@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends CrudRepository<CartEntity, Integer> {
-    List<CartEntity> findByUserId(Integer userId);
+    List<CartEntity> findByUserEmail(String emailId);
 }

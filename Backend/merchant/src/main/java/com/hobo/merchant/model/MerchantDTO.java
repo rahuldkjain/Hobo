@@ -4,8 +4,6 @@ public class MerchantDTO {
 
     private int merchantId;
     private String merchantName;
-    private float merchantRating;
-    private String description;
     private String address;
     private String email;
     private long phoneNumber;
@@ -24,22 +22,6 @@ public class MerchantDTO {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-    }
-
-    public float getMerchantRating() {
-        return merchantRating;
-    }
-
-    public void setMerchantRating(float merchantRating) {
-        this.merchantRating = merchantRating;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getAddress() {
@@ -73,8 +55,6 @@ public class MerchantDTO {
         return "MerchantDTO{" +
                 "merchantId=" + merchantId +
                 ", merchantName='" + merchantName + '\'' +
-                ", merchantRating=" + merchantRating +
-                ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +

@@ -9,7 +9,7 @@ public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemId;
-    private int userId;
+    private String userEmail;
     private int productId;
     private int merchantId;
     private int quantity;
@@ -26,12 +26,12 @@ public class CartEntity {
         this.cartItemId = cartItemId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public int getProductId() {
@@ -74,7 +74,7 @@ public class CartEntity {
     public String toString() {
         return "CartEntity{" +
                 "cartItemId=" + cartItemId +
-                ", userId=" + userId +
+                ", userId=" + userEmail +
                 ", productId=" + productId +
                 ", merchantId=" + merchantId +
                 ", quantity=" + quantity +

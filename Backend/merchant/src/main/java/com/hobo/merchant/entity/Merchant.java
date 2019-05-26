@@ -11,7 +11,6 @@ public class Merchant {
     private int merchantId;
     private String merchantName;
     private float merchantRating;
-    private String description;
     private String address;
     private String email;
     private long phoneNumber;
@@ -30,16 +29,6 @@ public class Merchant {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
-    }
-
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getAddress() {
@@ -82,7 +71,6 @@ public class Merchant {
                 "merchantId=" + merchantId +
                 ", merchantName='" + merchantName + '\'' +
                 ", merchantRating=" + merchantRating +
-                ", description='" + description + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +

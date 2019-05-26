@@ -14,7 +14,7 @@ public interface CartService {
     CartDTO deleteCart(int cartItemId) throws  CartNotFound;
     CartDTO updateCart(CartDTO cartDTO) throws  CartNotFound;
 
-    List<CartEntity> userCart(Integer userId);
-    List<CartEntity> deleteCart(Integer userId);
+    List<CartEntity> userCart(String emailId);
+    List<CartEntity> deleteCart(String emailId);
 }
 

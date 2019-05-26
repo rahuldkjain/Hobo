@@ -139,7 +139,7 @@ public class MerchantProductController {
         return null;
     }
 
-    @GetMapping("getByIds")
+    @GetMapping("/getbyids")
     public JSONObject findByMerchantProductId(@RequestParam Integer merchantId, @RequestParam Integer productId) throws MerchantProductNotFound{
         try {
             MerchantProductDTO merchantProductDTO=merchantProductService.findByMerchantProductId(merchantId,productId);
