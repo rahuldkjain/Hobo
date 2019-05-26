@@ -12,17 +12,16 @@ export default {
     },
     mutations: {
         SET_ORDER: (state, result) => {
-            if(result.data != null){
+            if (result.data != null) {
                 state.order = result.data
                 state.orderId = result.data.orderId
             }
         },
         SET_PRODUCT_ORDER: (state, result) => {
-            if(result.data != null){
+            if (result.data != null) {
                 state.orderProduct = result.data
-                
             }
-        },
+        }
     },
     actions: {
         createOrder: (context, payload) => {

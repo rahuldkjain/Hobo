@@ -113,8 +113,7 @@ export default {
       }
     },
     methods: {
-        onSubmit(evt) {
-             evt.preventDefault();
+        onSubmit() {
         var today = new Date();
         var orderDate = today.getFullYear() + '-' + today.getMonth() + '-' +today.getDate()
         var deliveryDate = new Date(today)
@@ -144,19 +143,33 @@ export default {
     computed: {
         ...mapGetters(['getOrderId','getCartQuantity','getOrder'])
     },
-    components: {
-        ProductDetails,
-        ProductDetailsShipping
-    },
     watch: {
-        getOrder: function(newValue, oldValue) {
+        // getOrder: function(newValue, oldValue) {
+        //         console.log('order:', newValue)
+            
+        //     var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
+
+        //     for(var index=0;index<this.getCartQuantity.length;index++){
+                
+        //         var payload ={}
+        //         payload["productId"] = orderDetails["pid"]
+        //         payload["merchantId"] = orderDetails["merchantId"]
+        //         payload["quantity"] = this.getCartQuantity[index]
+        //         payload["productPrice"] = orderDetails["price"]
+
+        //          this.$store.dispatch('createProductOrder',payload)
+        //     }
+        // },
+        getOrderId: function(newValue, oldValue) {
                 console.log('order:', newValue)
             
-            var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))
-
+            
+            var payload ={}
+            payload["orderId"] = this.getOrderId
+            sessionStorage.setItem("orderId", payload.orderId)
             for(var index=0;index<this.getCartQuantity.length;index++){
                 
-                var payload ={}
+                var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))[index]
                 payload["productId"] = orderDetails["pid"]
                 payload["merchantId"] = orderDetails["merchantId"]
                 payload["quantity"] = this.getCartQuantity[index]
@@ -164,11 +177,12 @@ export default {
 
                  this.$store.dispatch('createProductOrder',payload)
             }
-
         }
-
     },
-
+    components: {
+        ProductDetails,
+        ProductDetailsShipping
+    }
 }
 </script>
 <style scoped>
