@@ -15,7 +15,7 @@ export default {
             .then(callback)
             .catch((error) => { console.log(error) })
     },
-    makeDeleteRequest(path, callback) {
+    makeDeleteRequest(path, callback, payload) {
         axios.delete(path)
             .then(callback)
             .catch((error) => { console.log(error) })
