@@ -93,11 +93,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 */
 
     }
-    public boolean isLoggedIn(){
-        SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
-        String userId = sharedPreferences.getString("UserId","");
 
-        return !userId.equals("");
-
-    }
 }

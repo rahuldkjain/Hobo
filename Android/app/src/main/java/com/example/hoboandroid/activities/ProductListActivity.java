@@ -36,8 +36,8 @@ public class ProductListActivity extends BaseActivity {
         ProductListFragment productsFragment = new ProductListFragment();
         //based on which we should search
         switch (intent.getStringExtra("type")){
-            case "Search":
-                bundle.putString("SubCategory",intent.getStringExtra("SearchQuery"));
+            case "SearchQuery":
+                bundle.putString("SearchQuery",intent.getStringExtra("SearchQuery"));
                 break;
             case "SubCategory":
                 //bundle.putString("Category",intent.getStringExtra("Category"));

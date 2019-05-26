@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:id="@+id/reusable_categories_xml"
     tools:context=".activities.CategoryActivity">
-    <include layout="@layout/global_toolbar"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reusable_recycler_view"
         android:layout_width="match_parent"

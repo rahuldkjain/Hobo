@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.GuestActivity"></activity>
         <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.OrderedProductsActivity" />
         <activity android:name=".activities.OrderHistoryActivity" />
@@ -29,8 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LandingPageActivity">
-        </activity>
+        <activity android:name=".activities.LandingPageActivity"></activity>
     </application>
 
 </manifest>

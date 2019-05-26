@@ -7,7 +7,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/orderedProductListItemImage"
         android:layout_width="155dp"
         android:layout_height="163dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:layout_marginTop="4dp"
         android:text="Product Id :"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toBottomOf="@+id/order_text1" />
 
     <TextView
@@ -49,11 +49,11 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toBottomOf="@+id/order_text2" />
 
     <TextView
-        android:id="@+id/order_MerchantName"
+        android:id="@+id/orderedProductMerchantName"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
@@ -61,11 +61,11 @@
         android:text="Merchant Name"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toBottomOf="@+id/order_productName" />
 
     <TextView
-        android:id="@+id/order_price"
+        android:id="@+id/orderedProductPrice"
         android:layout_width="0dp"
         android:layout_height="29dp"
         android:layout_marginStart="8dp"
@@ -73,8 +73,8 @@
         android:text="@string/ItemPrice"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/order_MerchantName" />
+        app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
+        app:layout_constraintTop_toBottomOf="@+id/orderedProductMerchantName" />
 
     <TextView
         android:id="@+id/order_productId"
@@ -107,7 +107,7 @@
         android:layout_height="54dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_price" />
+        app:layout_constraintTop_toBottomOf="@+id/orderedProductPrice" />
 
     <RatingBar
         android:id="@+id/ratingBar2"
@@ -130,7 +130,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar2"
         app:layout_constraintEnd_toStartOf="@+id/ratingBar"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/orderedProductListItemImage"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView

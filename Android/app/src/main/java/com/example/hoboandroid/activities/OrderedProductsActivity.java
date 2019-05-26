@@ -1,6 +1,7 @@
 package com.example.hoboandroid.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.OrderedProductAdapter;
+import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.OrderedProduct;
 import com.example.hoboandroid.services.OrderService;
 
@@ -22,71 +25,71 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderedProductsActivity extends AppCompatActivity{
+public class OrderedProductsActivity extends BaseActivity{
 
     RecyclerView orderedProductsRecyclerView;
     OrderedProductAdapter orderedProductsAdapter;
     List<OrderedProduct> orderedProductsList;
-    String orderId = null;
+    int orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
 
-        Intent intent = getIntent();
-        if(intent != null)
-            orderId  = intent.getStringExtra("OrderId");
+        if(isLoggedIn()) {
+            orderId = getIntent().getIntExtra("OrderId", 1);
 
-        orderedProductsRecyclerView =findViewById(R.id.recyclerView);
+            orderedProductsRecyclerView = findViewById(R.id.recyclerView);
 
-        orderedProductsAdapter = new OrderedProductAdapter(orderedProductsList);
+            orderedProductsAdapter = new OrderedProductAdapter(orderedProductsList);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderedProductsActivity.this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        orderedProductsRecyclerView.setLayoutManager(linearLayoutManager);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderedProductsActivity.this);
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            orderedProductsRecyclerView.setLayoutManager(linearLayoutManager);
 
+            orderedProductsRecyclerView.setAdapter(orderedProductsAdapter);
 
-        orderedProductsRecyclerView.setAdapter(orderedProductsAdapter);
-
-        //orderedProductsRecyclerView.setOnClickListener(this);
+            //orderedProductsRecyclerView.setOnClickListener(this);
 
 
+            //TODO login user's userId
+            getProducts(orderId, 0);
 
+        }
+        else    loginToContinue();
 
-        //TODO login user's userId
-        getProducts(orderId,"userId");
 
 
     }
 
 
 
-    private void getProducts(String orderId,String userId) {
+    private void getProducts(int orderId,int userId) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(String.valueOf(R.string.ordered_api))
+                .baseUrl(CONSTANTS.ORDER_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
 
-        OrderService service = retrofit.create(OrderService.class);
+        OrderService orderService = retrofit.create(OrderService.class);
 
 
 
         //TODO login flag and session management
 
-        service.getOrderDetails(Integer.parseInt(orderId),Integer.parseInt(userId))
-                .enqueue(new Callback<List<OrderedProduct>>() {
+        orderService.getOrderDetails(orderId,""+userId)
+                .enqueue(new Callback<ApiResponse<List<OrderedProduct>>>() {
 
                     @Override
-                    public void onResponse(Call<List<OrderedProduct>> call, Response<List<OrderedProduct>> response) {
+                    public void onResponse(Call<ApiResponse<List<OrderedProduct>>> call, Response<ApiResponse<List<OrderedProduct>>> response) {
 
                         //List<Category> categoryList = new ArrayList<>();
 
                         if(response.body() != null){
-                            boolean b = orderedProductsList.addAll(response.body());
-                            Log.d("HOBOLandingPage",response.body().toString()+" "+b);
+                            boolean b = orderedProductsList.addAll(response.body().getData());
+                            Log.d("OrderedProductsActivity",response.body().toString()+" "+b);
 
 
                             orderedProductsAdapter.notifyDataSetChanged();
@@ -98,9 +101,9 @@ public class OrderedProductsActivity extends AppCompatActivity{
 
 
                     @Override
-                    public void onFailure(Call<List<OrderedProduct>> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<OrderedProduct>>> call, Throwable t) {
                         Toast.makeText(OrderedProductsActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.d("HOBOLandingPage",t.getMessage()+" failure");
+                        Log.d("OrderedProductsActivity",t.getMessage()+" failure");
                     }
                 });
 
@@ -108,16 +111,5 @@ public class OrderedProductsActivity extends AppCompatActivity{
 
     }
 
-    //This is moved into the OrderedProductAdapter
-/*    @Override
-    public void onClick(View view) {
-        int itemPosition = orderedProductsRecyclerView.getChildLayoutPosition(view);
-        OrderedProduct item = orderedProductsList.get(itemPosition);
-        Toast.makeText(OrderedProductsActivity.this, "A Ordered Product is clicked", Toast.LENGTH_LONG).show();
-        //opening a category page
-        Intent intent = new Intent(OrderedProductsActivity.this,CategoryActivity.class);
-        //TODO check the objects inserted into database and retrieved here
-        intent.putExtra("Ordered Product Object",item.getProductId());
-        startActivity(intent);
-    }*/
+
 }
