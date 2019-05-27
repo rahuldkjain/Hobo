@@ -207,6 +207,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(intent);
 
 
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please type anything and search",Toast.LENGTH_SHORT).show();
                 }
 
 

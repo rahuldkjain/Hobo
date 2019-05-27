@@ -74,7 +74,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
         }
         public void bind(final CartItem cartItem){
 
-            Log.e("CartActivity","inside adapter "+cartItem.toString());
+            Log.e("CartActivity","inside viewholder "+cartItem.toString());
             Retrofit retrofit = Api.getclient(CONSTANTS.MERCHANT_BASE_URL);
 
             MerchantService merchantService = retrofit.create(MerchantService.class);
@@ -85,7 +85,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
             TextView productPriceTextView = itemView.findViewById(R.id.cartItemProductPrice);
             productPriceTextView.setText(""+cartItem.getProductPrice());
 
-            ((CartActivity)context).addToTotalPrice(cartItem.getProductPrice()*cartItem.getQuantity());
+            ((CartActivity)(context)).addToTotalPrice((int)cartItem.getProductPrice());
 
 
 

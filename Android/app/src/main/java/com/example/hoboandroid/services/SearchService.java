@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 
 public interface SearchService {
 
-    @GET("/search")
+    @GET("/search/suggestions")
     Call<ApiResponse<List<Product>>> searchQuery(@Query("query") String query);
 
 

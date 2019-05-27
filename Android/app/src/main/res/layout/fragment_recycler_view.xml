@@ -9,7 +9,7 @@
         android:id="@+id/category_name_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category Name"
+        android:text=""
         android:textColor="@color/black" />
 
     <android.support.v7.widget.RecyclerView

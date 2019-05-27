@@ -30,13 +30,12 @@ public class Api {
 
 
     public static Retrofit getclient(String string) {
-        if(retrofit1==null) {
-            retrofit1 = new Retrofit.Builder()
+
+            return  new Retrofit.Builder()
                     .baseUrl(string)
                     .client(new OkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
-        return  retrofit1;
+
     }
 }

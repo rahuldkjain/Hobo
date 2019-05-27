@@ -94,7 +94,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                 String[] array = new String[1];
                 array[0] = bundle.getString("ProductImage");
                 jsonParams.put("productImage",array);
-                jsonParams.put("productName",bundle.getInt("ProductName") );
+                jsonParams.put("productName",bundle.getString("ProductName") );
                 jsonParams.put("productPrice", bundle.getInt("ProductPrice"));
                 jsonParams.put("quantity", 1);
 
@@ -277,6 +277,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         try {
             i += Integer.parseInt(totalPrice.getText().toString());
             totalPrice.setText(i);
+            Log.e("CartActivity","addToTotal"+i);
         }catch (Exception exception){
             if(exception != null)
                 Log.e("CartActivity",exception.toString());

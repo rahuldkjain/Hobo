@@ -100,7 +100,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         int itemPosition = subCategoryRecyclerView.getChildLayoutPosition(view);
         SubCategory item = subCategoryList.get(itemPosition);
-        Toast.makeText(CategoryActivity.this, "A Sub category is clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "A Sub category is clicked", Toast.LENGTH_LONG).show();
 
 
 
