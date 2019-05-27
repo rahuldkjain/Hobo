@@ -14,11 +14,15 @@
                 <b-row>
                 <span class="texttop"><b>Product name: </b>{{getProduct.productName}}</span>
                 </b-row>
+                
                 <b-row>
                 <span class="text"><b>Product Description:</b> {{getProduct.description}}</span>
                 </b-row>
                 <b-row>    
-                <span class="text"><b>Product Price:</b>{{getProductDetails ? getProductDetails[0].price : ''}}</span>
+                <span class="text"><b>Product Price:</b>{{getProductDetails[selected] ? getProductDetails[selected].price : ''}}</span>
+                </b-row>
+                <b-row>
+                <span class="text"><b>Product Attributes: </b>{{getProduct.attributes}}</span>
                 </b-row>
 
             </b-col>
@@ -28,7 +32,13 @@
                     <b-button @click="directCheckout(getProduct.productId)" class="button" variant="success">Buy</b-button><br><br><br>
                     <span class="textmerchant">Merchant Details</span>
                     <br>
-                    <div v-for="(product,index) in getProductDetails" :key="index" row="text">{{product.merchantId}}</div>
+                    <b-form-select id="merchantDetails" v-model="selected">
+                            <option :value="null">Select Merchant </option>
+                            <option :value="index" v-for="(product,index) in getProductDetails" :key="index" row="text">>{{product.merchantName}}</option>
+                        
+                    </b-form-select>
+
+        
                
             </b-col>
         </b-row>
@@ -46,7 +56,9 @@ export default {
                     image: 'https://i.imgur.com/VgoUWI5.jpg',
                     name: 'product 1',
                     price: '15000'
-                }
+                },
+                selected: 0,
+            
             
         }
     },
