@@ -1,8 +1,6 @@
 package com.example.hoboandroid.services;
 
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.Cart;
-import com.example.hoboandroid.models.Order;
 import com.example.hoboandroid.models.OrderedProduct;
 import com.example.hoboandroid.models.cart.CartItem;
 import com.example.hoboandroid.models.order.OrderData;
@@ -27,7 +25,7 @@ public interface OrderService {
 
 
     @GET("/orders/getorderdetails")
-    Call<ApiResponse<List<OrderedProduct>>> getOrderDetails(@Query("orderId") Integer orderId,@Query("userId") String userId);
+    Call<ApiResponse<List<OrderedProduct>>> getOrderDetails(@Query("orderId") Integer orderId, @Query("userId") String userId);
 
     //@GET("/orders")
     //Call<ApiResponse<Order>> getOrderById(@Query("orderId") Integer orderId);
@@ -42,9 +40,8 @@ public interface OrderService {
     Call<OrderProductMe> saveProduct(@Body RequestBody params);
 
 
-
     @GET("/cart/usercart")
-    Call<ApiResponse<List<CartItem>>> getCartItems(@Query("emailId")String userEmailId);
+    Call<ApiResponse<List<CartItem>>> getCartItems(@Query("emailId") String userEmailId);
 
     @POST("/cart")
     Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody params);

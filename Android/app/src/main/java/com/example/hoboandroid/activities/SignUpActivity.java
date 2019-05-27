@@ -142,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Log.d("SignUp",user.toString());
 
-        api.signup(user).enqueue(new Callback<ApiResponse>() {
+        api.signUp(user).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 

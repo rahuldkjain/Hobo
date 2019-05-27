@@ -12,13 +12,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/global_toolbar"
-            android:id="@+id/toolbar"/>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/global_toolbar" />
 
         <FrameLayout
             android:id="@+id/base_activity_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

@@ -8,25 +8,22 @@
     android:background="@color/black"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <Button
             android:id="@+id/drawerButton"
             android:layout_width="32dp"
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:backgroundTint="@color/white"
-            android:gravity="center"
             android:layout_marginBottom="8dp"
             android:background="@drawable/ic_drawer"
+            android:gravity="center"
+            app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/logoTextView"
             style="@style/custom_style_toolbar_item"
@@ -41,58 +38,54 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/drawerButton"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
+        <EditView
             android:id="@+id/globalSearch"
             style="@style/custom_style_toolbar_item"
-            android:layout_width="0dp"
-            android:layout_height="37dp"
+            android:layout_width="158dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:autofillHints=""
             android:background="#FFFFFF"
             android:hint="@string/search_any_product"
             android:inputType=""
             android:textColor="#000000"
             android:textColorHint="#292323"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/toolbar_search_button"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintHorizontal_weight="5"
             app:layout_constraintStart_toEndOf="@+id/logoTextView"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:targetApi="o">
-
-        </EditText>
-
+        </EditView>
         <Button
             android:id="@+id/toolbar_search_button"
             android:layout_width="45dp"
             android:layout_height="47dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
-            app:backgroundTint="@color/white"
             android:background="@drawable/icon_search"
+            app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toStartOf="@+id/toolbar_cart_button"
-            app:layout_constraintStart_toEndOf="@+id/globalSearch"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.428" />
         <Button
             android:id="@+id/toolbar_cart_button"
-            android:layout_width="46dp"
-            android:layout_height="51dp"
+            android:layout_width="36dp"
+            android:layout_height="39dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            app:backgroundTint="@color/white"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/cart_icon"
+            app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/toolbar_search_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v7.widget.Toolbar>

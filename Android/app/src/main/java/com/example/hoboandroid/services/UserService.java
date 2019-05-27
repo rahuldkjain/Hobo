@@ -18,7 +18,7 @@ public interface UserService {
     Call<ApiResponse> loginByEmailAndPassword(@Body LoginData loginData);
 
     @POST("/user")
-    Call<ApiResponse> signup(@Body Data data);
+    Call<ApiResponse> signUp(@Body Data data);
 
     @GET("/user")
     Call<ApiResponse<UserPOST>> getUserByEmailId(@Query("emailId")String userEmailId);

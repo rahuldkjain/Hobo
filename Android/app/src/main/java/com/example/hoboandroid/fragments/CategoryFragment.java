@@ -1,11 +1,9 @@
 package com.example.hoboandroid.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,11 +14,9 @@ import android.widget.TextView;
 
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.SubCategoryAdapter;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.SubCategory;
-import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.services.ProductService;
 
 import java.util.ArrayList;

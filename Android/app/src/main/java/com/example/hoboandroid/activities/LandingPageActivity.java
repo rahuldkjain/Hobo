@@ -2,6 +2,7 @@ package com.example.hoboandroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,14 +47,6 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         super.setContentView(R.layout.activity_landing_page);
 
         getProducts();
-
-
-
-
-
-
-
-
 
         //loadSlidingImages();
 
@@ -159,6 +152,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
+
         //TODO differentiate for category activity and product activity
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
         //Category item = categoryList.get(itemPosition);
@@ -169,9 +163,29 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     public void onBackPressed()
     {
 
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
         if(getSupportFragmentManager().getBackStackEntryCount() > 0)
             getSupportFragmentManager().popBackStack();
         else
             super.onBackPressed();
+
+        this.doubleBackToExitPressedOnce = true;
+        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+
 }

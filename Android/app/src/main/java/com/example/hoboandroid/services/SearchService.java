@@ -1,8 +1,6 @@
 package com.example.hoboandroid.services;
 
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.Order;
-import com.example.hoboandroid.models.OrderedProduct;
 import com.example.hoboandroid.models.product.Product;
 
 import java.util.List;

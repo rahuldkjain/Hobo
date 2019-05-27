@@ -68,12 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (email.getText().toString().trim().matches(emailPattern))
                 {
-                    if(password.getText().toString().length()>5) {
                         userVerify();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(),"Password size should be >8", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 else
                 {
