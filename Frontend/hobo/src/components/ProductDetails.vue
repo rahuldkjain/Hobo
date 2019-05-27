@@ -19,7 +19,7 @@
                 <span class="text"><b>Product Description:</b> {{getProduct.description}}</span>
                 </b-row>
                 <b-row>    
-                <span class="text"><b>Product Price:</b>{{getProductDetails[selected] ? getProductDetails[selected].price : ''}}</span>
+                <span class="text"><b>Product Price:</b> ₹ {{getProductDetails[selected] ? getProductDetails[selected].price : ''}}</span>
                 </b-row>
                 <b-row>
                 <span class="text"><b>Product Attributes: </b>{{getProduct.attributes}}</span>

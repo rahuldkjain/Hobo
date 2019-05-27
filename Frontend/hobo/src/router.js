@@ -60,7 +60,7 @@ export default new Router({
         },
         {
             name: 'Profile',
-            path: '/profile',
+            path: '/profile/:emailId',
             component: Profile
         },
         // {
