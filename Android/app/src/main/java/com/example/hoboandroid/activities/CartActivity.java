@@ -28,6 +28,7 @@ import com.example.hoboandroid.services.OrderService;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,33 +76,42 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         if(getIntent().getBundleExtra("AddToCart") != null){
             Bundle bundle = getIntent().getBundleExtra("AddToCart");
 
+            //Bundle bundle = getIntent().getBundleExtra()
             if(isLoggedIn()) {
-                Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("UserEmail", getUserEmailId());
-                jsonParams.put("ProductId", bundle.getInt("ProductId"));
-                jsonParams.put("MerchantId", bundle.getInt("MerchantId"));
-                jsonParams.put("ProductImage", bundle.getString("ProductImage"));
-                jsonParams.put("ProductPrice", bundle.getInt("ProductPrice"));
 
-                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
-
-                Log.d("CartActivity","Request body" + body.toString());
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(CONSTANTS.ORDER_BASE_URL)
                         .client(new OkHttpClient())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                OrderService orderService = retrofit.create(OrderService.class);
 
-                orderService.createCartItem(body).enqueue(new Callback<ApiResponse<CartItem>>() {
+                OrderService orderService = retrofit.create(OrderService.class);
+                Map<String, Object> jsonParams = new ArrayMap<>();
+                jsonParams.put("userEmail", bundle.getString("EmailId"));
+                jsonParams.put("productId",bundle.getInt("ProductId") );
+                jsonParams.put("merchantId", bundle.getInt("MerchantId"));
+                String[] array = new String[1];
+                array[0] = bundle.getString("ProductImage");
+                jsonParams.put("productImage",array);
+                jsonParams.put("productName",bundle.getInt("ProductName") );
+                jsonParams.put("productPrice", bundle.getInt("ProductPrice"));
+                jsonParams.put("quantity", 1);
+
+
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+                Log.d("CartActivity","Request body" + jsonParams.toString());
+
+                orderService.createCartItem(body)
+                        .enqueue(new Callback<ApiResponse<CartItem>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
                         if (response.body() != null) {
                                 Log.e("CartActivity", "response body in add cart"+response.body().getData().toString());
 
                         }
-                        Log.e("CartActivity", "in add cart response "+response.body().toString() );
+                      //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
                         getCartItems();
                     }
 

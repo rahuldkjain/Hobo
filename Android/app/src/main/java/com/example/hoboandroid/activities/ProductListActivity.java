@@ -49,7 +49,7 @@ public class ProductListActivity extends BaseActivity {
         productsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
-                .add(R.id.product_list_fragment, productsFragment, "ProductsFragment").commit();
+                .add(R.id.reusable_categories_xml, productsFragment, "ProductsFragment").commit();
 
 
 

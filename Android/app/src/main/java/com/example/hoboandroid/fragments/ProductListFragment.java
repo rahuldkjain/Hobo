@@ -53,7 +53,7 @@ public class ProductListFragment extends Fragment{
 
 
 
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.activity_sub_category, container, false);
     }
 
 
@@ -62,7 +62,7 @@ public class ProductListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView subCatName = view.findViewById(R.id.category_name_fragment);
+        //TextView subCatName = view.findViewById(R.id.category_name_fragment);
 
 
         Bundle bundle = getArguments();
@@ -70,13 +70,13 @@ public class ProductListFragment extends Fragment{
             case "SearchQuery":
 
                 getSearchedProducts(bundle.getString("SearchQuery"));
-                subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
+                //subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
 
                 break;
             case "SubCategory":
-                //Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
+                Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
                 getProducts(bundle.getString("SubCategory"));
-                subCatName.setText(bundle.getString("SubCategory"));
+                //subCatName.setText(bundle.getString("SubCategory"));
 
                 break;
         }
@@ -84,7 +84,7 @@ public class ProductListFragment extends Fragment{
         Log.e("ProductListFragment","Inside OnviewCreated method");
 
 
-        productRecyclerView = view.findViewById(R.id.recyclerView);
+        productRecyclerView = view.findViewById(R.id.reusable_recycler_view);
 
         productItemAdapter = new ProductItemAdapter(productListItems);
 

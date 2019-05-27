@@ -44,7 +44,7 @@ public interface OrderService {
     Call<ApiResponse<List<CartItem>>> getCartItems(@Query("emailId") String userEmailId);
 
     @POST("/cart")
-    Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody params);
+    Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody body);
 
     @PUT("/cart")
     Call<ApiResponse<CartItem>> updateCartItem(CartItem cartItem);

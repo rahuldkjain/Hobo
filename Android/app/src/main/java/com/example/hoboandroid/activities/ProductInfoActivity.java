@@ -72,11 +72,13 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
 
 
-        Button buyNow,addToCart;
+        final Button buyNow,addToCart;
         buyNow = findViewById(R.id.buyNowButton);
         addToCart = findViewById(R.id.addToCartButton);
         buyNow.setOnClickListener(this);
         addToCart.setOnClickListener(this);
+        addToCart.setEnabled(false);
+        buyNow.setEnabled(false);
 
 
         service.getProductById(productId)
@@ -118,6 +120,8 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             Log.e("Inmerchant", response1.body().getData().getPrice() + "");
                             productPrice.setText(response1.body().getData().getPrice());
                             merchantid = Integer.parseInt(response1.body().getData().getMerchantId());
+                            addToCart.setEnabled(true);
+                            buyNow.setEnabled(true);
                             //productMerchantName.setText(response1.body().getData().getMerchantId())
                         }
                     }
@@ -308,12 +312,15 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         if(view.getId() == R.id.addToCartButton){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);
             Bundle bundle =  new  Bundle();
+
+            bundle.putString("EmailId",getUserEmailId());
             bundle.putInt("ProductId",productId);
             bundle.putInt("MerchantId",merchantid);
             bundle.putString("ProductName",productName.getText().toString());
             bundle.putString("ProductImage",productStringImage);
             bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));
 
+            Toast.makeText(getApplicationContext(),productId.toString(),Toast.LENGTH_SHORT).show();
             //((ViewGroup)((View)view.getParent()).getParent()).findViewById()
 
             intent.putExtra("AddToCart",bundle);
