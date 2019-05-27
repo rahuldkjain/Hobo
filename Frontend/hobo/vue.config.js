@@ -8,6 +8,13 @@ module.exports = {
                     '^/api': ''
                 }
             },
+            '/Cart': {
+                target: 'http://172.16.20.84:8082/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/Cart': ''
+                }
+            },
             '/allProducts': {
                 target: 'http://172.16.20.80:8080/',
                 changeOrigin: true,
@@ -71,6 +78,7 @@ module.exports = {
                     '^/order': ''
                 }
             }
+
         }
     }
 }

@@ -56,7 +56,7 @@ public class RetrofitClient {
                 .addInterceptor(
                         new Interceptor() {
                             @Override
-                            public Response intercept(Chain chain) throws IOException {
+                            public CartItem intercept(Chain chain) throws IOException {
                                 Request original = chain.request();
 
                                 Request.Builder requestBuilder = original.newBuilder()

@@ -57,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     if (emailId.getText().toString().trim().matches(emailPattern)) {
 
-                        if (password.getText().toString().length() >= 8) {
+                        if (password.getText().toString().length() >= 6) {
 
                             if(password.getText().toString().equals(confPass.getText().toString())) {
 
@@ -146,20 +146,27 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
-                Log.d("SignUp", "Response : " + response.toString());
+                Log.d("SignUp", "CartItem : " + response.toString());
                 if(response.body()==null){
                     Log.e("SignUp","Body is null");
                     Toast.makeText(getApplicationContext(),"Please fill details correctly", Toast.LENGTH_SHORT).show();
 
                 }
                 else {
-                    Log.d("SignUp", "Response Body : " + response.body().toString());
-                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    if(response.body().getData().equals("adding successful")) {
+                        Log.d("SignUp", "CartItem Body : " + response.body().toString());
+                        Toast.makeText(getApplicationContext(), "Please login now to continue", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
 
                     //TODO
                     // GO to the profile screen or landing page
                     // and take response.body().getData().getEmailId()
                 }
+                finish();
             }
 
             @Override

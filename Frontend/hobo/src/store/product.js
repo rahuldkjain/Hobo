@@ -1,4 +1,5 @@
 import productAPI from '../apis/productApis'
+import cartApis from '../apis/cartApis.js'
 export default {
     state: {
         product: {},
@@ -15,7 +16,9 @@ export default {
         buyNowProductImage: '',
         buyNowProductPrice: '',
         buyNowProductQuantity: 1,
-        buyNowProductMerchantId: ''
+        buyNowProductMerchantId: '',
+        UserCartItem: {},
+        UserCartItems: []
     },
     getters: {
         getProduct: (state) => state.product,
@@ -32,7 +35,9 @@ export default {
         getBuyNowProductImage: (state) => state.buyNowProductImage,
         getBuyNowProductPrice: (state) => state.buyNowProductPrice,
         getBuyNowProductQuantity: (state) => state.buyNowProductQuantity,
-        getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId
+        getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId,
+        getUserCartItem: (state) => state.UserCartItem,
+        getUserCartItems: (state) => state.UserCartItems
 
     },
     mutations: {
@@ -43,10 +48,17 @@ export default {
             state.productDetails = result.data
         },
         SET_CART_PRODUCT: (state, result) => {
-            if (!state.cartProductId.includes(result.data.productId)) {
+            if (localStorage.getItem('loggedIn') == 'false') {
                 state.cartProduct.push(result.data.productName)
                 state.cartProductId.push(result.data.productId)
                 state.cartImage.push(result.data.productImage)
+            } else {
+                for (var index = 0; index < result.data.length; index++) {
+                    state.cartProduct.push(result.data[index])
+                        //state.cartProduct.push(result.data[index].productName)
+                    state.cartProductId.push(result.data[index].productId)
+                    state.cartImage.push(result.data[index].productImage)
+                }
             }
         },
         SET_CART_PRODUCT_PRICE: (state, result) => {
@@ -73,6 +85,12 @@ export default {
             state.buyNowProductPrice = result.data[0].price
             state.buyNowProductMerchantId = result.data[0].merchantId
             state.totalAmount = state.buyNowProductQuantity * state.buyNowProductPrice
+        },
+        SET_USER_ADD_TO_CART: (state, result) => {
+            state.UserCartItem = result.data
+        },
+        SET_USER_CART_ITEMS: (state, result) => {
+            state.UserCartItems = result.data
         }
     },
     actions: {
@@ -112,6 +130,18 @@ export default {
             productAPI.getProductDetails((result) => {
                 context.commit('SET_BUY_NOW_PRODUCT_PRICE', result.data)
             }, pid)
+        },
+        addItemToCart: (context, payload) => {
+            // console.log('data in action'+payload)
+            cartApis.addCartItem((result) => {
+                context.commit('SET_USER_ADD_TO_CART', result.data)
+            }, payload)
+        },
+        cartItems: (context, emailId) => {
+            // console.log('data in action'+payload)
+            cartApis.fetchCartItems((result) => {
+                context.commit('SET_CART_PRODUCT', result.data)
+            }, emailId)
         }
     }
 }

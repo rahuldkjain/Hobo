@@ -2,25 +2,45 @@
 
     <b-card bg-variant="light">
         <div v-if="!buyNow">
-            <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
-                <div class="cartItem" id="getCartProductId[index]">
-                    <img :src='getCartImage[index]'>
-                    <div class="head">
-                        <h4> Name: {{product}}</h4>
-                        <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
-                        <h4>Quantity: {{getCartQuantity[index]}}</h4>
+            <div v-if="!userLoggedIn">
+                <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+                    <div class="cartItem" id="getCartProductId[index]">
+                        <img :src='getCartImage[index]'>
+                        <div class="head">
+                            <h4> Name: {{product}}</h4>
+                            <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
+                            <h4>Quantity: {{getCartQuantity[index]}}</h4>
+                        </div>
+                        <div>
+                            <!-- <Quantity/> -->
+                            <h3> Total: {{getCartQuantity[index]*getCartProductPrice[index]}}  </h3>
+                        </div>
                     </div>
-                    <div>
-                        <!-- <Quantity/> -->
-                        <h3> Total: {{getCartQuantity[index]*getCartProductPrice[index]}}  </h3>
-                    </div>
-                
+                </b-row>
+            </div>
+
+            <div v-else>
+                <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+                    <div class="cartItem" id="getCartProductId[index]">
+                        <img :src='product.productImage'>
+                        <div class="head">
+                            <h4> Name: {{product.productName}}</h4>
+                            <h4> price: {{product.productPrice}}</h4>
+                            <h4>Quantity: {{getCartQuantity[index]}}</h4>
+                        </div>
+                        <div>
+                            <!-- <Quantity/> -->
+                            <h3> Total: {{getCartQuantity[index]*product.productPrice}}  </h3>
+                        </div>
                     
-                </div>
-            </b-row>
+                        
+                    </div>
+                </b-row>
+            </div>
         </div>
         <div v-else>
-            <b-row id="products" >
+            <div v-if="!userLoggedIn">
+                <b-row id="products" >
                 <div class="buyNowItem" id="getBuyNowProductId">
                     <img :src='getBuyNowProductImage'>
                     <div class="head">
@@ -36,6 +56,27 @@
                     
                 </div>
             </b-row>
+            </div>
+
+            <div v-else>
+                <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
+                    <div class="cartItem" id="getCartProductId[index]">
+                        <img :src='product.productImage'>
+                        <div class="head">
+                            <h4> Name: {{product.productName}}</h4>
+                            <h4> price: {{product.productPrice}}</h4>
+                            <h4>Quantity: {{product.quantity}}</h4>
+                        </div>
+                        <div>
+                            <!-- <Quantity/> -->
+                            <h3> Total: {{product.quantity*product.productPrice}}  </h3>
+                        </div>
+                    
+                        
+                    </div>
+                </b-row>
+            </div>
+            
         </div>
         
 
@@ -54,7 +95,7 @@ export default {
         return {
             total: [],
             buyNow: false,
-            
+            userLoggedIn: false,
         }
     },
     computed: {
@@ -62,6 +103,7 @@ export default {
     },
     mounted(){
         sessionStorage.setItem("buyNow", false)
+        this.userLoggedIn = localStorage.getItem("loggedIn")
         console.log("quantity on shipping page "+this.getCartQuantity)
         if(this.getBuyNowProduct){
             this.buyNow = true
@@ -77,10 +119,19 @@ export default {
             sessionStorage.setItem("orderDetails",JSON.stringify(Product))
         }
         else{
-            for(productPrice in this.total){
-                this.totalAmount += productPrice
+            if(!this.userLoggedIn){
+                for(productPrice in this.total){
+                    this.totalAmount += productPrice
+                }
+                console.log("total "+this.totalAmount)
             }
-            console.log("total "+this.totalAmount)
+            else{
+                for(product in this.getCartProduct){
+                    this.totalAmount += product.productPrice * product.quantity
+                }
+                console.log("total" + this.totalAmount)
+            }
+            
         }
             
         

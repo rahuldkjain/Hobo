@@ -21,7 +21,7 @@
     <string name="welcome">Welcome, Happy Shopping!</string>
     <string name="thisprice">thisprice</string>
     <string name="delete_all">Delete All</string>
-    <string name="price">Price :</string>
+    <string name="price">Total Price :</string>
     <string name="checkout">CheckOut</string>
     <string name="delete_item">delete item</string>
     <string name="ItemPrice">Price</string>
@@ -43,4 +43,11 @@
     <string name="delivery_dateis">Delivery Date :</string>
     <string name="order_dateis">Order Date :</string>
     <string name="thank_you_for_shopping">Thank you for Shopping!</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_address_line_2">Enter Address Line 2</string>
+    <string name="enter_city">Enter city</string>
+    <string name="enter_pincode">Enter pincode</string>
+    <string name="enter_address_line_1">Enter Address Line 1</string>
+    <string name="login_signup">Login/SignUp</string>
+    <string name="submit">Submit</string>
 </resources>

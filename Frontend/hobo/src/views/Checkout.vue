@@ -121,15 +121,26 @@ export default {
         deliveryDate = deliveryDate.getFullYear() + '-' + deliveryDate.getMonth() + '-' + deliveryDate.getDate()
 
         var guestDetails = {}
-        guestDetails["userId"] = 0
+        if(localStorage.getItem("loggedIn")){
+             guestDetails["userId"] = JSON.parse(localStorage.getItem("userDetails")).emailId
+        }
+        else{
+            guestDetails["userId"] = 0
+        }
+        
         guestDetails["userEmailId"] = this.form.email
         guestDetails["orderDate"] = orderDate
         guestDetails["deliveryDate"] = deliveryDate
-        if(typeof(sessionStorage.getItem("orderDetails")) == "string"){
-            guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails")).price
+        if(localStorage.getItem("loggedIn")){
+            guestDetails["orderPrice"] = this.getTotalAmount
         }
         else{
-            guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails"))[0].price
+            if(typeof(sessionStorage.getItem("orderDetails")) == "string"){
+            guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails")).price
+            }
+            else{
+                guestDetails["orderPrice"] = JSON.parse(sessionStorage.getItem("orderDetails"))[0].price
+            }
         }
         
         guestDetails["address1"] = this.form.address1
@@ -147,7 +158,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getOrderProductNum','getOrderId','getCartQuantity','getOrder', 'getBuyNowProduct', 'getBuyNowProductQuantity'])
+        ...mapGetters(['getTotalAmount', 'getOrderProductNum','getOrderId','getCartQuantity','getOrder', 'getBuyNowProduct', 'getBuyNowProductQuantity'])
     },
     watch: {
         getOrderProductNum: function(newValue, oldValue){
@@ -187,13 +198,15 @@ export default {
              this.$router.push("/success");
 
             }else{
-                var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))[0]
-                payload["productId"] = orderDetails["pid"]
-                payload["merchantId"] = orderDetails["merchantId"]
-                payload["quantity"] = this.getCartQuantity[0]
-                payload["productPrice"] = orderDetails["price"]
+                
+                    var orderDetails = JSON.parse(sessionStorage.getItem("orderDetails"))[0]
+                    payload["productId"] = orderDetails["pid"]
+                    payload["merchantId"] = orderDetails["merchantId"]
+                    payload["quantity"] = this.getCartQuantity[0]
+                    payload["productPrice"] = orderDetails["price"]
 
-                 this.$store.dispatch('createProductOrder',payload)
+                    this.$store.dispatch('createProductOrder',payload)
+                
                 
             }
             

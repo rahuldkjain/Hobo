@@ -4,13 +4,26 @@ import com.hobo.search.entity.Product;
 import com.hobo.search.model.ProductDTO;
 import com.hobo.search.repository.ProductRepositoryImpl;
 import com.hobo.search.service.ProductServiceImpl;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.image.BandCombineOp;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +33,26 @@ public class ProductServiceImplementation implements ProductServiceImpl {
 
     @Autowired
     private ProductRepositoryImpl productRepository;
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+    @Autowired
+    private TransportClient client;
+
+    @PostConstruct
+    public void after() {
+        try {
+            Settings settings = Settings.settingsBuilder().put("cluster.name", "hobo").build();
+            client = TransportClient.builder().settings(settings).build()
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PreDestroy
+    public void before() {
+        client.close();
+    }
 
     @Override
     public ProductDTO saveProduct(ProductDTO productDTO) {
@@ -75,24 +108,26 @@ public class ProductServiceImplementation implements ProductServiceImpl {
     }
 
     @Override
-    public List<List<ProductDTO>> query(String query) {
-        List<List<ProductDTO>> result = new ArrayList<>();
-        Iterable<Product> productList = productRepository.findByProductNameContaining(query);
-        List<ProductDTO> resultList = new ArrayList<>();
-        for(Product e: productList) {
-            ProductDTO productDTO = new ProductDTO();
-            BeanUtils.copyProperties(e,productDTO);
-            resultList.add(productDTO);
+    public JSONArray query(String recievedQuery) throws ParseException {
+        String searchQuery="";
+        String[] words = recievedQuery.split("\\s+");
+        for (int i = 0; i < words.length; i++) {
+            words[i] = words[i].replaceAll("[^\\w]", "");
+            searchQuery+="*"+words[i]+"* ";
         }
-        result.add(resultList);
-        resultList = new ArrayList<>();
-        productList = productRepository.findByDescriptionContaining(query);
-        for(Product e: productList) {
-            ProductDTO productDTO = new ProductDTO();
-            BeanUtils.copyProperties(e,productDTO);
-            resultList.add(productDTO);
+        SearchResponse response = client.prepareSearch().setQuery(QueryBuilders.queryStringQuery(searchQuery)).execute().actionGet();
+        JSONParser parser = new JSONParser();
+        JSONArray result = (JSONArray)((JSONObject)((JSONObject)parser.parse(response.toString())).get("hits")).get("hits");
+        JSONArray resultAray = new JSONArray();
+        for (Object object: result) {
+            resultAray.add(((JSONObject)object).get("_source"));
         }
-        result.add(resultList);
-        return result;
+        return resultAray;
+    }
+
+    @Override
+    public List<List<ProductDTO>> result(String query) {
+
+        return null;
     }
 }

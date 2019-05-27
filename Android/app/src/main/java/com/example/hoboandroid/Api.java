@@ -32,12 +32,9 @@ public class Api {
 
     public static Retrofit getclient(String string) {
         if(retrofit1==null) {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .addInterceptor(new HttpLoggingInterceptor().setLevel(BODY));
-
             retrofit1 = new Retrofit.Builder()
                     .baseUrl(string)
-                    .client(builder.build())
+                    .client(new OkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                     .build();
         }

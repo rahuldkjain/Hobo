@@ -24,7 +24,7 @@
             </b-col>
             <b-col >
               
-                    <b-button class="button" @click="addToCart(getProduct.productId)" variant="primary">Add to Cart</b-button>
+                    <b-button class="button" @click="addToCart(getProduct.productId, getProductDetails[0].merchantId, getProductDetails[0].price, getProduct.productName, getProduct.productImage)" variant="primary">Add to Cart</b-button>
                     <b-button @click="directCheckout(getProduct.productId)" class="button" variant="success">Buy</b-button><br><br><br>
                     <span class="textmerchant">Merchant Details</span>
                     <br>
@@ -55,12 +55,12 @@ export default {
            this.$store.dispatch('productDetails', this.$route.params.id)
     },
     computed: {
-        ...mapGetters(['getProduct','getProductDetails','getLoggedIn', 'getBuyNowProductId', 'getBuyNowProductPrice'])
+        ...mapGetters(['getProduct','getProductDetails','getLoggedIn', 'getBuyNowProductId', 'getBuyNowProductPrice', 'getUserCartItem'])
     },
     methods: {
-        addToCart(pid) {
+        addToCart(pid, merchantId, productPrice, productName, productImage) {
             
-            if(this.getLoggedIn == false){
+            if(localStorage.getItem("loggedIn") == "false"){
                 // console.log("not logged in")
                 var product_number = sessionStorage.length + 1
                 var productValues = {'pid':pid}
@@ -68,7 +68,17 @@ export default {
                 alert("the item is added")
             }
             else{
-                
+                var userDetails = JSON.parse(localStorage.getItem("userDetails"))
+                var payload = {
+                        'userEmail': userDetails.emailId,
+                        'productId': pid,
+                        'merchantId': merchantId,
+                        'quantity': 1,
+                        'productPrice': productPrice,
+                        'productName': productName,
+                        'productImage': productImage
+                }
+                this.$store.dispatch('addItemToCart', payload)
             }
         },
         directCheckout(pid) {
@@ -94,6 +104,9 @@ export default {
             
             //order is placed!
             this.$router.push("/checkout");
+        },
+        getUserCartItem: function(newValue, oldValue){
+            alert("Item added to cart")
         }
     },
 

@@ -11,12 +11,44 @@ public class CartEntity {
     private int cartItemId;
     private String userEmail;
     private int productId;
+    private String productName;
+    private String productImage;
     private int merchantId;
     private int quantity;
     private float productPrice;
 
 
     //getters and setters for cart defined variables
+
+    @Override
+    public String toString() {
+        return "CartEntity{" +
+                "cartItemId=" + cartItemId +
+                ", userEmail='" + userEmail + '\'' +
+                ", productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productImage='" + productImage + '\'' +
+                ", merchantId=" + merchantId +
+                ", quantity=" + quantity +
+                ", productPrice=" + productPrice +
+                '}';
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
 
     public int getCartItemId() {
         return cartItemId;
@@ -70,15 +102,4 @@ public class CartEntity {
     //Overriding toString
 
 
-    @Override
-    public String toString() {
-        return "CartEntity{" +
-                "cartItemId=" + cartItemId +
-                ", userId=" + userEmail +
-                ", productId=" + productId +
-                ", merchantId=" + merchantId +
-                ", quantity=" + quantity +
-                ", productPrice=" + productPrice +
-                '}';
-    }
 }

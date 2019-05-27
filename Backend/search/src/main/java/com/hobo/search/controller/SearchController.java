@@ -3,6 +3,7 @@ package com.hobo.search.controller;
 import com.hobo.search.model.ProductDTO;
 import com.hobo.search.service.ProductServiceImpl;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,10 +67,17 @@ public class SearchController {
     }
 
     @GetMapping(value = "/suggestion")
-    public JSONObject getQuery(@RequestParam String query) {
+    public JSONObject getQuery(@RequestParam String query) throws ParseException {
         JSONObject response = getJSONResponse(productService.query(query));
         response.replace("message", "success", "fetching successful");
         return response;
     }
 
+
+    @GetMapping(value = "/result")
+    public JSONObject getResult(@RequestParam String query) {
+        JSONObject response = getJSONResponse(productService.result(query));
+        response.replace("message", "success", "fetching successful");
+        return response;
+    }
 }

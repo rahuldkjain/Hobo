@@ -95,7 +95,7 @@ public class MerchantProduct {
     @Override
     public String toString(){
         return
-                "Response{" +
+                "CartItem{" +
                         "productId = '" + productId + '\'' +
                         ",merchantId = '" + merchantId + '\'' +
                         ",price = '" + price + '\'' +
