@@ -87,16 +87,21 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
                 Log.d("CartActivity","Request body" + body.toString());
 
-                Retrofit retrofit = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
                 OrderService orderService = retrofit.create(OrderService.class);
 
                 orderService.createCartItem(body).enqueue(new Callback<ApiResponse<CartItem>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                        if (response.body() != null && response.body().getData() != null) {
-                            Log.d("CartActivity", response.body().getData().toString());
+                        if (response.body() != null) {
+                                Log.e("CartActivity", "response body in add cart"+response.body().getData().toString());
 
                         }
+                        Log.e("CartActivity", "in add cart response "+response.body().toString() );
                         getCartItems();
                     }
 

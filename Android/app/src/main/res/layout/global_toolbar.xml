@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_toolbar"
@@ -38,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/drawerButton"
             app:layout_constraintTop_toTopOf="parent" />
-        <EditView
+        <EditText
             android:id="@+id/globalSearch"
             style="@style/custom_style_toolbar_item"
             android:layout_width="158dp"
@@ -46,7 +47,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:background="#FFFFFF"
-            android:hint="@string/search_any_product"
+            android:hint="Search Product"
             android:inputType=""
             android:textColor="#000000"
             android:textColorHint="#292323"
@@ -59,7 +60,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:targetApi="o">
-        </EditView>
+        </EditText>
         <Button
             android:id="@+id/toolbar_search_button"
             android:layout_width="45dp"

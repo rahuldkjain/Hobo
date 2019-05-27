@@ -380,7 +380,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
 
 
-        //        super.setContentView(fullLayout);
+        //super.setContentView(fullLayout);
 
         //Your drawer content...
 
@@ -401,7 +401,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         switch(menuItem.getTitle().toString()) {
 
-            case "Login":
+            case "Login/SignUp":
                 if(isLoggedIn())
                     Toast.makeText(getApplicationContext(),"Already logged in",Toast.LENGTH_SHORT).show();
                 else{
