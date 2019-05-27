@@ -17,7 +17,11 @@ import com.example.hoboandroid.services.OrderService;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -31,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GuestActivity extends BaseActivity {
 
     EditText guest_email,guest_address1,guest_address2,guest_city,guest_pincode;
+    Button submit,loginSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +53,37 @@ public class GuestActivity extends BaseActivity {
         guest_city=findViewById(R.id.guest_city);
         guest_pincode=findViewById(R.id.guest_pincode);
 
+        loginSignUp = findViewById(R.id.guest_login_prompt_button);
+        loginSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            }
+        });
 
-        final LocalDate orderDate=java.time.LocalDate.now();
-        final LocalDate deliveryDate=orderDate.plusDays(5);
+
+        if(isLoggedIn()){
+            guest_email.setText(getUserEmailId());
+            guest_email.setEnabled(false);
+            loginSignUp.setVisibility(View.GONE);
+        }
 
 
-        final Button submit=findViewById(R.id.guest_submit);
+
+        //final LocalDate orderDate=java.time.LocalDate.now();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        final Date orderDate = new Date();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(orderDate); // Now use today date.
+        c.add(Calendar.DATE, 5); // Adding 5 days
+        final String deliveryDate = df.format(c.getTime());
+
+
+        //final LocalDate deliveryDate=orderDate.plusDays(5);
+
+
+        submit=findViewById(R.id.guest_submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +94,7 @@ public class GuestActivity extends BaseActivity {
                 if(guest_email.getText().toString().trim().matches(emailPattern) & address1>1 & address2>1 & city >1) {
 
                     submit.setEnabled(false);
+
                     Retrofit retrofit3 = new Retrofit.Builder()
                             .baseUrl("http://172.16.20.84:8082/")
                             .client(new OkHttpClient())
@@ -79,7 +110,6 @@ public class GuestActivity extends BaseActivity {
                     jsonParams.put("orderPrice", intent.getIntExtra("ProductPrice", 8500));
                     jsonParams.put("pincode", guest_pincode.getText().toString());
                     jsonParams.put("userEmailId", guest_email.getText().toString());
-                    jsonParams.put("userId", "0");
 
                     RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
 

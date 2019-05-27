@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     <EditText
         android:id="@+id/guest_email"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
@@ -17,29 +17,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/guest_address1"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPostalAddress"
+        android:ems="30"
         android:hint="Enter Address Line 1"
+        android:inputType="textPostalAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guest_email"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/guest_email" />
     <EditText
         android:id="@+id/guest_address2"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
+        android:ems="30"
         android:hint="Enter Address Line 2"
         android:inputType="textPostalAddress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,13 +46,13 @@
         app:layout_constraintTop_toBottomOf="@+id/guest_address1" />
     <EditText
         android:id="@+id/guest_city"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:ems="10"
+        android:ems="15"
         android:inputType="textPersonName"
         android:hint="Enter city"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guest_address2"/>
     <EditText
         android:id="@+id/guest_pincode"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
@@ -74,8 +73,9 @@
         app:layout_constraintTop_toBottomOf="@+id/guest_city" />
     <Button
         android:id="@+id/guest_submit"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="37dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -84,4 +84,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteX="147dp" />
+
+    <Button
+        android:id="@+id/guest_login_prompt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login/SignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guest_submit" />
+
+
 </android.support.constraint.ConstraintLayout>

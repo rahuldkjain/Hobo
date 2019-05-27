@@ -21,7 +21,7 @@
     <string name="welcome">Welcome, Happy Shopping!</string>
     <string name="thisprice">thisprice</string>
     <string name="delete_all">Delete All</string>
-    <string name="price">Price :</string>
+    <string name="price">Total Price :</string>
     <string name="checkout">CheckOut</string>
     <string name="delete_item">delete item</string>
     <string name="ItemPrice">Price</string>

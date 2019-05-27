@@ -20,9 +20,11 @@ import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 import com.example.hoboandroid.models.order.OrderMe;
 import com.example.hoboandroid.models.order.OrderProductMe;
 import com.example.hoboandroid.models.product.Product;
+import com.example.hoboandroid.models.user.UserPOST;
 import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.OrderService;
 import com.example.hoboandroid.services.ProductService;
+import com.example.hoboandroid.services.UserService;
 
 import org.json.JSONObject;
 
@@ -167,72 +169,63 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(isLoggedIn()) {
 
-                    Retrofit retrofit3 = new Retrofit.Builder()
-                            .baseUrl("http://172.16.20.84:8082/")
+                    Retrofit userRetrofit = new Retrofit.Builder()
+                            .baseUrl(CONSTANTS.USER_BASE_URL)
                             .client(new OkHttpClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
-                    OrderService orderService1 = retrofit3.create(OrderService.class);
-                    Map<String, Object> jsonParams = new ArrayMap<>();
-                    jsonParams.put("address1", "daf");
-                    jsonParams.put("address2", "asdfa");
-                    jsonParams.put("city", "chirala");
-                    jsonParams.put("deliveryDate", deliveryDate);
-                    jsonParams.put("orderDate", orderDate);
-                    jsonParams.put("orderPrice", "8400");
-                    jsonParams.put("pincode", "9090");
-                    jsonParams.put("userEmailId", "mehak@gmail.com");
-                    jsonParams.put("userId", "2");
 
-                    RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
-
-                    orderService1.saveOrder(body)
-                            .enqueue(new Callback<OrderMe>() {
+                    UserService userService  = userRetrofit.create(UserService.class);
+                    userService.getUserByEmailId(getUserEmailId())
+                            .enqueue(new Callback<ApiResponse<UserPOST>>() {
                                 @Override
-                                public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
-                                    Log.e("Inordersave", response.body().toString());
+                                public void onResponse(Call<ApiResponse<UserPOST>> call, Response<ApiResponse<UserPOST>> response) {
 
-                                    Retrofit retrofit4 = new Retrofit.Builder()
-                                            .baseUrl(CONSTANTS.ORDER_BASE_URL)
-                                            .client(new OkHttpClient())
-                                            .addConverterFactory(GsonConverterFactory.create())
-                                            .build();
-                                    OrderService orderService2 = retrofit4.create(OrderService.class);
-                                    Map<String, Object> jsonParams1 = new ArrayMap<>();
-                                    jsonParams1.put("orderId", response.body().getData().getOrderId());
-                                    jsonParams1.put("productId", productId);
-                                    jsonParams1.put("merchantId", merchantid);
-                                    jsonParams1.put("quantity", "1");
-                                    jsonParams1.put("productPrice", (int) Float.parseFloat(productPrice.getText().toString()));
+                                    if(response.body().getData() != null && !response.body().getData().toString().equals("")){
+                                        Retrofit retrofit3 = new Retrofit.Builder()
+                                                .baseUrl("http://172.16.20.84:8082/")
+                                                .client(new OkHttpClient())
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+                                        OrderService orderService1 = retrofit3.create(OrderService.class);
 
-                                    RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
 
-                                    orderService2.saveProduct(body1)
-                                            .enqueue(new Callback<OrderProductMe>() {
-                                                @Override
-                                                public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
-                                                    Log.e("Inorderproductsave", response.body().toString());
-                                                }
+                                        UserPOST userPOST = response.body().getData();
 
-                                                @Override
-                                                public void onFailure(Call<OrderProductMe> call, Throwable t) {
-                                                    Log.e("Inorderproductsave", "failure");
+                                        Map<String, Object> jsonParams = new ArrayMap<>();
+                                        jsonParams.put("address1", userPOST.getAddress1());
+                                        jsonParams.put("address2", userPOST.getAddress2());
+                                        jsonParams.put("city", userPOST.getCity());
+                                        jsonParams.put("deliveryDate", deliveryDate);
+                                        jsonParams.put("orderDate", orderDate);
+                                        jsonParams.put("orderPrice", productPrice);
+                                        jsonParams.put("pincode", userPOST.getPincode());
+                                        jsonParams.put("userEmailId", userPOST.getEmailId());
+                                        //should I comment the below line?
+                                        jsonParams.put("userId", "2");
 
-                                                }
-                                            });
+
+                                        orderCreate(orderService1,jsonParams);
+
+                                    }
+
+
+
 
 
                                 }
 
                                 @Override
-                                public void onFailure(Call<OrderMe> call, Throwable t) {
-                                    Log.e("inorder save", "failed");
+                                public void onFailure(Call<ApiResponse<UserPOST>> call, Throwable t) {
 
                                 }
                             });
 
 
-                    Intent intent = new Intent(getApplicationContext(), CheckoutPromptActivity.class);
+
+
+
+                    Intent intent = new Intent(getApplicationContext(), GuestActivity.class);
                     startActivity(intent);
                 }
                 else
@@ -246,6 +239,58 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
 
     }
+
+    private void orderCreate(OrderService orderService1, Map<String, Object> jsonParams) {
+
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+
+        orderService1.saveOrder(body)
+                .enqueue(new Callback<OrderMe>() {
+                    @Override
+                    public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
+                        Log.e("Inordersave", response.body().toString());
+
+                        Retrofit retrofit4 = new Retrofit.Builder()
+                                .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                                .client(new OkHttpClient())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        OrderService orderService2 = retrofit4.create(OrderService.class);
+                        Map<String, Object> jsonParams1 = new ArrayMap<>();
+                        jsonParams1.put("orderId", response.body().getData().getOrderId());
+                        jsonParams1.put("productId", productId);
+                        jsonParams1.put("merchantId", merchantid);
+                        jsonParams1.put("quantity", "1");
+                        jsonParams1.put("productPrice", (int) Float.parseFloat(productPrice.getText().toString()));
+
+                        RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
+
+                        orderService2.saveProduct(body1)
+                                .enqueue(new Callback<OrderProductMe>() {
+                                    @Override
+                                    public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
+                                        Log.e("Inorderproductsave", response.body().toString());
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<OrderProductMe> call, Throwable t) {
+                                        Log.e("Inorderproductsave", "failure");
+
+                                    }
+                                });
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderMe> call, Throwable t) {
+                        Log.e("inorder save", "failed");
+
+                    }
+                });
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.addToCartButton){

@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.CONSTANTS;
@@ -35,18 +38,30 @@ import retrofit2.Retrofit;
 public class CartActivity extends BaseActivity implements View.OnClickListener {
 
     List<CartItem> cartItemsList;
-    CartItemAdapter cartItemAdapter;
+    public CartItemAdapter cartItemAdapter;
     RecyclerView cartRecyclerView;
     CartItem cartItem;
+    Retrofit retrofit;
+    OrderService orderService;
+    TextView totalPrice;
+    Button deleteall,checkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        Retrofit retrofit = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+        totalPrice = findViewById(R.id.cart_price);
+        deleteall = findViewById(R.id.cart_deleteAll);
+        checkout = findViewById(R.id.cart_checkOut);
 
-        OrderService orderService = retrofit.create(OrderService.class);
+
+
+        retrofit = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+
+        orderService = retrofit.create(OrderService.class);
+
+
 
 
         if(getIntent().getBundleExtra("AddToCart") != null){
@@ -84,7 +99,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
         }
 
-        cartItemAdapter = new CartItemAdapter(cartItemsList);
+        cartItemAdapter = new CartItemAdapter(cartItemsList,CartActivity.this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,7 +111,20 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         //TODO now load cart items from user or from guest phone storage and store in the list
                                                                     //Adapter.notifyDataSetChanged
 
+        getCartItems();
 
+
+        //implemented inside on click function
+        checkout.setOnClickListener(this);
+        deleteall.setOnClickListener(this);
+
+
+
+
+
+    }
+
+    public void getCartItems() {
         if(isLoggedIn()){
             //TODO check backend url endpoint & variable name if it matches the get cart
             orderService.getCartItems(getUserEmailId()).enqueue(new Callback<ApiResponse<List<CartItem>>>() {
@@ -107,16 +135,18 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                     if(response.body() == null){
                         //TODO handle null body
                     }
-                    else if(response.body().getData() != null && response.body().getData().size()!=0){
+                    else if(response.body().getData() != null && response.body().getData().size()!=0) {
 
+                        cartItemsList.clear();
 
                         cartItemsList.addAll(response.body().getData());
-                        Log.d("CartActivity","CartItems list "+cartItemsList.toString());
-                        cartRecyclerView.setAdapter(cartItemAdapter);
+                        Log.d("CartActivity", "CartItems list " + cartItemsList.toString());
 
+                        cartRecyclerView.setAdapter(cartItemAdapter);
 
                     }
                     else {
+                        Log.d("CartActivity","getCartItems() - "+response.body().getData());
                         //TODO handle empty response list
                     }
 
@@ -129,12 +159,70 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
             });
         }
 
-
-
     }
 
     @Override
     public void onClick(View v) {
+        if(v.getId() == R.id.cart_deleteAll){
+            deleteAllCartItems();
+        }
+        else if(v.getId() == R.id.cart_checkOut){
 
+        }
+
+    }
+
+    private void deleteAllCartItems() {
+
+        if(isLoggedIn()){
+
+            if(cartItem.getQuantity() - 1 == 0){
+                Toast.makeText(getApplicationContext(),"Deleting the product from cart",Toast.LENGTH_SHORT).show();
+
+                //TODO refresh
+            }
+            else {
+                cartItem.setQuantity(cartItem.getQuantity()-1);
+
+                Retrofit retrofitDelete = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+
+                OrderService orderService = retrofitDelete.create(OrderService.class);
+
+                orderService.deleteCartItem(cartItem.getCartItemId())
+                        .enqueue(new Callback<ApiResponse<CartItem>>() {
+                            @Override
+                            public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
+                                if(response.body() != null && response.body().getData()!=null){
+                                    if(cartItem.getCartItemId()==response.body().getData().getCartItemId()) {
+                                        Toast.makeText(getApplicationContext(),"Deleting the product from cart",Toast.LENGTH_SHORT).show();
+                                        Log.d("CartItemAdapter", "Successfully deleted - " + response.body().getData().toString());
+                                    }
+                                    else{
+                                        Log.d("CartItemAdapter", "cart Item deletion didn't return same item Id - " + response.body().getData().toString());
+                                    }
+
+                                }
+                                getCartItems();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ApiResponse<CartItem>> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(),"Couldn't connect please try again",Toast.LENGTH_SHORT).show();
+                                Log.d("CartItemAdapter","onFailure response in deletingCartItem couldn't connect - Cart" );
+                            }
+                        });
+            }
+        }
+
+    }
+
+    public void addToTotalPrice(int i) {
+        try {
+            i += Integer.parseInt(totalPrice.getText().toString());
+            totalPrice.setText(i);
+        }catch (Exception exception){
+            if(exception != null)
+                Log.e("CartActivity",exception.toString());
+        }
     }
 }
