@@ -68,12 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (email.getText().toString().trim().matches(emailPattern))
                 {
-                    if(password.getText().toString().length()>5) {
                         userVerify();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(),"Password size should be >8", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 else
                 {
@@ -107,11 +102,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), apiResponse.getMessage(),
                                     Toast.LENGTH_SHORT).show();
+                            if(response.body().getMessage().equals("verification successful")){
 
-                            SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
 
-                            (sharedPreferences.edit().putString("UserId",email.getText().toString())).apply();
-
+                                (sharedPreferences.edit()).putString("UserId",email.getText().toString()).commit();
+                            }
 
                             finish();
                             //TODO

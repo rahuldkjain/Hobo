@@ -25,7 +25,7 @@ public class ProductListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub_category);
+        setContentView(R.layout.fragment_category);
 
 
 
@@ -49,7 +49,7 @@ public class ProductListActivity extends BaseActivity {
         productsFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
-                .add(R.id.reusable_categories_xml, productsFragment, "ProductsFragment").commit();
+                .add(R.id.fragment_category_product, productsFragment, "ProductsFragment").commit();
 
 
 

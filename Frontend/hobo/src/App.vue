@@ -3,8 +3,7 @@
     <div id="nav">
       <!-- <NavbarMerchant fixed="top"/> -->
       <Navbar fixed="top"/>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/category">Category</router-link>
+      
     </div>
     <router-view/>
   </div>

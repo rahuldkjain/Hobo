@@ -2,7 +2,7 @@ package com.example.hoboandroid.models.cart;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CartItem {
+public class CartItem{
 
 	@SerializedName("productImage")
 	private String productImage;
@@ -93,17 +93,17 @@ public class CartItem {
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"CartItem{" +
-			"productImage = '" + productImage + '\'' + 
-			",quantity = '" + quantity + '\'' + 
-			",productId = '" + productId + '\'' + 
-			",merchantId = '" + merchantId + '\'' + 
-			",userEmail = '" + userEmail + '\'' + 
-			",productName = '" + productName + '\'' + 
-			",productPrice = '" + productPrice + '\'' + 
-			",cartItemId = '" + cartItemId + '\'' + 
-			"}";
-		}
+	public String toString(){
+		return
+				"Response{" +
+						"productImage = '" + productImage + '\'' +
+						",quantity = '" + quantity + '\'' +
+						",productId = '" + productId + '\'' +
+						",merchantId = '" + merchantId + '\'' +
+						",userEmail = '" + userEmail + '\'' +
+						",productName = '" + productName + '\'' +
+						",productPrice = '" + productPrice + '\'' +
+						",cartItemId = '" + cartItemId + '\'' +
+						"}";
+	}
 }

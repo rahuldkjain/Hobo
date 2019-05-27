@@ -44,17 +44,19 @@ public class OrderedProductsActivity extends BaseActivity{
 
             orderedProductsAdapter = new OrderedProductAdapter(orderedProductsList);
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderedProductsActivity.this);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            orderedProductsRecyclerView.setLayoutManager(linearLayoutManager);
+            if(orderedProductsRecyclerView!= null) {
 
-            orderedProductsRecyclerView.setAdapter(orderedProductsAdapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                orderedProductsRecyclerView.setLayoutManager(linearLayoutManager);
 
+                orderedProductsRecyclerView.setAdapter(orderedProductsAdapter);
+            }
             //orderedProductsRecyclerView.setOnClickListener(this);
 
 
             //TODO login user's userId
-            getProducts(orderId, 0);
+            getProducts(orderId,getUserEmailId());
 
         }
         else    loginToContinue();
@@ -65,7 +67,7 @@ public class OrderedProductsActivity extends BaseActivity{
 
 
 
-    private void getProducts(int orderId,int userId) {
+    private void getProducts(int orderId,String emailId) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CONSTANTS.ORDER_BASE_URL)
@@ -79,7 +81,7 @@ public class OrderedProductsActivity extends BaseActivity{
 
         //TODO login flag and session management
 
-        orderService.getOrderDetails(orderId,""+userId)
+        orderService.getOrderDetails(orderId,""+emailId)
                 .enqueue(new Callback<ApiResponse<List<OrderedProduct>>>() {
 
                     @Override

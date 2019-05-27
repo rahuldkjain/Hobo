@@ -15,13 +15,13 @@
     <string name="add_to_cart">Add To Cart</string>
     <string name="buy_now">Buy Now</string>
     <string name="product_host_address">http://172.16.20.80:8080/</string>
-    <string name="search_any_product">Search any product</string>
+    <string name="search_any_product">Search products</string>
     <string name="search_port_address">search_port_address</string>
     <string name="merchant_host_address">http://172.16.20.101:8080/</string>
     <string name="welcome">Welcome, Happy Shopping!</string>
     <string name="thisprice">thisprice</string>
     <string name="delete_all">Delete All</string>
-    <string name="price">Price :</string>
+    <string name="price">Total Price :</string>
     <string name="checkout">CheckOut</string>
     <string name="delete_item">delete item</string>
     <string name="ItemPrice">Price</string>
@@ -34,4 +34,28 @@
     <string name="e_mail">E-mail</string>
     <string name="button">Button</string>
     <string name="user_host_address">host_address_user</string>
+    <string name="name">Name</string>
+    <string name="order_date">Order date</string>
+    <string name="delivery_date">Delivery date</string>
+    <string name="textview">TextView</string>
+    <string name="order_id">Order Id :</string>
+    <string name="order_price">Order Price :</string>
+    <string name="delivery_dateis">Delivery Date :</string>
+    <string name="order_dateis">Order Date :</string>
+    <string name="thank_you_for_shopping">Thank you for Shopping!</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_address_line_2">Enter Address Line 2</string>
+    <string name="enter_city">Enter city</string>
+    <string name="enter_pincode">Enter pincode</string>
+    <string name="enter_address_line_1">Enter Address Line 1</string>
+    <string name="login_signup">Login/SignUp</string>
+    <string name="submit">Submit</string>
+    <string name="address">Address :</string>
+    <string name="addres">Address</string>
+
+
+
+
 </resources>
+
+

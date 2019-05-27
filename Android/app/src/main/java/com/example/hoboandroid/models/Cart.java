@@ -2,8 +2,6 @@ package com.example.hoboandroid.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
 public class Cart {
     @SerializedName("merchant_id")
     private String merchantId;

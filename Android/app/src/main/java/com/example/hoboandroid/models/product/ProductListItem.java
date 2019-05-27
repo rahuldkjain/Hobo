@@ -1,9 +1,5 @@
 package com.example.hoboandroid.models.product;
 
-import com.example.hoboandroid.models.Attributes;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class ProductListItem {
 

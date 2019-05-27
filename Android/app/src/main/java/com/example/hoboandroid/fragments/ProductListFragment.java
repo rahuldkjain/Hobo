@@ -40,7 +40,8 @@ public class ProductListFragment extends Fragment{
     ProductListItem productListItem;
     ProductItemAdapter productItemAdapter;
     List<Product> productList = new ArrayList<>();
-    List<ProductListItem> productListItems = new ArrayList<>();
+    Product product;
+    volatile List<ProductListItem> productListItems = new ArrayList<>();
 
 
 
@@ -53,7 +54,7 @@ public class ProductListFragment extends Fragment{
 
 
 
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_category_product_recycler_view, container, false);
     }
 
 
@@ -62,7 +63,7 @@ public class ProductListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView subCatName = view.findViewById(R.id.category_name_fragment);
+        //TextView subCatName = view.findViewById(R.id.category_name_fragment);
 
 
         Bundle bundle = getArguments();
@@ -70,21 +71,21 @@ public class ProductListFragment extends Fragment{
             case "SearchQuery":
 
                 getSearchedProducts(bundle.getString("SearchQuery"));
-                subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
+                //subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
 
                 break;
             case "SubCategory":
-                //Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
+                Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
                 getProducts(bundle.getString("SubCategory"));
-                subCatName.setText(bundle.getString("SubCategory"));
+                //subCatName.setText(bundle.getString("SubCategory"));
 
                 break;
         }
 
-        //Log.e("ProductListFragment","Inside OnviewCreated method");
+        Log.e("ProductListFragment","Inside OnviewCreated method");
 
 
-        productRecyclerView = view.findViewById(R.id.recyclerView);
+        productRecyclerView = view.findViewById(R.id.fragment_category_product_id);
 
         productItemAdapter = new ProductItemAdapter(productListItems);
 
@@ -180,7 +181,10 @@ public class ProductListFragment extends Fragment{
 
     private void getOtherAttributes() {
 
-        for(final Product product: productList){
+        Log.d("productlist   ", productList.toString());
+
+        for(int i=0;i<productList.size();i++){
+            product = productList.get(i);
 
             productListItem = new ProductListItem(
                     product.getProductId(),
@@ -198,7 +202,7 @@ public class ProductListFragment extends Fragment{
                     .build();
 
             Log.e("ProductListFragment","getOtherAttributes "+CONSTANTS.MERCHANT_BASE_URL + "   "+product.getProductName());
-            final MerchantService merchantService =  retrofit.create(MerchantService.class);
+            MerchantService merchantService =  retrofit.create(MerchantService.class);
 
             merchantService.getTopProductMerchant(product.getProductId())
                     .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
@@ -214,26 +218,30 @@ public class ProductListFragment extends Fragment{
 
                                 productListItems.add(productListItem);
 
-                                productItemAdapter.notifyDataSetChanged();
 
                                 Log.e("Inside ",productListItem.toString());
 
+
+                                productItemAdapter.notifyDataSetChanged();
                                 //productMerchantName.setText(response1.body().getData().getMerchantId())
                             }
                         }
                         @Override
                         public void onFailure(Call<ApiResponse<MerchantProductResponse>> call, Throwable t) {
                             Toast.makeText(getContext(),"Check your connection in merchant",Toast.LENGTH_LONG).show();
-                            Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                            Log.e("ProductListFragment",t.getMessage()+" failure");
                         }
                     });
 
 
+            Log.e("ProductListFragment","list items" +productListItems.toString());
+
+
         }
-        Log.e("ProductListFragment",productListItems.toString());
 
 
-        
+
+
     }
 
 

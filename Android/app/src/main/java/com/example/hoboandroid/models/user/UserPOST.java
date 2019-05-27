@@ -5,26 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class UserPOST {
-    @SerializedName("email_id")
-    private String emailId;
-
-    @SerializedName("name")
-    private String name;
+    @SerializedName("pincode")
+    private int pincode;
 
     @SerializedName("password")
     private String password;
 
     @SerializedName("phoneNumber")
-    private Long phoneNumber;
+    private long  phoneNumber;
 
     @SerializedName("gender")
     private String gender;
-
-    @SerializedName("dateOfBirth")
-    private Date dateOfBirth;
-
-    @SerializedName("address1")
-    private String address1;
 
     @SerializedName("address2")
     private String address2;
@@ -32,113 +23,124 @@ public class UserPOST {
     @SerializedName("city")
     private String city;
 
-    public String getState() {
-        return state;
-    }
+    @SerializedName("address1")
+    private String address1;
 
-    public void setState(String state) {
-        this.state = state;
-    }
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("emailId")
+    private String emailId;
+
+    @SerializedName("dateOfBirth")
+    private Date dateOfBirth;
 
     @SerializedName("state")
     private String state;
 
-    @SerializedName("pincode")
-    private Integer pincode;
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(Long phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getAddress1() {
-        return address1;
-    }
-
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
-
-    public String getAddress2() {
-        return address2;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Integer getPincode() {
-        return pincode;
-    }
-
-    public void setPincode(Integer pincode) {
+    public void setPincode(int pincode){
         this.pincode = pincode;
     }
 
+    public int getPincode(){
+        return pincode;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPhoneNumber(long phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
+    public long getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    public void setGender(String gender){
+        this.gender = gender;
+    }
+
+    public String getGender(){
+        return gender;
+    }
+
+    public void setAddress2(String address2){
+        this.address2 = address2;
+    }
+
+    public String getAddress2(){
+        return address2;
+    }
+
+    public void setCity(String city){
+        this.city = city;
+    }
+
+    public String getCity(){
+        return city;
+    }
+
+    public void setAddress1(String address1){
+        this.address1 = address1;
+    }
+
+    public String getAddress1(){
+        return address1;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setEmailId(String emailId){
+        this.emailId = emailId;
+    }
+
+    public String getEmailId(){
+        return emailId;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth){
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Date getDateOfBirth(){
+        return dateOfBirth;
+    }
+
+    public void setState(String state){
+        this.state = state;
+    }
+
+    public String getState(){
+        return state;
+    }
+
     @Override
-    public String toString() {
-        return "User{" +
-                ", emailId='" + emailId + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", gender='" + gender + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address1='" + address1 + '\'' +
-                ", address2='" + address2 + '\'' +
-                ", city='" + city + '\'' +
-                ", pincode=" + pincode +
-                '}';
+    public String toString(){
+        return
+                "Data{" +
+                        "pincode = '" + pincode + '\'' +
+                        ",password = '" + password + '\'' +
+                        ",phoneNumber = '" + phoneNumber + '\'' +
+                        ",gender = '" + gender + '\'' +
+                        ",address2 = '" + address2 + '\'' +
+                        ",city = '" + city + '\'' +
+                        ",address1 = '" + address1 + '\'' +
+                        ",name = '" + name + '\'' +
+                        ",emailId = '" + emailId + '\'' +
+                        ",dateOfBirth = '" + dateOfBirth + '\'' +
+                        ",state = '" + state + '\'' +
+                        "}";
     }
 }

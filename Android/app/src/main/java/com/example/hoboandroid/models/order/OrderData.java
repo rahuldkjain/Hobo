@@ -2,7 +2,7 @@ package com.example.hoboandroid.models.order;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OrderData {
+public class OrderData{
 
     @SerializedName("pincode")
     private int pincode;
@@ -26,13 +26,10 @@ public class OrderData {
     private int orderPrice;
 
     @SerializedName("deliveryDate")
-    private long deliveryDate;
-
-    @SerializedName("userId")
-    private int userId;
+    private String deliveryDate;
 
     @SerializedName("orderDate")
-    private long orderDate;
+    private String orderDate;
 
     public void setPincode(int pincode){
         this.pincode = pincode;
@@ -90,34 +87,26 @@ public class OrderData {
         return orderPrice;
     }
 
-    public void setDeliveryDate(long deliveryDate){
+    public void setDeliveryDate(String deliveryDate){
         this.deliveryDate = deliveryDate;
     }
 
-    public long getDeliveryDate(){
+    public String getDeliveryDate(){
         return deliveryDate;
     }
 
-    public void setUserId(int userId){
-        this.userId = userId;
-    }
-
-    public int getUserId(){
-        return userId;
-    }
-
-    public void setOrderDate(long orderDate){
+    public void setOrderDate(String orderDate){
         this.orderDate = orderDate;
     }
 
-    public long getOrderDate(){
+    public String getOrderDate(){
         return orderDate;
     }
 
     @Override
     public String toString(){
         return
-                "Data{" +
+                "Response{" +
                         "pincode = '" + pincode + '\'' +
                         ",userEmailId = '" + userEmailId + '\'' +
                         ",orderId = '" + orderId + '\'' +
@@ -126,7 +115,6 @@ public class OrderData {
                         ",address1 = '" + address1 + '\'' +
                         ",orderPrice = '" + orderPrice + '\'' +
                         ",deliveryDate = '" + deliveryDate + '\'' +
-                        ",userId = '" + userId + '\'' +
                         ",orderDate = '" + orderDate + '\'' +
                         "}";
     }

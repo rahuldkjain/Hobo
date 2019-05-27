@@ -3,12 +3,14 @@ export default {
     state: {
         order: {},
         orderId: '',
-        orderProductNum: 0
+        orderProductNum: 0,
+        orderHistory: []
     },
     getters: {
         getOrder: (state) => state.order,
         getOrderId: (state) => state.orderId,
-        getOrderProductNum: (state) => state.orderProductNum
+        getOrderProductNum: (state) => state.orderProductNum,
+        getOrderHistory: (state) => state.orderHistory
     },
     mutations: {
         SET_ORDER: (state, result) => {
@@ -21,7 +23,12 @@ export default {
             if (result.data != null) {
                 state.orderProductNum += 1
             }
-        }
+        },
+        SET_ORDER_HISTORY: (state, result) => {
+            if (result.data != null) {
+                state.orderHistory = result.data
+            }
+        },
     },
     actions: {
         createOrder: (context, payload) => {
@@ -36,5 +43,11 @@ export default {
                 context.commit('SET_PRODUCT_ORDER', result.data)
             }, payload)
         },
+        fetchOrderHistory: (context, email) => {
+            // console.log('data in action'+payload)
+            orderApis.orderHistory((result) => {
+                context.commit('SET_ORDER_HISTORY', result.data)
+            }, email)
+        }
     }
 }

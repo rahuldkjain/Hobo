@@ -121,7 +121,7 @@ export default {
         deliveryDate = deliveryDate.getFullYear() + '-' + deliveryDate.getMonth() + '-' + deliveryDate.getDate()
 
         var guestDetails = {}
-        if(localStorage.getItem("loggedIn")){
+        if(localStorage.getItem("loggedIn") == 'true'){
              guestDetails["userId"] = JSON.parse(localStorage.getItem("userDetails")).emailId
         }
         else{

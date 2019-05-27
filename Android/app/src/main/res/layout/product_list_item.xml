@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_new"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_new"
     android:layout_margin="5dp"
-    android:padding="2dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
-
+    android:padding="2dp">
     <ImageView
         android:id="@+id/product_list_image"
         android:layout_width="0dp"
@@ -19,7 +15,6 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/product_list_name"
         android:layout_width="0dp"
@@ -31,20 +26,17 @@
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/product_list_image"
         app:layout_constraintTop_toTopOf="@+id/product_list_image" />
-
     <TextView
         android:id="@+id/product_list_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:text="Price"
+        android:textColor="@color/black"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/product_list_name"
         app:layout_constraintTop_toTopOf="@+id/product_list_image" />
-
-
     <TextView
         android:id="@+id/product_list_rate_text"
         android:layout_width="0dp"
@@ -54,10 +46,8 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/product_list_rating"
-        app:layout_constraintStart_toEndOf="@+id/productItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/productItemName" />
-
-
+        app:layout_constraintStart_toEndOf="@+id/product_list_image"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_name" />
     <TextView
         android:id="@+id/product_list_rating"
         android:layout_width="0dp"
@@ -67,10 +57,6 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/productItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/productItemName" />
-
-
-
-
+        app:layout_constraintStart_toEndOf="@+id/product_list_image"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_name" />
 </android.support.constraint.ConstraintLayout>

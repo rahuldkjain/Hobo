@@ -36,7 +36,7 @@
                     <img :src='getCartImage[index]'>
                     <div class="head">
                         <h3> name: {{product.productName}}</h3>
-                        <h3> price: {{product.productPrice}}</h3>
+                        <h3> price: ₹ {{product.productPrice}}</h3>
 
                     </div>
                     <div class="quantity">
@@ -77,7 +77,7 @@ export default {
             total: [],
             totalAmount: 0,
             orderDetails: [],
-            userLoggedIn: false,
+            userLoggedIn: false
         }
     },
     methods:{
@@ -94,7 +94,8 @@ export default {
                 this.forceRerender();
             }
             else{
-
+                this.$store.dispatch('removeCartItem', this.getCartProduct[index].cartItemId)
+                this.forceRerender()
             }
         },
         forceRerender() {
@@ -128,7 +129,7 @@ export default {
             this.$store.dispatch('checkoutAmount',this.totalAmount)
             
             // add orderDetails to the session storage
-           if(localStorage.getItem("loggedIn")){
+           if(localStorage.getItem("loggedIn") == "true"){
                for(var index=0;index<this.getCartQuantity.length;index++){
                 var dummyProduct = {}
                 dummyProduct["userId"] = JSON.parse(localStorage.getItem("userDetails")).emailId

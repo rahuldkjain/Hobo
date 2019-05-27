@@ -20,9 +20,11 @@ import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 import com.example.hoboandroid.models.order.OrderMe;
 import com.example.hoboandroid.models.order.OrderProductMe;
 import com.example.hoboandroid.models.product.Product;
+import com.example.hoboandroid.models.user.UserPOST;
 import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.OrderService;
 import com.example.hoboandroid.services.ProductService;
+import com.example.hoboandroid.services.UserService;
 
 import org.json.JSONObject;
 
@@ -53,11 +55,11 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_product_info);
         //Retrofit retrofit= Api.getclient("http://172.16.20.80:8080/","product/");
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.20.80:8080/")
+                .baseUrl(CONSTANTS.PRODUCT_BASE_URL)
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
-        ProductService service=retrofit.create(ProductService.class);
+        ProductService service = retrofit.create(ProductService.class);
 
 
         productImage = findViewById(R.id.productInfoImage);
@@ -66,7 +68,17 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         productAttributes = findViewById(R.id.attributes2);
         productPrice = findViewById(R.id.productInfoPrice);
 
-        productId =  getIntent().getIntExtra("Product",1);
+        productId = getIntent().getIntExtra("Product", 1);
+
+
+
+        final Button buyNow,addToCart;
+        buyNow = findViewById(R.id.buyNowButton);
+        addToCart = findViewById(R.id.addToCartButton);
+        buyNow.setOnClickListener(this);
+        addToCart.setOnClickListener(this);
+        addToCart.setEnabled(false);
+        buyNow.setEnabled(false);
 
 
         service.getProductById(productId)
@@ -75,8 +87,8 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(Call<ApiResponse<Product>> call, Response<ApiResponse<Product>> response) {
                         //Log.e("Hello","hi");
                         //Log.e("Hello",response.message());
-                        if(response.body() != null){
-                            Log.d("ProductInfoPage",response.body().toString());
+                        if (response.body() != null) {
+                            Log.d("ProductInfoPage", response.body().toString());
                             productName.setText(response.body().getData().getProductName());
                             productDesc.setText(response.body().getData().getDescription());
                             productAttributes.setText(response.body().getData().getAttributes().getColor());
@@ -86,35 +98,38 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             productStringImage = response.body().getData().getProductImage().get(1);
                         }
                     }
+
                     @Override
                     public void onFailure(Call<ApiResponse<Product>> call, Throwable t) {
-                        Toast.makeText(ProductInfoActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                        Toast.makeText(ProductInfoActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+                        Log.e("HOBOLandingPage", t.getMessage() + " failure");
                     }
                 });
         Retrofit retrofit1 = new Retrofit.Builder()
-                .baseUrl("http://172.16.20.101:8080/")
+                .baseUrl(CONSTANTS.MERCHANT_BASE_URL)
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
 
-        MerchantService service1=retrofit1.create(MerchantService.class);
-        Log.d("LandingPageActivity","Sub "+getIntent().getStringExtra("Product"));
+        MerchantService service1 = retrofit1.create(MerchantService.class);
         service1.getTopProductMerchant(productId)
                 .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response1) {
-                        if(response1.body() != null){
-                            Log.e("Inmerchant",response1.body().getData().getPrice()+"");
+                        if (response1.body() != null) {
+                            Log.e("Inmerchant", response1.body().getData().getPrice() + "");
                             productPrice.setText(response1.body().getData().getPrice());
                             merchantid = Integer.parseInt(response1.body().getData().getMerchantId());
+                            addToCart.setEnabled(true);
+                            buyNow.setEnabled(true);
                             //productMerchantName.setText(response1.body().getData().getMerchantId())
                         }
                     }
+
                     @Override
                     public void onFailure(Call<ApiResponse<MerchantProductResponse>> call, Throwable t) {
-                        Toast.makeText(ProductInfoActivity.this,"Check your connection in merchant",Toast.LENGTH_LONG).show();
-                        Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                        Toast.makeText(ProductInfoActivity.this, "Check your connection in merchant", Toast.LENGTH_LONG).show();
+                        Log.e("HOBOLandingPage", t.getMessage() + " failure");
                     }
                 });
 
@@ -157,82 +172,74 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
             }
         });*/
 
-        final LocalDate orderDate=java.time.LocalDate.now();
-        final LocalDate deliveryDate=orderDate.plusDays(5);
+        final LocalDate orderDate = java.time.LocalDate.now();
+        final LocalDate deliveryDate = orderDate.plusDays(5);
 
 
-        final Button buyNow=findViewById(R.id.buyNowButton);
+
+        /*final Button buyNow=findViewById(R.id.buyNowButton);
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isLoggedIn()) {
 
-                    Retrofit retrofit3 = new Retrofit.Builder()
-                            .baseUrl("http://172.16.20.84:8082/")
+                    Retrofit userRetrofit = new Retrofit.Builder()
+                            .baseUrl(CONSTANTS.USER_BASE_URL)
                             .client(new OkHttpClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
-                    OrderService orderService1 = retrofit3.create(OrderService.class);
-                    Map<String, Object> jsonParams = new ArrayMap<>();
-                    jsonParams.put("address1", "daf");
-                    jsonParams.put("address2", "asdfa");
-                    jsonParams.put("city", "chirala");
-                    jsonParams.put("deliveryDate", deliveryDate);
-                    jsonParams.put("orderDate", orderDate);
-                    jsonParams.put("orderPrice", "8400");
-                    jsonParams.put("pincode", "9090");
-                    jsonParams.put("userEmailId", "mehak@gmail.com");
-                    jsonParams.put("userId", "2");
 
-                    RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
-
-                    orderService1.saveOrder(body)
-                            .enqueue(new Callback<OrderMe>() {
+                    UserService userService  = userRetrofit.create(UserService.class);
+                    userService.getUserByEmailId(getUserEmailId())
+                            .enqueue(new Callback<ApiResponse<UserPOST>>() {
                                 @Override
-                                public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
-                                    Log.e("Inordersave", response.body().toString());
+                                public void onResponse(Call<ApiResponse<UserPOST>> call, Response<ApiResponse<UserPOST>> response) {
 
-                                    Retrofit retrofit4 = new Retrofit.Builder()
-                                            .baseUrl(CONSTANTS.ORDER_BASE_URL)
-                                            .client(new OkHttpClient())
-                                            .addConverterFactory(GsonConverterFactory.create())
-                                            .build();
-                                    OrderService orderService2 = retrofit4.create(OrderService.class);
-                                    Map<String, Object> jsonParams1 = new ArrayMap<>();
-                                    jsonParams1.put("orderId", response.body().getData().getOrderId());
-                                    jsonParams1.put("productId", productId);
-                                    jsonParams1.put("merchantId", merchantid);
-                                    jsonParams1.put("quantity", "1");
-                                    jsonParams1.put("productPrice", (int) Float.parseFloat(productPrice.getText().toString()));
+                                    if(response.body().getData() != null && !response.body().getData().toString().equals("")){
+                                        Retrofit retrofit3 = new Retrofit.Builder()
+                                                .baseUrl("http://172.16.20.84:8082/")
+                                                .client(new OkHttpClient())
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+                                        OrderService orderService1 = retrofit3.create(OrderService.class);
 
-                                    RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
 
-                                    orderService2.saveProduct(body1)
-                                            .enqueue(new Callback<OrderProductMe>() {
-                                                @Override
-                                                public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
-                                                    Log.e("Inorderproductsave", response.body().toString());
-                                                }
+                                        UserPOST userPOST = response.body().getData();
 
-                                                @Override
-                                                public void onFailure(Call<OrderProductMe> call, Throwable t) {
-                                                    Log.e("Inorderproductsave", "failure");
+                                        Map<String, Object> jsonParams = new ArrayMap<>();
+                                        jsonParams.put("address1", userPOST.getAddress1());
+                                        jsonParams.put("address2", userPOST.getAddress2());
+                                        jsonParams.put("city", userPOST.getCity());
+                                        jsonParams.put("deliveryDate", deliveryDate);
+                                        jsonParams.put("orderDate", orderDate);
+                                        jsonParams.put("orderPrice", productPrice);
+                                        jsonParams.put("pincode", userPOST.getPincode());
+                                        jsonParams.put("userEmailId", userPOST.getEmailId());
+                                        //should I comment the below line?
+                                        //jsonParams.put("userId", "2");
 
-                                                }
-                                            });
+
+                                        orderCreate(orderService1,jsonParams);
+
+                                    }
+
+
+
 
 
                                 }
 
                                 @Override
-                                public void onFailure(Call<OrderMe> call, Throwable t) {
-                                    Log.e("inorder save", "failed");
+                                public void onFailure(Call<ApiResponse<UserPOST>> call, Throwable t) {
 
                                 }
                             });
 
 
-                    Intent intent = new Intent(getApplicationContext(), CheckoutPromptActivity.class);
+
+
+
+                    Intent intent = new Intent(getApplicationContext(), GuestActivity.class);
                     startActivity(intent);
                 }
                 else
@@ -242,21 +249,78 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
-
+*/
 
 
     }
+
+/*
+    private void orderCreate(OrderService orderService1, Map<String, Object> jsonParams) {
+
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+
+        orderService1.saveOrder(body)
+                .enqueue(new Callback<OrderMe>() {
+                    @Override
+                    public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
+                        Log.e("Inordersave", response.body().toString());
+
+                        Retrofit retrofit4 = new Retrofit.Builder()
+                                .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                                .client(new OkHttpClient())
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        OrderService orderService2 = retrofit4.create(OrderService.class);
+                        Map<String, Object> jsonParams1 = new ArrayMap<>();
+                        jsonParams1.put("orderId", response.body().getData().getOrderId());
+                        jsonParams1.put("productId", productId);
+                        jsonParams1.put("merchantId", merchantid);
+                        jsonParams1.put("quantity", "1");
+                        jsonParams1.put("productPrice", (int) Float.parseFloat(productPrice.getText().toString()));
+
+                        RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
+
+                        orderService2.saveProduct(body1)
+                                .enqueue(new Callback<OrderProductMe>() {
+                                    @Override
+                                    public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
+                                        Log.e("Inorderproductsave", response.body().toString());
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<OrderProductMe> call, Throwable t) {
+                                        Log.e("Inorderproductsave", "failure");
+
+                                    }
+                                });
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderMe> call, Throwable t) {
+                        Log.e("inorder save", "failed");
+
+                    }
+                });
+    }
+*/
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.addToCartButton){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);
             Bundle bundle =  new  Bundle();
-            bundle.putInt("ProductId",Integer.parseInt(((TextView)((getWindow().getDecorView()).findViewById(R.id.productInfoName))).getText().toString()));
+
+            bundle.putString("EmailId",getUserEmailId());
+            bundle.putInt("ProductId",productId);
             bundle.putInt("MerchantId",merchantid);
             bundle.putString("ProductName",productName.getText().toString());
             bundle.putString("ProductImage",productStringImage);
             bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));
 
+            Toast.makeText(getApplicationContext(),productId.toString(),Toast.LENGTH_SHORT).show();
             //((ViewGroup)((View)view.getParent()).getParent()).findViewById()
 
             intent.putExtra("AddToCart",bundle);
@@ -264,7 +328,15 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
         }
         else if(view.getId() == R.id.buyNowButton ){
-            Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+            Bundle bundle =  new  Bundle();
+            bundle.putInt("ProductId",productId);
+            bundle.putInt("MerchantId",merchantid);
+            bundle.putString("ProductName",productName.getText().toString());
+            bundle.putString("ProductImage",productStringImage);
+            bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));
+
+            Intent intent = new Intent(getApplicationContext(),GuestActivity.class);
+            intent.putExtra("BuyNow",bundle);
             view.getContext().startActivity(intent);
         }
         //Intent intent = new Intent(ProductInfoActivity.this,CartActivity.class);

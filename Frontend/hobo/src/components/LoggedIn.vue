@@ -2,10 +2,11 @@
 <div>
     <div v-if="checkLogIn">
         <b-navbar-nav>
-            <b-nav-item class="login"><router-link to="/profile"> {{userDetails.name}}</router-link></b-nav-item>
+            <b-nav-item class="login"><b-link @click="getUserProfile(userDetails.emailId)"> {{userDetails.name}}</b-link></b-nav-item>
+
             <b-nav-item class="login"><router-link to="/cart"><img class="cartIcon" src="https://i.imgur.com/8zfcGiW.png"></router-link></b-nav-item>
         
-            <b-button @click="logoutFunction" class="login">Logout</b-button>
+            <b-button size="sm" @click="logoutFunction" class="login" variant="danger">Logout</b-button>
         </b-navbar-nav>
     </div>
     <div v-else>
@@ -37,6 +38,9 @@ export default {
 
             window.location.assign("/")
             // this.$router.push('/')
+        },
+        getUserProfile(emailid){
+            this.$router.push('/profile/'+emailid)
         }
     },
     computed: {
@@ -63,20 +67,21 @@ mounted() {
 </script>
 <style scoped>
 .cartIcon{
-    height: 50px;
+    
+    height: 40px;
     width: 50px;
 }
 @media screen and (max-width: 2000px) {
     .login{
-        font-size: 25px;
+        font-size: 15px;
         text-align: left;
-        padding-left:5%;
+        height: 40px;
     }
 }
 @media screen and (max-width: 700px) {
     .login{
         text-align: left;
-        padding-left:0;
+       
     }
 }
 </style>

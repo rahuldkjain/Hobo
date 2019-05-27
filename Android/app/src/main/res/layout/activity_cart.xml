@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.CartActivity">
 
+    <include
+        android:id="@+id/cart_failure_layout"
+        layout="@layout/failure_layout" />
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/landing_page_image_recycler_view"
+        android:id="@+id/cart_recycler_view"
         android:layout_width="402dp"
         android:layout_height="453dp"
         android:layout_marginTop="60dp"
@@ -21,6 +25,7 @@
 
     <Button
         android:id="@+id/cart_deleteAll"
+        style="@style/TextAppearance.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/landing_page_image_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/cart_recycler_view" />
 
     <Button
         android:id="@+id/cart_checkOut"
@@ -44,13 +49,13 @@
 
     <TextView
         android:id="@+id/cart_pricetext"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/price"
         android:textAlignment="gravity"
-        android:textSize="28sp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/cart_checkOut"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cart_checkOut" />
 
@@ -58,12 +63,9 @@
         android:id="@+id/cart_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
-        android:text="@string/thisprice"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cart_checkOut"
         app:layout_constraintEnd_toStartOf="@+id/cart_checkOut"
         app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"

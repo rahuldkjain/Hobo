@@ -14,6 +14,7 @@ import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.OrderAdapter;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Order;
+import com.example.hoboandroid.models.order.OrderData;
 import com.example.hoboandroid.services.OrderService;
 
 import java.util.ArrayList;
@@ -26,62 +27,62 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OrderHistoryActivity extends AppCompatActivity implements View.OnClickListener {
+public class OrderHistoryActivity extends BaseActivity implements View.OnClickListener {
 
     RecyclerView orderHistoryRecyclerView;
     OrderAdapter orderAdapter;
-    List<Order> orderList = new ArrayList<>();
+    List<OrderData> orderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_history);
+        setContentView(R.layout.activity_sub_category);
 
-        orderHistoryRecyclerView =findViewById(R.id.recyclerView);
+        orderHistoryRecyclerView =findViewById(R.id.reusable_recycler_view);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        orderHistoryRecyclerView.setLayoutManager(linearLayoutManager);
 
         orderAdapter = new OrderAdapter(orderList);
 
-     /*   LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderHistoryActivity.this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        orderHistoryRecyclerView.setLayoutManager(linearLayoutManager);
-*/
-
         orderHistoryRecyclerView.setAdapter(orderAdapter);
-        
-        
+
         //to get all the orders belonging to the current user and then populate them in the orderHistoryRecyclerView
         getOrders();
     }
 
     private void getOrders() {
+        if(isLoggedIn()) {
+            Retrofit retrofit2 = new Retrofit.Builder()
+                    .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(CONSTANTS.ORDER_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client( new OkHttpClient())
-                .build();
+            OrderService orderService = retrofit2.create(OrderService.class);
 
-        OrderService service = retrofit.create(OrderService.class);
+            orderService.getOrders(getUserEmailId())
+                    .enqueue(new Callback<ApiResponse<List<OrderData>>>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse<List<OrderData>>> call, Response<ApiResponse<List<OrderData>>> response2) {
 
+                            Log.e("In order history",getUserEmailId());
+                            Log.e("In order history",response2.toString());
+                            if (response2.body() != null) {
+                                orderList.addAll(response2.body().getData());
+                                Log.e("In order history", orderList.toString());
 
+                                orderAdapter.notifyDataSetChanged();
+                            }
+                        }
 
-        //TODO login flag and session management
-
-        service.getOrders("aman@gmail.com")
-                .enqueue(new Callback<ApiResponse<List<Order>>>() {
-                    @Override
-                    public void onResponse(Call<ApiResponse<List<Order>>> call, Response<ApiResponse<List<Order>>> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ApiResponse<List<Order>>> call, Throwable t) {
-
-                    }
-                });
-
-
-
+                        @Override
+                        public void onFailure(Call<ApiResponse<List<OrderData>>> call, Throwable t) {
+                            Log.e("In history Fialure", "Failed");
+                        }
+                    });
+        }
     }
 
     @Override
@@ -89,12 +90,15 @@ public class OrderHistoryActivity extends AppCompatActivity implements View.OnCl
 
 
         int itemPosition = orderHistoryRecyclerView.getChildLayoutPosition(view);
-        Order orderItem = orderList.get(itemPosition);
-        Toast.makeText(OrderHistoryActivity.this, "A Order is clicked for details", Toast.LENGTH_LONG).show();
+        OrderData orderItem = orderList.get(itemPosition);
+        Toast.makeText(getApplicationContext(), "A Order is clicked for details", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(OrderHistoryActivity.this,OrderedProductsActivity.class);
-        //intent.putExtra("OrderId",orderItem.get());
+        Intent intent = new Intent(getApplicationContext(),OrderedProductsActivity.class);
+        intent.putExtra("OrderId",orderItem.getOrderId());
         startActivity(intent);
 
     }
 }
+
+
+

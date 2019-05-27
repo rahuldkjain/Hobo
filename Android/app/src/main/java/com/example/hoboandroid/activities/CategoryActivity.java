@@ -88,7 +88,7 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
 
                     @Override
                     public void onFailure(Call<ApiResponse<List<SubCategory>>> call, Throwable t) {
-                        Toast.makeText(CategoryActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Check your connection",Toast.LENGTH_LONG).show();
                         Log.d("HOBOLandingPage",t.getMessage()+" failure");
                     }// happens when api is not able to be connect or getting any response(even a failure response is called a response)
                 });
@@ -100,12 +100,12 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         int itemPosition = subCategoryRecyclerView.getChildLayoutPosition(view);
         SubCategory item = subCategoryList.get(itemPosition);
-        Toast.makeText(CategoryActivity.this, "A Sub category is clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "A Sub category is clicked", Toast.LENGTH_LONG).show();
 
 
 
         //opening a sub category activity
-        Intent intent = new Intent(CategoryActivity.this,ProductListActivity.class);
+        Intent intent = new Intent(getApplicationContext(),ProductListActivity.class);
         intent.putExtra("type","SubCategory");
         intent.putExtra("SubCategory",item.getSubCategoryName());
         view.getContext().startActivity(intent);

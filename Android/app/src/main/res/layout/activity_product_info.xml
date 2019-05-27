@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".activities.ProductInfoActivity">
+
     <ScrollView
         android:id="@+id/scrollViewProductInfo"
         android:layout_width="374dp"
@@ -18,6 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +27,7 @@
             app:layout_constraintEnd_toEndOf="@id/scrollViewProductInfo"
             app:layout_constraintStart_toStartOf="@id/scrollViewProductInfo"
             app:layout_constraintTop_toTopOf="@id/scrollViewProductInfo">
+
             <ImageView
                 android:id="@+id/productInfoImage"
                 android:layout_width="329dp"
@@ -40,10 +43,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
                 tools:srcCompat="@tools:sample/avatars" />
+
             <TextView
                 android:id="@+id/productInfoName"
                 android:layout_width="236dp"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="12dp"
@@ -54,16 +58,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent" />
+
             <TextView
                 android:id="@+id/productInfoPrice"
                 android:layout_width="145dp"
-                android:layout_height="46dp"
+                android:layout_height="wrap_content"
                 android:text="@string/product_info_price"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/productInfoName"
                 app:layout_constraintTop_toBottomOf="@+id/productInfoName" />
+
             <TextView
                 android:id="@+id/productDescription1"
                 android:layout_width="wrap_content"
@@ -75,16 +81,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/productInfoPrice"
                 app:layout_constraintTop_toBottomOf="@+id/productInfoPrice" />
+
             <TextView
                 android:id="@+id/productDescription2"
                 android:layout_width="348dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/product_description_zone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/productDescription1"
                 app:layout_constraintTop_toBottomOf="@+id/productDescription1" />
+
             <TextView
                 android:id="@+id/attributes1"
                 android:layout_width="wrap_content"
@@ -93,6 +101,7 @@
                 android:text="@string/product_attributes"
                 app:layout_constraintStart_toStartOf="@+id/productDescription2"
                 app:layout_constraintTop_toBottomOf="@+id/productDescription2" />
+
             <TextView
                 android:id="@+id/attributes2"
                 android:layout_width="wrap_content"
@@ -107,16 +116,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/attributes1" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cartButtonBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:id="@+id/cartButtonBox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
+
         <Button
             android:id="@+id/addToCartButton"
             android:layout_width="180dp"
@@ -129,6 +140,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
         <Button
             android:id="@+id/buyNowButton"
             android:layout_width="179dp"

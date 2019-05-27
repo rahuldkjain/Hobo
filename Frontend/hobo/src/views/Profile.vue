@@ -24,7 +24,6 @@
                         id="email-box"
                         v-model="form.email"
                         type="email"
-                        disabled
                         :placeholder='form.email'>
                         </b-form-input>
                         </b-col>
@@ -39,23 +38,104 @@
                     id="name-box"
                     type="text"
                     v-model="form.name"
-                    :disabled="validated==1"
                     placeholder="Enter name">
                     </b-form-input>
                     </b-col>
                     
                 </b-row>
             </b-form-group>
-            <b-form-group id="address" label="Your Address:" label-for="address-box">
+            <b-form-group id="password" label="Your Password:" label-for="password-box">
                 <b-row>
                     <b-col sm="8">
 
                     <b-form-input
-                    id="address-box"
+                    id="password-box"
                     type="text"
-                    v-model="form.address"
-                    :disabled="validated==1"
-                    placeholder="Enter Address">
+                    v-model="form.password"
+                    placeholder="Enter Password">
+                    </b-form-input>
+                    </b-col>
+                    
+                </b-row>
+            </b-form-group>
+            <b-form-group id="gender" label="Gender:" label-for="gender-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="gender-box"
+                    type="text"
+                    v-model="form.gender"
+                    placeholder="Enter Gender">
+                    </b-form-input>
+                    </b-col>
+                   
+                </b-row>
+            </b-form-group>
+            <b-form-group id="dateOfBirth" label="Your DOB:" label-for="dob-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="dob-box"
+                    type="text"
+                    v-model="form.dateOfBirth"
+                    placeholder="YYYY-MM-DD">
+                    </b-form-input>
+                    </b-col>
+                </b-row>
+            </b-form-group>
+            <b-form-group id="address1" label="Your Address1:" label-for="address1-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="address1-box"
+                    type="text"
+                    v-model="form.address1"
+                    placeholder="Enter Address1">
+                    </b-form-input>
+                    </b-col>
+                    
+                </b-row>
+            </b-form-group>
+            <b-form-group id="address2" label="Your Address2:" label-for="address2-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="address2-box"
+                    type="text"
+                    v-model="form.address2"
+                    placeholder="Enter Address2">
+                    </b-form-input>
+                    </b-col>
+                    
+                </b-row>
+            </b-form-group>
+            <b-form-group id="city" label="Your City:" label-for="city-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="city-box"
+                    type="text"
+                    v-model="form.city"
+                    placeholder="Enter City">
+                    </b-form-input>
+                    </b-col>
+                    
+                </b-row>
+            </b-form-group>
+            <b-form-group id="state" label="Your State:" label-for="state-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="state-box"
+                    type="text"
+                    v-model="form.state"
+                    placeholder="Enter State">
                     </b-form-input>
                     </b-col>
                     
@@ -69,17 +149,30 @@
                     id="phone-box"
                     type="text"
                     v-model="form.phone"
-                    :disabled="validated==1"
                     placeholder="Enter phone no">
                     </b-form-input>
                     </b-col>
                    
                 </b-row>
             </b-form-group>
+            <b-form-group id="pincode" label="Your Pincode:" label-for="pincode-box">
+                <b-row>
+                    <b-col sm="8">
+
+                    <b-form-input
+                    id="pincode-box"
+                    type="text"
+                    v-model="form.pincode"
+                    placeholder="Enter Pincode">
+                    </b-form-input>
+                    </b-col>
+                    
+                </b-row>
+            </b-form-group>
 
       
 
-        <b-button type="submit" variant="primary">Change</b-button>
+        <b-button @click="editProfile" variant="primary">Change</b-button>
         <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
         </b-form>
                
@@ -87,20 +180,37 @@
         </b-col>
         <b-col>
             <h3>Order History</h3>
+            <b-row v-for="(order,index) in (getOrderHistory ? getOrderHistory : null)" :key="index">
+                 <b-card>
+                        
+                        <div class="head">
+                            <h6> <b>Order Id:</b> {{order.orderId}}</h6>
+                            <h6> <b>Order Date:</b> {{order.orderDate}}</h6>
+                            <h6> <b>Order Price:</b> ₹ {{order.orderPrice}}</h6>
+                           
+                        </div>
+                        
+                    </b-card>
+            </b-row>
         </b-col>
         </b-row>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
             form: {
           email: 'mehak@gmail.com',
           name: 'mehak',
-          address:'abcd 24th main road 11th cross',
-          phone:'123456'
-          
+          address1:'abcd 24th main road 11th cross',
+          phone:'123456',
+            dateOfBirth: '',
+            address2: '',
+            city: '',
+            state: '',
+            pincode: ''
         },
             validated: true,
             show: true
@@ -110,8 +220,44 @@ export default {
         editFunc(obj) {
            
             this.validated = !this.validated
+        },
+        editProfile(){
+            var payload = {
+                'emailId': this.form.email,
+                'name': this.form.name,
+                'address1': this.form.address1,
+                'phoneNumber': this.form.phone,
+                'dateOfBirth': this.form.dateOfBirth,
+                'address2': this.form.address2,
+                'city': this.form.city,
+                'state': this.form.state,
+                'pincode': this.form.pincode,
+                'password': this.form.password
+            }
+            this.$store.dispatch('changeUserDetails',payload)
         }
         
+    },
+    created() {
+        this.$store.dispatch("fetchOrderHistory",this.$route.params.emailId)
+
+
+    },
+    mounted(){
+        var userDetails = JSON.parse(localStorage.getItem("userDetails"))
+        this.form.email = userDetails.emailId
+        this.form.name = userDetails.name
+        this.form.address1 = userDetails.address1
+        this.form.phone = userDetails.phoneNumber
+        this.form.dateOfBirth = userDetails.dateOfBirth
+        this.form.address2 = userDetails.address2
+        this.form.city = userDetails.city
+        this.form.state = userDetails.state
+        this.form.pincode = userDetails.pincode
+        this.form.password = userDetails.password
+    },
+    computed: {
+        ...mapGetters(['getOrderHistory'])
     }
 }
 </script>

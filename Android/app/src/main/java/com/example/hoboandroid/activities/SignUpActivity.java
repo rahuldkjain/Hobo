@@ -57,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     if (emailId.getText().toString().trim().matches(emailPattern)) {
 
-                        if (password.getText().toString().length() >= 8) {
+                        if (password.getText().toString().length() >= 6) {
 
                             if(password.getText().toString().equals(confPass.getText().toString())) {
 
@@ -142,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Log.d("SignUp",user.toString());
 
-        api.signup(user).enqueue(new Callback<ApiResponse>() {
+        api.signUp(user).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
 
@@ -153,13 +153,20 @@ public class SignUpActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Log.d("SignUp", "CartItem Body : " + response.body().toString());
-                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    if(response.body().getData().equals("adding successful")) {
+                        Log.d("SignUp", "CartItem Body : " + response.body().toString());
+                        Toast.makeText(getApplicationContext(), "Please login now to continue", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
 
                     //TODO
                     // GO to the profile screen or landing page
                     // and take response.body().getData().getEmailId()
                 }
+                finish();
             }
 
             @Override
