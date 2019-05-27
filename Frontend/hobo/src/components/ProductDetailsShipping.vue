@@ -8,7 +8,7 @@
                         <img :src='product.productImage'>
                         <div class="head">
                             <h4> Name: {{product.productName}}</h4>
-                            <h4> price: {{product.productPrice}}</h4>
+                            <h4> price: ₹ {{product.productPrice}}</h4>
                             <h4>Quantity: {{getCartQuantity[index]}}</h4>
                         </div>
                         <div>
@@ -31,7 +31,7 @@
                         <img :src='getCartImage[index]'>
                         <div class="head">
                             <h4> Name: hi{{product}}</h4>
-                            <h4> price: {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
+                            <h4> price: ₹ {{getCartProductPrice ? getCartProductPrice[index] : '' }}</h4>
                             <h4>Quantity: {{getCartQuantity[index]}}</h4>
                         </div>
                         <div>

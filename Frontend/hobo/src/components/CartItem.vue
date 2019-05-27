@@ -36,7 +36,7 @@
                     <img :src='getCartImage[index]'>
                     <div class="head">
                         <h3> name: {{product.productName}}</h3>
-                        <h3> price: {{product.productPrice}}</h3>
+                        <h3> price: ₹ {{product.productPrice}}</h3>
 
                     </div>
                     <div class="quantity">

@@ -2,7 +2,8 @@
 <div>
     <div v-if="checkLogIn">
         <b-navbar-nav>
-            <b-nav-item class="login"><router-link to="/profile"> {{userDetails.name}}</router-link></b-nav-item>
+            <b-nav-item class="login"><b-link @click="getUserProfile(userDetails.emailId)"> {{userDetails.name}}</b-link></b-nav-item>
+
             <b-nav-item class="login"><router-link to="/cart"><img class="cartIcon" src="https://i.imgur.com/8zfcGiW.png"></router-link></b-nav-item>
         
             <b-button @click="logoutFunction" class="login">Logout</b-button>
@@ -37,6 +38,9 @@ export default {
 
             window.location.assign("/")
             // this.$router.push('/')
+        },
+        getUserProfile(emailid){
+            this.$router.push('/profile/'+emailid)
         }
     },
     computed: {
