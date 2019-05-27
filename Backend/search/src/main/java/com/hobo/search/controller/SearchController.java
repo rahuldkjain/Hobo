@@ -80,4 +80,15 @@ public class SearchController {
         response.replace("message", "success", "fetching successful");
         return response;
     }
+
+    @PostMapping(value="/addall",consumes = {"application/json"})
+    public JSONObject saveallProduct(@RequestBody List<ProductDTO> productDTO) {
+        ProductDTO result = new ProductDTO();
+        for (ProductDTO pro:productDTO) {
+            result = productService.saveProduct(pro);
+        }
+        JSONObject response = getJSONResponse(result);
+        response.replace("message", "success", "saving successful");
+        return response;
+    }
 }

@@ -10,20 +10,24 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartRepository cartRepository;
 
     @Override
+    @Transactional(readOnly = false)
     public CartDTO createCart(CartDTO cartDTO) throws CartAlreadyExists {
 
-        if(cartRepository.existsByUserEmailAndProductId(cartDTO.getUserEmail(),cartDTO.getProductId())){
+        if(cartRepository.existsByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId())){
             throw new CartAlreadyExists("Data already exists");
         }
         CartEntity cartEntity =new CartEntity();
@@ -58,6 +62,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public CartDTO updateCart(CartDTO cartDTO) throws CartNotFound{
         CartDTO checkAlreadyExists=readCart(cartDTO.getCartItemId());
 
@@ -75,6 +80,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public List<CartEntity> deleteCart(String emailId) {
         List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
         for (CartEntity cartEntity:cartEntities) {

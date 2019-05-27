@@ -12,10 +12,13 @@ import com.hobo.merchant.service.MerchantProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class MerchantProductServiceImpl  implements MerchantProductService {
     @Autowired
     private MerchantProductRepository merchantProductRepository;
@@ -24,6 +27,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     private MerchantRepository merchantRepository;
 
     @Override
+    @Transactional(readOnly = false)
     public MerchantProductDTO createMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductAlreadyExists, MerchantNotFound {
 
         if(merchantProductRepository.exists(merchantProductDTO.getIndexx())){
@@ -36,6 +40,9 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         MerchantProductDTO merchantProductDTO1=null;
         MerchantProduct merchantProduct=new MerchantProduct();
         BeanUtils.copyProperties(merchantProductDTO,merchantProduct);
+        merchantProduct.setMerchantScore(5);
+        merchantProduct.setProductRating(5);
+        merchantProduct.setProductsSold(0);
         MerchantProduct merchantProduct1=merchantProductRepository.save(merchantProduct);
 
         merchantProductDTO1=new MerchantProductDTO();
@@ -55,6 +62,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public MerchantProductDTO updateMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductNotFound, MerchantNotFound{
         if(!merchantProductRepository.exists(merchantProductDTO.getIndexx()))
         {
@@ -102,7 +110,9 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
 
     @Override
     public List<MerchantProduct> getAllMerchants(Integer productId) throws MerchantProductNotFound{
-        List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(productId);
+    //public Object getAllMerchants(Integer productId) throws MerchantProductNotFound{
+        List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductIdOrderByMerchantScoreDesc(productId);
+        //Object merchantProducts = merchantProductRepository.test(productId);
         if(merchantProducts==null)
         {
             throw new MerchantProductNotFound("Data not found");
@@ -112,6 +122,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
+    @Transactional(readOnly = false )
     public MerchantProductDTO updateProductRating(Integer index, float productRating) throws MerchantProductNotFound,MerchantNotFound{
         if(!merchantProductRepository.exists(index))
         {
@@ -169,6 +180,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void calculateScore(int indexx) {
         MerchantProduct merchantProduct = merchantProductRepository.findOne(indexx);
         double updateScore;

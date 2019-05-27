@@ -9,16 +9,20 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class OrderProductServiceImpl implements OrderProductService {
 
     @Autowired
     private OrderProductRepository orderProductRepository;
 
     @Override
+    @Transactional(readOnly = false)
     public OrderProductDTO createOrderProduct(OrderProductDTO orderProductDTO) throws OrderProductAlreadyExists {
         if(orderProductRepository.exists(orderProductDTO.getIndexx())){
             throw new OrderProductAlreadyExists("Data already exists");

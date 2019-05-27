@@ -2,6 +2,8 @@ package com.hobo.search.model;
 
 import org.json.simple.JSONObject;
 
+import java.util.List;
+
 public class ProductDTO {
 
     private String productId;
@@ -9,7 +11,7 @@ public class ProductDTO {
     private String description;
     private String category;
     private String subCategory;
-    private String productImage;
+    private List<String> productImage;
     private String productBrand;
     private JSONObject attributes;
 
@@ -21,7 +23,7 @@ public class ProductDTO {
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
                 ", subCategory='" + subCategory + '\'' +
-                ", productImage='" + productImage + '\'' +
+                ", productImage=" + productImage +
                 ", productBrand='" + productBrand + '\'' +
                 ", attributes=" + attributes +
                 '}';
@@ -67,11 +69,11 @@ public class ProductDTO {
         this.subCategory = subCategory;
     }
 
-    public String getProductImage() {
+    public List<String> getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(String productImage) {
+    public void setProductImage(List<String> productImage) {
         this.productImage = productImage;
     }
 

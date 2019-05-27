@@ -47,11 +47,11 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
 		</dependency>
-			<dependency>
-				<groupId>com.mailjet</groupId>
-				<artifactId>mailjet-client</artifactId>
-				<version>4.2.0</version>
-			</dependency>
+		<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.5.3</version>
+	</dependency>
 	</dependencies>
 
 	<build>

@@ -1,12 +1,18 @@
 package com.hobo.merchant.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
 import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductAlreadyExists;
 import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductNotFound;
 import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.service.MerchantProductService;
+import com.hobo.merchant.service.MerchantService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +23,8 @@ import java.util.List;
 public class MerchantProductController {
     @Autowired
     MerchantProductService merchantProductService;
+    @Autowired
+    MerchantService merchantService;
 
     @PostMapping(consumes = {"application/json"})
     public JSONObject create(@RequestBody MerchantProductDTO merchantProductDTO) throws MerchantProductAlreadyExists,MerchantNotFound {
@@ -91,10 +99,27 @@ public class MerchantProductController {
     public JSONObject getAllMerchants(@RequestParam Integer productId) throws MerchantProductNotFound{
         try {
             List<MerchantProduct> merchantProducts=merchantProductService.getAllMerchants(productId);
-            JSONObject response=getJSONResponse(merchantProducts);
+            //Object merchantProducts = merchantProductService.getAllMerchants(productId);
+            String name;
+            JSONParser parser = new JSONParser();
+            JSONObject data = new JSONObject();
+            JSONArray dataArray = new JSONArray();
+            ObjectMapper mapper = new ObjectMapper();
+            for (MerchantProduct m:merchantProducts) {
+                name = merchantService.getName(m.getMerchantId());
+                data = (JSONObject)parser.parse(mapper.writeValueAsString(m));
+                data.put("merchantName",name);
+                dataArray.add(data);
+            }
+            JSONObject response=getJSONResponse(dataArray);
+
             return response;
         }
         catch (RuntimeException e){
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;

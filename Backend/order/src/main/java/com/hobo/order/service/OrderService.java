@@ -6,11 +6,12 @@ import com.hobo.order.exceptions.orderExceptions.OrderNotFound;
 import com.hobo.order.entity.OrderEntity;
 import com.hobo.order.model.OrderDTO;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
-    OrderDTO createOrder(OrderDTO orderDTO) throws OrderAlreadyExists;
+    OrderDTO createOrder(OrderDTO orderDTO) throws OrderAlreadyExists, IOException;
     OrderDTO readOrder(int orderItemId) throws OrderNotFound;
     OrderDTO deleteOrder(int orderItemId) throws OrderNotFound;
     OrderDTO updateOrder(OrderDTO orderDTO) throws OrderNotFound;

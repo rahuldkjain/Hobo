@@ -1,42 +1,30 @@
 package com.hobo.order.email;
 
-import com.mailjet.client.ClientOptions;
-import com.mailjet.client.MailjetClient;
-import com.mailjet.client.MailjetRequest;
-import com.mailjet.client.MailjetResponse;
-import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.errors.MailjetSocketTimeoutException;
-import com.mailjet.client.resource.Emailv31;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.sendgrid.*;
+
+import java.io.IOException;
 
 
 public class OrderEmail {
 
-    public void sendEmail() throws MailjetException, MailjetSocketTimeoutException {
-        MailjetClient client;
-        MailjetRequest request;
-        MailjetResponse response;
-        client = new MailjetClient(System.getenv("MJ_APIKEY_PUBLIC"), System.getenv("MJ_APIKEY_PRIVATE"), new ClientOptions("v3.1"));
-        JSONObject from = new JSONObject();
-        from.put("Email", "order@hobo.com");
-        from.put("Name", "Hobo Pilot");
-        JSONArray toArray = new JSONArray();
-        JSONObject to = new JSONObject();
-        to.put("Email", "mudit.joshi@coviam.com");
-        to.put("Name", "Mudit Joshi");
-        toArray.add(to);
-        JSONObject message = new JSONObject();
-        message.put(Emailv31.Message.FROM, from);
-        message.put(Emailv31.Message.TO, toArray);
-        message.put(Emailv31.Message.SUBJECT, "Your email flight plan!");
-        message.put(Emailv31.Message.TEXTPART, "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!");
-        message.put(Emailv31.Message.HTMLPART, "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!");
-        JSONArray messageArray = new JSONArray();
-        messageArray.add(message);
-        request = new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES,messageArray);
-        response = client.post(request);
-        System.out.println(response.getStatus());
-        System.out.println(response.getData());
+    public void sendEmail(String email, String date, Float price) throws IOException {
+        try {
+            SendGrid sg = new SendGrid("Key hai yaaha par chupi huyi hai");
+            Request request = new Request();
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody("{"+
+                    "\"from\": {\"email\": \"order@hobo.in\"},"+
+                    "\"personalizations\": [{"+
+                    "\"to\": [{\"email\": \""+email+"\"}],"+
+                    "\"dynamic_template_data\": {\"email\": \""+email+"\", \"totalPrice\": "+price+", \"date\": \""+date+"\"}}],\"template_id\": \"d-710c6e4f8da54ce9b6b2328bea219db7\"}");
+            System.out.println(request.getBody());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            throw ex;
+        }
     }
 }
