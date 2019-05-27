@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/cartProductItemPrice"
+        android:id="@+id/cartItemProductPrice"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
@@ -73,7 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cartProductItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/cartProductItemPrice"
+        app:layout_constraintTop_toBottomOf="@+id/cartItemProductPrice"
         app:layout_constraintVertical_bias="0.021" />
 
     <TextView

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.LandingPageProductAdapter;
@@ -78,7 +79,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         categoryRecyclerView.setAdapter(categoryAdapter);
 
 
-        Retrofit retrofit = Api.getclient("http://172.16.20.80:8080/","product/listcategory/");
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL);
 
         ProductService service = retrofit.create(ProductService.class);
 
@@ -125,7 +126,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
 
-        Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address),"/product/getall/");
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL);
 
         ProductService service = retrofit.create(ProductService.class);
 

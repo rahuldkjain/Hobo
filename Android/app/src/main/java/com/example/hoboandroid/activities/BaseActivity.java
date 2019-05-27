@@ -71,7 +71,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
 
     private TextView logoTextView;
-    private AutoCompleteTextView autoTextView;
+    private EditText searchEditText;
     private Button navigationDrawerButton, searchButton, cartButton;
     List<String> searchAutoTextList = new ArrayList<>();
 
@@ -100,6 +100,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
         searchButton = toolbar.findViewById(R.id.toolbar_search_button);
         cartButton = toolbar.findViewById(R.id.toolbar_cart_button);
+        searchEditText = toolbar.findViewById(R.id.globalSearch);
 
 
 
@@ -226,14 +227,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
 
-                String searchText = autoTextView.getText().toString();
+                String searchText = searchEditText.getText().toString();
                 if (!searchText.equals("")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("type","Search");
-                    bundle.putString("SearchQuery",searchText);
-
-
-                    Intent intent  =  new Intent(getApplicationContext(),ProductInfoActivity.class);
+                    Intent intent  =  new Intent(getApplicationContext(),ProductListActivity.class);
+                    intent.putExtra("type","Search");
+                    intent.putExtra("SearchQuery",searchText);
                     startActivity(intent);
 
 
@@ -441,7 +439,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
             case "Order History":
                 if(isLoggedIn())
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    startActivity(new Intent(getApplicationContext(), OrderHistoryActivity.class));
 
                 else{
 

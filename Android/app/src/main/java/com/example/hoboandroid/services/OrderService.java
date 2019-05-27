@@ -23,7 +23,7 @@ import retrofit2.http.Query;
 public interface OrderService {
 
     @GET("/orders/getall")
-    Call<ApiResponse<List<OrderData>>> getOrders(@Query("userId") String userId);
+    Call<ApiResponse<List<OrderData>>> getOrders(@Query("email") String email);
 
 
     @GET("/orders/getorderdetails")

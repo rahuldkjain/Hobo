@@ -79,7 +79,7 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
             //title.setText(productListItem.getProductId());
 
             TextView rating = itemView.findViewById(R.id.product_list_rating);
-            rating.setText(""+productListItem.getRating());
+            rating.setText("Rating:"+productListItem.getRating());
 
 
 
@@ -105,6 +105,6 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
             view.getContext().startActivity(intent);
 
         }
-        
+
     }
 }

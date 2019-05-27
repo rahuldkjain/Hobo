@@ -81,7 +81,7 @@ public class ProductListFragment extends Fragment{
                 break;
         }
 
-        //Log.e("ProductListFragment","Inside OnviewCreated method");
+        Log.e("ProductListFragment","Inside OnviewCreated method");
 
 
         productRecyclerView = view.findViewById(R.id.recyclerView);

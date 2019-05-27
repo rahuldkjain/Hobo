@@ -59,7 +59,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
-        ProductService service=retrofit.create(ProductService.class);
+        ProductService service = retrofit.create(ProductService.class);
 
 
         productImage = findViewById(R.id.productInfoImage);
@@ -68,7 +68,15 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         productAttributes = findViewById(R.id.attributes2);
         productPrice = findViewById(R.id.productInfoPrice);
 
-        productId =  getIntent().getIntExtra("Product",1);
+        productId = getIntent().getIntExtra("Product", 1);
+
+
+
+        Button buyNow,addToCart;
+        buyNow = findViewById(R.id.buyNowButton);
+        addToCart = findViewById(R.id.addToCartButton);
+        buyNow.setOnClickListener(this);
+        addToCart.setOnClickListener(this);
 
 
         service.getProductById(productId)
@@ -77,8 +85,8 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(Call<ApiResponse<Product>> call, Response<ApiResponse<Product>> response) {
                         //Log.e("Hello","hi");
                         //Log.e("Hello",response.message());
-                        if(response.body() != null){
-                            Log.d("ProductInfoPage",response.body().toString());
+                        if (response.body() != null) {
+                            Log.d("ProductInfoPage", response.body().toString());
                             productName.setText(response.body().getData().getProductName());
                             productDesc.setText(response.body().getData().getDescription());
                             productAttributes.setText(response.body().getData().getAttributes().getColor());
@@ -88,10 +96,11 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             productStringImage = response.body().getData().getProductImage().get(1);
                         }
                     }
+
                     @Override
                     public void onFailure(Call<ApiResponse<Product>> call, Throwable t) {
-                        Toast.makeText(ProductInfoActivity.this,"Check your connection",Toast.LENGTH_LONG).show();
-                        Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                        Toast.makeText(ProductInfoActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
+                        Log.e("HOBOLandingPage", t.getMessage() + " failure");
                     }
                 });
         Retrofit retrofit1 = new Retrofit.Builder()
@@ -100,23 +109,23 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
 
-        MerchantService service1=retrofit1.create(MerchantService.class);
-        Log.d("LandingPageActivity","Sub "+getIntent().getStringExtra("Product"));
+        MerchantService service1 = retrofit1.create(MerchantService.class);
         service1.getTopProductMerchant(productId)
                 .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response1) {
-                        if(response1.body() != null){
-                            Log.e("Inmerchant",response1.body().getData().getPrice()+"");
+                        if (response1.body() != null) {
+                            Log.e("Inmerchant", response1.body().getData().getPrice() + "");
                             productPrice.setText(response1.body().getData().getPrice());
                             merchantid = Integer.parseInt(response1.body().getData().getMerchantId());
                             //productMerchantName.setText(response1.body().getData().getMerchantId())
                         }
                     }
+
                     @Override
                     public void onFailure(Call<ApiResponse<MerchantProductResponse>> call, Throwable t) {
-                        Toast.makeText(ProductInfoActivity.this,"Check your connection in merchant",Toast.LENGTH_LONG).show();
-                        Log.e("HOBOLandingPage",t.getMessage()+" failure");
+                        Toast.makeText(ProductInfoActivity.this, "Check your connection in merchant", Toast.LENGTH_LONG).show();
+                        Log.e("HOBOLandingPage", t.getMessage() + " failure");
                     }
                 });
 
@@ -159,11 +168,12 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
             }
         });*/
 
-        final LocalDate orderDate=java.time.LocalDate.now();
-        final LocalDate deliveryDate=orderDate.plusDays(5);
+        final LocalDate orderDate = java.time.LocalDate.now();
+        final LocalDate deliveryDate = orderDate.plusDays(5);
 
 
-        final Button buyNow=findViewById(R.id.buyNowButton);
+
+        /*final Button buyNow=findViewById(R.id.buyNowButton);
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +212,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                                         jsonParams.put("pincode", userPOST.getPincode());
                                         jsonParams.put("userEmailId", userPOST.getEmailId());
                                         //should I comment the below line?
-                                        jsonParams.put("userId", "2");
+                                        //jsonParams.put("userId", "2");
 
 
                                         orderCreate(orderService1,jsonParams);
@@ -235,11 +245,12 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
-
+*/
 
 
     }
 
+/*
     private void orderCreate(OrderService orderService1, Map<String, Object> jsonParams) {
 
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
@@ -290,13 +301,14 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+*/
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.addToCartButton){
             Intent intent = new Intent(getApplicationContext(),CartActivity.class);
             Bundle bundle =  new  Bundle();
-            bundle.putInt("ProductId",Integer.parseInt(((TextView)((getWindow().getDecorView()).findViewById(R.id.productInfoName))).getText().toString()));
+            bundle.putInt("ProductId",productId);
             bundle.putInt("MerchantId",merchantid);
             bundle.putString("ProductName",productName.getText().toString());
             bundle.putString("ProductImage",productStringImage);
@@ -309,7 +321,15 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
         }
         else if(view.getId() == R.id.buyNowButton ){
-            Intent intent = new Intent(getApplicationContext(),CartActivity.class);
+            Bundle bundle =  new  Bundle();
+            bundle.putInt("ProductId",productId);
+            bundle.putInt("MerchantId",merchantid);
+            bundle.putString("ProductName",productName.getText().toString());
+            bundle.putString("ProductImage",productStringImage);
+            bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));
+
+            Intent intent = new Intent(getApplicationContext(),GuestActivity.class);
+            intent.putExtra("BuyNow",bundle);
             view.getContext().startActivity(intent);
         }
         //Intent intent = new Intent(ProductInfoActivity.this,CartActivity.class);

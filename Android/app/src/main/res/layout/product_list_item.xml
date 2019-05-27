@@ -45,30 +45,20 @@
         app:layout_constraintTop_toTopOf="@+id/product_list_image" />
 
 
-    <TextView
-        android:id="@+id/product_list_rate_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Rating"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/product_list_rating"
-        app:layout_constraintStart_toEndOf="@+id/productItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/productItemName" />
-
 
     <TextView
         android:id="@+id/product_list_rating"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Rating"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/product_list_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/productItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/productItemName" />
+        app:layout_constraintStart_toEndOf="@+id/product_list_image"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_name" />
 
 
 
