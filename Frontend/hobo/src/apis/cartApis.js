@@ -8,8 +8,8 @@ export default {
         var url = '/Cart/cart/usercart?emailId=' + emailId
         makeApiCalls.makeGetRequest(url, callback)
     },
-    deleteCartItem(callback, payload) {
-        var url = '/Cart/cart'
-        makeApiCalls.makeDeleteRequest(url, callback, payload)
+    deleteCartItem(callback, cartItemId) {
+        var url = '/Cart/cart?cartItemId=' + cartItemId
+        makeApiCalls.makeDeleteRequest(url, callback)
     }
 }

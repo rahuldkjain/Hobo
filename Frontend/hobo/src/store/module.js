@@ -16,10 +16,10 @@ export default {
     },
     mutations: {
         SET_LOGIN: (state, result) => {
-            if(result.data != null){
+            if (result.data != null) {
                 state.loggedin = true
                 state.user = result.data
-                
+
             }
         },
         MERCHANT_LOGIN: (state, result) => {
@@ -33,19 +33,24 @@ export default {
     },
     actions: {
         checkLogin: (context, payload) => {
-            console.log('data in action'+payload)
+            console.log('data in action' + payload)
             userApis.getUserDetails((result) => {
                 context.commit('SET_LOGIN', result.data)
             }, payload)
         },
         merchantLogin: (context, payload) => {
-            
             userApis.getMerchantDetails((result) => {
                 context.commit('MERCHANT_LOGIN', result.data)
             }, payload)
         },
         checkLogout: (context) => {
             context.commit('USER_LOGOUT')
+        },
+        changeUserDetails: (context, payload) => {
+            userApis.editUserDetails((result) => {
+                context.commit('MERCHANT_LOGIN', result.data)
+            }, payload)
         }
+
     }
 }
