@@ -10,9 +10,10 @@
         <!-- <b-nav-item href="#">Link</b-nav-item> -->
         <b-link href="/category" class="category">
             <b-nav-item-dropdown text="All Categories" class="dropdown" center fluid>
-                <b-dropdown-item href="#">Clothing</b-dropdown-item>
-                <b-dropdown-item href="#">Electronics</b-dropdown-item>
-                <b-dropdown-item href="#">Sports</b-dropdown-item>
+                <b-dropdown-item @click="goToCategory(3)">Clothing</b-dropdown-item>
+                <b-dropdown-item @click="goToCategory(1)">Electronics</b-dropdown-item>
+                <b-dropdown-item @click="goToCategory(2)">Sports</b-dropdown-item>
+               
                 <!-- <b-dropdown-item href="#">FA</b-dropdown-item> -->
             </b-nav-item-dropdown>
         </b-link>
@@ -58,7 +59,8 @@ export default {
     data() {
         return {
             searchValue: '',
-            options: [{name: 'mehak'}]
+            options: [{name: 'mehak'}],
+            category: ''
         }
     },
     props: {
@@ -70,7 +72,17 @@ export default {
         
     },
     methods: {
-        
+        goToCategory(pid) {
+          
+          if(pid==1)
+            this.category = "Electronics"
+          else if(pid==2)
+            this.category = "Sports"
+          else
+            this.category = "Clothing"
+          this.$store.dispatch("categoryProducts",this.category)
+          this.$router.push("/category/"+pid)
+        },
         getDropdownValues(value) {
           console.log(value);
           this.searchValue = value;

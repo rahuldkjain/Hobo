@@ -94,7 +94,8 @@ export default {
                 this.forceRerender();
             }
             else{
-
+                this.$store.dispatch('removeCartItem', this.getCartProduct[index].cartItemId)
+                this.forceRerender()
             }
         },
         forceRerender() {
@@ -128,7 +129,7 @@ export default {
             this.$store.dispatch('checkoutAmount',this.totalAmount)
             
             // add orderDetails to the session storage
-           if(localStorage.getItem("loggedIn")){
+           if(localStorage.getItem("loggedIn") == "true"){
                for(var index=0;index<this.getCartQuantity.length;index++){
                 var dummyProduct = {}
                 dummyProduct["userId"] = JSON.parse(localStorage.getItem("userDetails")).emailId

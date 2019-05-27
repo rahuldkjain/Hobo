@@ -90,7 +90,10 @@ export default {
             state.UserCartItem = result.data
         },
         SET_USER_CART_ITEMS: (state, result) => {
-            state.UserCartItems = result.data
+            state.UserCartItems.push(result.data)
+        },
+        SET_REMOVE_USER_CART_ITEMS: (state, result) => {
+            state.cartProduct.pop(result.data)
         }
     },
     actions: {
@@ -142,6 +145,11 @@ export default {
             cartApis.fetchCartItems((result) => {
                 context.commit('SET_CART_PRODUCT', result.data)
             }, emailId)
+        },
+        removeCartItem: (context, cartItemId) => {
+            cartApis.deleteCartItem((result) => {
+                context.commit('SET_REMOVE_USER_CART_ITEMS', result.data)
+            }, cartItemId)
         }
     }
 }

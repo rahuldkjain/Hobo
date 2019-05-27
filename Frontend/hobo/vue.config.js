@@ -16,35 +16,35 @@ module.exports = {
                 }
             },
             '/allProducts': {
-                target: 'http://172.16.20.80:8080/',
+                target: 'http://172.16.20.84:8084/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/allProducts': ''
                 }
             },
             '/goToProduct': {
-                target: 'http://172.16.20.80:8080/',
+                target: 'http://172.16.20.84:8084/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/goToProduct': ''
                 }
             },
             '/merchantProduct': {
-                target: 'http://172.16.20.101:8080/',
+                target: 'http://172.16.20.84:8083/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/merchantProduct': ''
                 }
             },
             '/fetchCartProduct': {
-                target: 'http://172.16.20.80:8080/',
+                target: 'http://172.16.20.84:8084/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/fetchCartProduct': ''
                 }
             },
             '/fetchBuyNowProduct': {
-                target: 'http://172.16.20.80:8080/',
+                target: 'http://172.16.20.84:8084/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/fetchBuyNowProduct': ''
@@ -78,7 +78,6 @@ module.exports = {
                     '^/order': ''
                 }
             }
-
         }
     }
 }

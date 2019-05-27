@@ -69,6 +69,7 @@ export default {
     computed : {
       ...mapGetters({
           getAllProducts : 'getAllProducts'
+
       })
     },
     watch : {
