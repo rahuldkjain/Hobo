@@ -77,7 +77,9 @@ export default {
             total: [],
             totalAmount: 0,
             orderDetails: [],
-            userLoggedIn: false
+            userLoggedIn: false,
+            cartItem: [],
+            cartItemDetails: [],
         }
     },
     methods:{
@@ -163,7 +165,7 @@ export default {
 
     },
     computed: {
-        ...mapGetters(['getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity','getCartProductMerchantId'])
+        ...mapGetters(['getCartItems','getCartProductDetails','getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity','getCartProductMerchantId'])
     },
     components: {
         Quantity
@@ -172,7 +174,23 @@ export default {
         getCartProduct: function(newValue, oldValue){
             console.log("getCartProduct: " + this.getCartProduct)
             //window.location.reload()
-        }
+            newValue.forEach(value => {
+                var payload = {
+                    productId: value.productId,
+                    content: value
+                }
+                cartItem.push(payload)
+            })
+        },
+        getCartProductDetails: function(newValue, oldValue){
+            newValue.forEach(value => {
+                var payload = {
+                    productId: value.productId,
+                    content: value
+                }
+                cartItemDetails.push(payload)
+            })
+        },
     },
     mounted() {
         console.log("in mounted ")
@@ -183,7 +201,7 @@ export default {
                 var pid = JSON.parse(sessionStorage.getItem(key)).pid
                 console.log("pid: " + pid)
                 this.$store.dispatch('cartProduct', pid)
-                this.$store.dispatch('cartProductPrice', pid)
+                this.$store.dispatch('cartProductDetails', pid)
 
             })
             }
@@ -193,7 +211,7 @@ export default {
             this.$store.dispatch('cartItems', emailId)
             this.getCartProduct.forEach(product =>{
                 this.$store.dispatch('cartProduct', product.productId)
-                this.$store.dispatch('cartProductPrice', product.productId)
+                this.$store.dispatch('cartProductDetails', product.productId)
             })
         }
     }

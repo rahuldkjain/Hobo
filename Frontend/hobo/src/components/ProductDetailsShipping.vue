@@ -61,7 +61,7 @@
                 <div class="buyNowItem" id="getBuyNowProductId">
                     <img :src='getBuyNowProductImage'>
                     <div class="head">
-                        <h4> Name: bn{{getBuyNowProduct}}</h4>
+                        <h4> Name: {{getBuyNowProduct}}</h4>
                         <h4> price: {{getBuyNowProductPrice ? getBuyNowProductPrice : '' }}</h4>
                         <h4>Quantity: {{getBuyNowProductQuantity}}</h4>
                     </div>
