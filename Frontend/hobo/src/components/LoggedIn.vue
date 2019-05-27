@@ -6,7 +6,7 @@
 
             <b-nav-item class="login"><router-link to="/cart"><img class="cartIcon" src="https://i.imgur.com/8zfcGiW.png"></router-link></b-nav-item>
         
-            <b-button @click="logoutFunction" class="login">Logout</b-button>
+            <b-button size="sm" @click="logoutFunction" class="login" variant="danger">Logout</b-button>
         </b-navbar-nav>
     </div>
     <div v-else>
@@ -67,20 +67,21 @@ mounted() {
 </script>
 <style scoped>
 .cartIcon{
-    height: 50px;
+    
+    height: 40px;
     width: 50px;
 }
 @media screen and (max-width: 2000px) {
     .login{
-        font-size: 25px;
+        font-size: 15px;
         text-align: left;
-        padding-left:5%;
+        height: 40px;
     }
 }
 @media screen and (max-width: 700px) {
     .login{
         text-align: left;
-        padding-left:0;
+       
     }
 }
 </style>

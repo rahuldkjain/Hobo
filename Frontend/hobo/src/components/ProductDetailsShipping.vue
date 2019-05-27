@@ -20,9 +20,24 @@
                     </div>
                 </b-row>
             </div>
-            <!-- <div v-else>
-                
-            </div> -->
+            <div v-else>
+                <b-row id="products">
+                    <div >
+                        <img :src='getBuyNowProductImage[0]'>
+                        <div class="head">
+                            <h4> Name: {{getBuyNowProduct}}</h4>
+                            <!-- <h4> price: ₹ {{product.productPrice}}</h4>
+                            <h4>Quantity: {{getCartQuantity[index]}}</h4> -->
+                        </div>
+                        <div>
+                            <!-- <Quantity/> -->
+                            <h3> Total: {{getCartQuantity[index]*product.productPrice}}  </h3>
+                        </div>
+                    
+                        
+                    </div>
+                </b-row>
+            </div>
         </div>
         <div v-else-if="!userLoggedIn">
             <div v-if="buyNow">
@@ -186,7 +201,7 @@ export default {
                 console.log("total "+this.totalAmount)
             }
             else{
-                for(product in this.getCartProduct){
+                for(var product in this.getCartProduct){
                     this.totalAmount += product.productPrice * product.quantity
                 }
                 console.log("total" + this.totalAmount)

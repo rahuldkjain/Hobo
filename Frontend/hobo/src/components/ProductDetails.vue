@@ -94,7 +94,7 @@ export default {
             }
         },
         directCheckout(pid) {
-            if(this.getLoggedIn == false){
+           // if(this.getLoggedIn == false){
                 // console.log("not logged in")
                 var product_number = sessionStorage.length + 1
                 var productValues = {'pid':pid}
@@ -104,10 +104,10 @@ export default {
                 this.$store.dispatch('buyNowProduct', pid)
                 this.$store.dispatch('buyNowProductPrice', pid)
 
-            }
-            else{
+            //}
+           // else{
                 
-            }
+           // }
         }
     },
     watch: {

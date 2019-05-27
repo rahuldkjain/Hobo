@@ -77,7 +77,7 @@ export default {
             total: [],
             totalAmount: 0,
             orderDetails: [],
-            userLoggedIn: false,
+            userLoggedIn: false
         }
     },
     methods:{

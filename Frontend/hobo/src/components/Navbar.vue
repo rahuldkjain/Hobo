@@ -1,7 +1,7 @@
 <template>
     <div>
-  <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand><router-link to="/"><h2>Hobo</h2></router-link></b-navbar-brand>
+  <b-navbar toggleable="lg" type="dark" class="navbar">
+    <b-navbar-brand class="brand"><b-link href="/"><h2>Hobo</h2></b-link></b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
@@ -127,4 +127,9 @@ export default {
 #nav a .category {
     padding-top: 0;
 }
+.navbar{
+  background-color: #FDCA40;
+  
+}
+
 </style>
