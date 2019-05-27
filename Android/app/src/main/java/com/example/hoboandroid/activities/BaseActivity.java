@@ -235,6 +235,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 //TODO goto cart activity
 
+                //Toast.makeText(getApplicationContext(), "Here", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 startActivity(intent);
             }

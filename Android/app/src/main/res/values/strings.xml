@@ -34,4 +34,13 @@
     <string name="e_mail">E-mail</string>
     <string name="button">Button</string>
     <string name="user_host_address">host_address_user</string>
+    <string name="name">Name</string>
+    <string name="order_date">Order date</string>
+    <string name="delivery_date">Delivery date</string>
+    <string name="textview">TextView</string>
+    <string name="order_id">Order Id :</string>
+    <string name="order_price">Order Price :</string>
+    <string name="delivery_dateis">Delivery Date :</string>
+    <string name="order_dateis">Order Date :</string>
+    <string name="thank_you_for_shopping">Thank you for Shopping!</string>
 </resources>

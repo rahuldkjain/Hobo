@@ -46,14 +46,6 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         getProducts();
 
-
-
-
-
-
-
-
-
         //loadSlidingImages();
 
         //categoryList = new ArrayList<>();
@@ -157,6 +149,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+
 
         //TODO differentiate for category activity and product activity
         //int itemPosition = categoryRecyclerView.getChildLayoutPosition(view);
