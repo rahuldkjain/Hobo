@@ -124,8 +124,9 @@ export default {
         checkoutAmount: (context, total) => {
             context.commit('SET_TOTAL_AMOUNT', total)
         },
-        buyNowProduct: (context, pid) => {
+        buyNowProduct: (context, { pid, success }) => {
             productAPI.fetchBuyNow((result) => {
+                success(pid)
                 context.commit('SET_BUY_NOW_PRODUCT', result.data)
             }, pid)
         },

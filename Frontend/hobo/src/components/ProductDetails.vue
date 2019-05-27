@@ -101,13 +101,16 @@ export default {
                 sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
                 alert("direct checkout")
 
-                this.$store.dispatch('buyNowProduct', pid)
+                this.$store.dispatch('buyNowProduct', {pid: pid, success: this.removalSuccess})
                 this.$store.dispatch('buyNowProductPrice', pid)
 
             //}
            // else{
                 
            // }
+        },
+        removalSuccess(id) {
+            console.log('***', id)
         }
     },
     watch: {
