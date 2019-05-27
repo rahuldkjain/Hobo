@@ -23,7 +23,7 @@ public interface MerchantService {
 
 
     @GET("/merchant/getallmerchant")
-    Call<ApiResponse<MerchantProduct>> getMerchantProduct(@Query("merchantId") String merchantId,@Query("productId") String productId);
+    Call<ApiResponse<MerchantProduct>> getMerchantProduct(@Query("merchantId") String merchantId, @Query("productId") String productId);
 
     @GET("/merchantproduct/gettopproductmerchant")
     Call<ApiResponse<MerchantProductResponse>> getTopProductMerchant(@Query("productId") Integer productId);

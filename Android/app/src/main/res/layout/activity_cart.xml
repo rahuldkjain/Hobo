@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CartActivity">
-    <include layout="@layout/failure_layout"
-        android:id="@+id/cart_failure_layout"/>
+
+    <include
+        android:id="@+id/cart_failure_layout"
+        layout="@layout/failure_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cart_recycler_view"
@@ -23,6 +25,7 @@
 
     <Button
         android:id="@+id/cart_deleteAll"
+        style="@style/TextAppearance.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -51,9 +54,9 @@
         android:text="@string/price"
         android:textAlignment="gravity"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/cart_checkOut"
         app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cart_checkOut" />
 
     <TextView

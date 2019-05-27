@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,8 +13,8 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
         android:hint="@string/enter_email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guest_email" />
+
     <EditText
         android:id="@+id/guest_address2"
         android:layout_width="250dp"
@@ -46,6 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guest_address1" />
+
     <EditText
         android:id="@+id/guest_city"
         android:layout_width="250dp"
@@ -55,11 +56,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="15"
-        android:inputType="textPersonName"
         android:hint="@string/enter_city"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guest_address2"/>
+        app:layout_constraintTop_toBottomOf="@+id/guest_address2" />
+
     <EditText
         android:id="@+id/guest_pincode"
         android:layout_width="250dp"
@@ -68,12 +70,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="@string/enter_pincode"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guest_city"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/guest_city" />
 
     <Button
         android:id="@+id/guest_submit"

@@ -1,9 +1,6 @@
 package com.example.hoboandroid.models;
 
-import com.example.hoboandroid.models.category.Category;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class ApiResponse<T> {
 

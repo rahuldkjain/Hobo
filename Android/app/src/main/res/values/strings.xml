@@ -50,4 +50,6 @@
     <string name="enter_address_line_1">Enter Address Line 1</string>
     <string name="login_signup">Login/SignUp</string>
     <string name="submit">Submit</string>
+    <string name="address">Address :</string>
+    <string name="addres">Address</string>
 </resources>

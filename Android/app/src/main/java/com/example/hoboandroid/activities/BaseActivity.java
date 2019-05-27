@@ -1,64 +1,35 @@
 package com.example.hoboandroid.activities;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.hoboandroid.Api;
 import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
-import com.example.hoboandroid.adapters.CategoryAdapter;
-import com.example.hoboandroid.adapters.NavigationAdapter;
-import com.example.hoboandroid.fragments.CategoryFragment;
-import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.cart.CartItem;
 import com.example.hoboandroid.models.category.Category;
-import com.example.hoboandroid.models.category.ResponseCategory;
-import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.services.ProductService;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

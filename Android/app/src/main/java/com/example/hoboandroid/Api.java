@@ -11,8 +11,7 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
 public class Api {
 
-//  final static String BASE_URL = "http://127.0.0.1:8080/";
-  //final static String BASE_URL = "http://172.16.20.53:8080/";
+
     static Retrofit retrofit1=null;
 
     public static Retrofit getclient(String BASE_URL,String endPoint) {
@@ -23,7 +22,7 @@ public class Api {
             retrofit1 = new Retrofit.Builder()
                     .baseUrl(BASE_URL+endPoint)
                     .client(builder.build())
-                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return  retrofit1;
@@ -35,7 +34,7 @@ public class Api {
             retrofit1 = new Retrofit.Builder()
                     .baseUrl(string)
                     .client(new OkHttpClient())
-                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return  retrofit1;
