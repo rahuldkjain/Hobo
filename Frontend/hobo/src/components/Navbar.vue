@@ -23,16 +23,25 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
           <!-- <b-form-input size="sm" class="mr-sm-2" v-model="searchValue" @input="searchFunc" placeholder="Search"> -->
-            <Dropdown
+            <!-- <Dropdown
             :options="options"
             name="dropdown"
             :maxItem="10"
             
             v-on:filter="getDropdownValues"
             placeholder="Search">
-            </Dropdown>
+            </Dropdown> -->
+    
+                    <b-form-input
+                        size="4"  
+                        id="search"
+                        v-model="searchQuery"
+                        type="text"
+                        placeholder="Type to search">
+                    </b-form-input>
+
            
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          <b-button size="sm" class="my-2 my-sm-0" @click="search" type="submit">Search</b-button>
         </b-nav-form>
         
         </b-navbar-nav>
@@ -58,7 +67,7 @@ export default {
     name: 'Navbar',
     data() {
         return {
-            searchValue: '',
+            searchQuery: '',
             options: [{name: 'mehak'}],
             category: ''
         }
@@ -90,13 +99,28 @@ export default {
                 this.$store.dispatch('checkSearch',value)
             }
          
+        },
+        search(evt) {
+          evt.preventDefault()
+
+           this.$router.push("/search/"+this.searchQuery)
+          // var query = this.searchQuery
+          // console.log(query)
+          // this.$store.dispatch("checkSearch",query)
         }
     },
+    // watch: {
+    //     getSearchData: function(newValue, oldValue) {
+    //         console.log('search changed:', newValue)
+            
+    //         this.$router.push("/search/"+this.searchQuery)
+    //     }
+    // },
     
     components: {
         LoggedIn,
         Dropdown
-    }
+    },
 }
 </script>
 <style scoped>

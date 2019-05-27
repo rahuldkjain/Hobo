@@ -77,6 +77,11 @@ export default new Router({
             name: 'ViewProduct',
             path: '/viewproduct',
             component: ViewProduct
+        },
+        {
+            name: 'Search',
+            path: '/search/:query',
+            component: Search
         }
     ]
 

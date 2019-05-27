@@ -77,6 +77,13 @@ module.exports = {
                 pathRewrite: {
                     '^/order': ''
                 }
+            },
+            '/searchpage': {
+                target: 'http://172.16.20.84:8085/',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/searchpage': ''
+                }
             }
         }
     }

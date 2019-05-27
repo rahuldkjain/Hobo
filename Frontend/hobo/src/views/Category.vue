@@ -64,6 +64,12 @@ export default {
           this.$store.dispatch("categoryProducts",this.category)
 
     },
+    methods: {
+        goToProduct(pid) {
+            console.log("in goToProd function")
+            this.$router.push('/product/'+pid )
+        }
+    },
     components: {
         ProductItems
     }
