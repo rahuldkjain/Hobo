@@ -107,11 +107,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), apiResponse.getMessage(),
                                     Toast.LENGTH_SHORT).show();
+                            if(response.body().getMessage().equals("verification successful")){
 
-                            SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getSharedPreferences("Users",MODE_PRIVATE);
 
-                            (sharedPreferences.edit().putString("UserId",email.getText().toString())).apply();
-
+                                (sharedPreferences.edit()).putString("UserId",email.getText().toString()).commit();
+                            }
 
                             finish();
                             //TODO

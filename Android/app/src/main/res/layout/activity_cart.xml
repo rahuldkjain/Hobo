@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CartActivity">
+    <include layout="@layout/failure_layout"
+        android:id="@+id/cart_failure_layout"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/landing_page_image_recycler_view"
+        android:id="@+id/cart_recycler_view"
         android:layout_width="402dp"
         android:layout_height="453dp"
         android:layout_marginTop="60dp"
@@ -30,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/landing_page_image_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/cart_recycler_view" />
 
     <Button
         android:id="@+id/cart_checkOut"

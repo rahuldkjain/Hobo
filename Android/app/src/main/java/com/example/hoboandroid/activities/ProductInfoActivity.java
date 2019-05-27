@@ -55,7 +55,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_product_info);
         //Retrofit retrofit= Api.getclient("http://172.16.20.80:8080/","product/");
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.20.80:8080/")
+                .baseUrl(CONSTANTS.PRODUCT_BASE_URL)
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
@@ -95,7 +95,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
         Retrofit retrofit1 = new Retrofit.Builder()
-                .baseUrl("http://172.16.20.101:8080/")
+                .baseUrl(CONSTANTS.MERCHANT_BASE_URL)
                 .client(new OkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();

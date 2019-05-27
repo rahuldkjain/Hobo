@@ -30,7 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LandingPageActivity"></activity>
+        <activity android:name=".activities.LandingPageActivity"
+            android:launchMode="singleInstance"></activity>
     </application>
 
 </manifest>

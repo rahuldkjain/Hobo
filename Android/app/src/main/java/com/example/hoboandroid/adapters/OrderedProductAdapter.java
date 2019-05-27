@@ -53,7 +53,7 @@ public class OrderedProductAdapter extends RecyclerView.Adapter<OrderedProductAd
         }
         public void bind(OrderedProduct order){
 
-            TextView textView =  itemView.findViewById(R.id.orders_product_name);
+           // TextView textView =  itemView.findViewById(R.id.orders_product_name);
 
 
             //TODO bind the respective list item with a row in recycler view

@@ -8,6 +8,8 @@ import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.example.hoboandroid.services.CartService;
 import com.example.hoboandroid.services.OrderService;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -99,6 +102,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
         }
 
+        cartRecyclerView = findViewById(R.id.cart_recycler_view);
         cartItemAdapter = new CartItemAdapter(cartItemsList,CartActivity.this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -157,6 +161,16 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
                 }
             });
+        }
+        else{
+            FrameLayout frameLayout = findViewById(R.id.cart_failure_layout);
+            ImageView imageView = ((View)frameLayout).findViewById(R.id.oops_image_view);
+            TextView textView = ((View)frameLayout).findViewById(R.id.oops_text_view);
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+            deleteall.setVisibility(View.GONE);
+            checkout.setVisibility(View.GONE);
+            textView.setText(textView.getText().toString()+" Please Login to open cart");
         }
 
     }

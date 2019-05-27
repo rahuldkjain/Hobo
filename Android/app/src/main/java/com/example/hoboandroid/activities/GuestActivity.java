@@ -117,37 +117,38 @@ public class GuestActivity extends BaseActivity {
                             .enqueue(new Callback<OrderMe>() {
                                 @Override
                                 public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
-                                    Log.e("Inordersave", response.body().toString());
+                                    if(response.body() != null) {
+                                        Log.e("Inordersave", response.body().toString());
 
-                                    Retrofit retrofit4 = new Retrofit.Builder()
-                                            .baseUrl("http://172.16.20.84:8082/")
-                                            .client(new OkHttpClient())
-                                            .addConverterFactory(GsonConverterFactory.create())
-                                            .build();
-                                    OrderService orderService2 = retrofit4.create(OrderService.class);
-                                    Map<String, Object> jsonParams1 = new ArrayMap<>();
-                                    jsonParams1.put("orderId", response.body().getData().getOrderId());
-                                    jsonParams1.put("productId", intent.getIntExtra("ProductId", 1));
-                                    jsonParams1.put("merchantId", intent.getIntExtra("MerchantId", 2));
-                                    jsonParams1.put("quantity", "1");
-                                    jsonParams1.put("productPrice", intent.getIntExtra("ProductPrice", 8500));
+                                        Retrofit retrofit4 = new Retrofit.Builder()
+                                                .baseUrl("http://172.16.20.84:8082/")
+                                                .client(new OkHttpClient())
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+                                        OrderService orderService2 = retrofit4.create(OrderService.class);
+                                        Map<String, Object> jsonParams1 = new ArrayMap<>();
+                                        jsonParams1.put("orderId", response.body().getData().getOrderId());
+                                        jsonParams1.put("productId", intent.getIntExtra("ProductId", 1));
+                                        jsonParams1.put("merchantId", intent.getIntExtra("MerchantId", 2));
+                                        jsonParams1.put("quantity", "1");
+                                        jsonParams1.put("productPrice", intent.getIntExtra("ProductPrice", 8500));
 
-                                    RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
+                                        RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
 
-                                    orderService2.saveProduct(body1)
-                                            .enqueue(new Callback<OrderProductMe>() {
-                                                @Override
-                                                public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
-                                                    Log.e("Inorderproductsave", response.body().toString());
-                                                }
+                                        orderService2.saveProduct(body1)
+                                                .enqueue(new Callback<OrderProductMe>() {
+                                                    @Override
+                                                    public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
+                                                        Log.e("Inorderproductsave", response.body().toString());
+                                                    }
 
-                                                @Override
-                                                public void onFailure(Call<OrderProductMe> call, Throwable t) {
-                                                    Log.e("Inorderproductsave", "failure");
+                                                    @Override
+                                                    public void onFailure(Call<OrderProductMe> call, Throwable t) {
+                                                        Log.e("Inorderproductsave", "failure");
 
-                                                }
-                                            });
-
+                                                    }
+                                                });
+                                    }
 
                                 }
 

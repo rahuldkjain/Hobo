@@ -310,7 +310,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="40dp"
                 android:enabled="true"
-                android:text="Sign In"
+                android:text="Sign Up"
                 app:layout_constraintBottom_toTopOf="@+id/signup_loading"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
