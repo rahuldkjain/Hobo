@@ -125,13 +125,14 @@ public class ProductListFragment extends Fragment{
 
         SearchService service = retrofit.create(SearchService.class);
 
-        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<JSONObject>>() {
+        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<Object>>() {
             @Override
-            public void onResponse(Call<ApiResponse<JSONObject>> call, Response<ApiResponse<JSONObject>> response) {
+            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
                 Log.d("ProductListFragment","product list response "+response.body().toString());
 
                 if(response.body() != null) {
                     Log.d("ProductListFragment","inside response and not null - "+response.body().toString());
+                    response.body().getData();
                     /*if(productList.size()!= 0 ){
                         productRecyclerView.setAdapter(productItemAdapter);
                         productItemAdapter.notifyDataSetChanged();
@@ -146,7 +147,7 @@ public class ProductListFragment extends Fragment{
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<JSONObject>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
 
             }
         });
