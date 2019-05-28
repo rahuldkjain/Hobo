@@ -1,11 +1,12 @@
 package com.example.hoboandroid.models.cart;
 
+import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public class CartItem{
 
 	@SerializedName("productImage")
-	private String productImage;
+	private List<String> productImage;
 
 	@SerializedName("quantity")
 	private int quantity;
@@ -19,6 +20,9 @@ public class CartItem{
 	@SerializedName("userEmail")
 	private String userEmail;
 
+	@SerializedName("stock")
+	private int stock;
+
 	@SerializedName("productName")
 	private String productName;
 
@@ -28,11 +32,14 @@ public class CartItem{
 	@SerializedName("cartItemId")
 	private int cartItemId;
 
-	public void setProductImage(String productImage){
+	@SerializedName("merchantName")
+	private String merchantName;
+
+	public void setProductImage(List<String> productImage){
 		this.productImage = productImage;
 	}
 
-	public String getProductImage(){
+	public List<String> getProductImage(){
 		return productImage;
 	}
 
@@ -68,6 +75,14 @@ public class CartItem{
 		return userEmail;
 	}
 
+	public void setStock(int stock){
+		this.stock = stock;
+	}
+
+	public int getStock(){
+		return stock;
+	}
+
 	public void setProductName(String productName){
 		this.productName = productName;
 	}
@@ -92,6 +107,14 @@ public class CartItem{
 		return cartItemId;
 	}
 
+	public void setMerchantName(String merchantName){
+		this.merchantName = merchantName;
+	}
+
+	public String getMerchantName(){
+		return merchantName;
+	}
+
 	@Override
 	public String toString(){
 		return
@@ -101,9 +124,11 @@ public class CartItem{
 						",productId = '" + productId + '\'' +
 						",merchantId = '" + merchantId + '\'' +
 						",userEmail = '" + userEmail + '\'' +
+						",stock = '" + stock + '\'' +
 						",productName = '" + productName + '\'' +
 						",productPrice = '" + productPrice + '\'' +
 						",cartItemId = '" + cartItemId + '\'' +
+						",merchantName = '" + merchantName + '\'' +
 						"}";
 	}
 }

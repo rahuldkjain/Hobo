@@ -1,5 +1,6 @@
 package com.example.hoboandroid.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.Cart;
 import com.example.hoboandroid.models.SubCategory;
 import com.example.hoboandroid.models.cart.CartItem;
+import com.example.hoboandroid.models.order.OrderMe;
+import com.example.hoboandroid.models.order.OrderProductMe;
 import com.example.hoboandroid.services.CartService;
 import com.example.hoboandroid.services.OrderService;
 
@@ -30,6 +33,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +53,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
     public CartItemAdapter cartItemAdapter;
     RecyclerView cartRecyclerView;
     CartItem cartItem;
-    TextView totalPrice;
+    TextView totalPriceTextView;
     Button deleteall,checkout;
 
     @Override
@@ -57,7 +61,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        totalPrice = findViewById(R.id.cart_price);
+        totalPriceTextView = findViewById(R.id.cart_price);
         deleteall = findViewById(R.id.cart_deleteAll);
         checkout = findViewById(R.id.cart_checkOut);
 
@@ -188,6 +192,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                         Log.d("CartActivity", "CartItems list " + cartItemsList.toString());
 
                         cartRecyclerView.setAdapter(cartItemAdapter);
+                        calculateTotalPrice();
 
                     }
                     else {
@@ -215,19 +220,29 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
+    public void calculateTotalPrice(){
+
+        float totalPrice = 0.0f;
+        for(int i=0;i<cartItemsList.size();i++) {
+            totalPrice=totalPrice+cartItemsList.get(i).getProductPrice()*cartItemsList.get(i).getQuantity();
+        }
+
+        totalPriceTextView.setText(""+totalPrice);
+
+    }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.cart_deleteAll){
-            deleteAllCartItems();
+            //deleteAllCartItems();
         }
         else if(v.getId() == R.id.cart_checkOut){
-
+            checkout();
         }
 
     }
 
-    private void deleteAllCartItems() {
+   /* private void deleteAllCartItems() {
 
         if(isLoggedIn()){
 
@@ -248,7 +263,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                 OrderService orderService = retrofit.create(OrderService.class);
 
                 orderService.deleteCartItem(cartItem.getCartItemId())
-                        .enqueue(new Callback<ApiResponse<CartItem>>() {
+                        .enqueue(new Callback<ApiResponse<C>>() {
                             @Override
                             public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
                                 if(response.body() != null && response.body().getData()!=null){
@@ -274,15 +289,111 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
-
-    public void addToTotalPrice(int i) {
+*/
+    /*public void addToTotalPrice(int i) {
         try {
-            i += Integer.parseInt(totalPrice.getText().toString());
-            totalPrice.setText(i);
+            i += Integer.parseInt(totalPriceTextView.getText().toString());
+            totalPriceTextView.setText(i);
             Log.e("CartActivity","addToTotal"+i);
         }catch (Exception exception){
             if(exception != null)
                 Log.e("CartActivity",exception.toString());
         }
+    }
+*/
+    public void checkout(){
+        float totalPrice=0;
+        // ArrayList<CartItem>  cartItemList= cartItems.getParcelableArrayList("cartItems");
+        //final List<CartItem> cartItemList=cartItems.getParcelableArrayList("cartItems");
+
+        final LocalDate orderDate=java.time.LocalDate.now();
+        final LocalDate deliveryDate=orderDate.plusDays(5);
+
+        Retrofit retrofit3 = new Retrofit.Builder()
+                .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        OrderService orderService1 = retrofit3.create(OrderService.class);
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("address1", "Chirala");
+        jsonParams.put("address2", "Hyd");
+        jsonParams.put("city", "Hyd");
+        jsonParams.put("deliveryDate", deliveryDate);
+        jsonParams.put("orderDate", orderDate);
+        for(int i=0;i<cartItemsList.size();i++) {
+            totalPrice=totalPrice+cartItemsList.get(i).getProductPrice();
+        }
+        jsonParams.put("orderPrice", totalPrice);
+        jsonParams.put("pincode", 501505);
+        jsonParams.put("userEmailId", getUserEmailId());
+        if (!isLoggedIn())
+            jsonParams.put("userId", 0);
+
+        Log.d("GuestActivity", "Json Value " + jsonParams.toString());
+
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+        orderService1.saveOrder(body)
+                .enqueue(new Callback<OrderMe>() {
+                    @Override
+                    public void onResponse(Call<OrderMe> call, Response<OrderMe> response) {
+                        if (response.body() != null) {
+                            //Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("GuestActivity", "Order save response body - " + response.body().toString());
+
+                            Toast.makeText(getApplicationContext(), "Order placed", Toast.LENGTH_SHORT).show();
+
+                            for(int i=0;i<cartItemsList.size();i++) {
+
+                                CartItem cartItemExample = null;
+                                if(i ==cartItemsList.size()-1){
+                                    cartItemExample = cartItemsList.get(i);
+                                }
+                                Retrofit retrofit4 = new Retrofit.Builder()
+                                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                                        .client(new OkHttpClient())
+                                        .addConverterFactory(GsonConverterFactory.create())
+                                        .build();
+                                OrderService orderService2 = retrofit4.create(OrderService.class);
+                                Map<String, Object> jsonParams1 = new ArrayMap<>();
+                                jsonParams1.put("orderId", response.body().getData().getOrderId());
+                                jsonParams1.put("productId",cartItemsList.get(i).getProductId());
+                                jsonParams1.put("merchantId", cartItemsList.get(i).getMerchantId());
+                                jsonParams1.put("quantity", cartItemsList.get(i).getQuantity());
+                                jsonParams1.put("productPrice", cartItemsList.get(i).getProductPrice()*cartItemsList.get(i).getQuantity());
+
+                                RequestBody body1 = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams1)).toString());
+
+
+                                orderService2.saveProduct(body1)
+                                        .enqueue(new Callback<OrderProductMe>() {
+                                            @Override
+                                            public void onResponse(Call<OrderProductMe> call, Response<OrderProductMe> response) {
+                                                Log.d("GuestActivity", "OrderedProducts - " + response.body().toString());
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<OrderProductMe> call, Throwable t) {
+                                                Log.e("GuestActivity", "OrderedProducts failure");
+
+                                            }
+                                        });
+                            }
+
+                            startActivity(new Intent(getApplicationContext(),CheckoutPromptActivity.class));
+                            finish();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderMe> call, Throwable t) {
+                        Log.e("inorder save", "failed");
+                    }
+                });
+
+
     }
 }

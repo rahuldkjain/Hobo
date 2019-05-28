@@ -381,7 +381,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
             bundle.putString("EmailId",getUserEmailId());
             bundle.putInt("ProductId",productId);
-            bundle.putInt("MerchantId",merchantid);
+            bundle.putInt("MerchantId",merchantProductObject.get(merchantsListSpinner.getSelectedItemPosition()).getMerchantId());
             bundle.putString("ProductName",productName.getText().toString());
             bundle.putString("ProductImage",productStringImage);
             bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));

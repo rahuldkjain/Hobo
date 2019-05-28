@@ -47,8 +47,13 @@ public interface OrderService {
     Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody body);
 
     @PUT("/cart")
-    Call<ApiResponse<CartItem>> updateCartItem(CartItem cartItem);
+    Call<ApiResponse<CartItem>> updateCartItem(@Body RequestBody body);
 
     @DELETE("/cart")
-    Call<ApiResponse<CartItem>> deleteCartItem(Integer cartItemId);
+    Call<ApiResponse<String>> deleteCartItem(@Query("cartItemId") Integer cartItemId);
+
+
+    @DELETE("/cart/deleteallcart")
+    Call<ApiResponse<String>> deleteAllCartItem(@Query("emailId") Integer emailId);
+
 }
