@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class ProductServiceImplementation implements ProductServiceImpl {
 
     @Autowired
@@ -55,6 +54,7 @@ public class ProductServiceImplementation implements ProductServiceImpl {
     }
 
     @Override
+    @Transactional
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = new Product();
         BeanUtils.copyProperties(productDTO, product);
@@ -76,6 +76,7 @@ public class ProductServiceImplementation implements ProductServiceImpl {
     }
 
     @Override
+    @Transactional
     public ProductDTO deleteProduct(String id) {
         Product product = productRepository.findOne(id);
         productRepository.delete(product);
@@ -85,6 +86,7 @@ public class ProductServiceImplementation implements ProductServiceImpl {
     }
 
     @Override
+    @Transactional
     public ProductDTO putProduct(ProductDTO productDTO) {
         Product product = new Product();
         BeanUtils.copyProperties(productDTO, product);
@@ -123,11 +125,5 @@ public class ProductServiceImplementation implements ProductServiceImpl {
             resultAray.add(((JSONObject)object).get("_source"));
         }
         return resultAray;
-    }
-
-    @Override
-    public List<List<ProductDTO>> result(String query) {
-
-        return null;
     }
 }

@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -85,9 +86,10 @@ public class CartController {
     }
 
     @DeleteMapping("/deleteallcart")
-    public JSONObject delteCart(@RequestParam String emailId){
+    public JSONObject deleteCarts(@RequestParam String emailId){
         try {
-            List<CartEntity> cartEntities=cartService.deleteCarts(emailId);
+            List<CartEntity> cartEntities= new ArrayList<>();
+            cartService.deleteCarts(emailId);
             JSONObject response=getJSONResponse(cartEntities);
             return response;
         }

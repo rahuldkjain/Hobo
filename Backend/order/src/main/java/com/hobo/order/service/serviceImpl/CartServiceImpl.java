@@ -94,24 +94,25 @@ public class CartServiceImpl implements CartService {
             UserCartDTO userCartDTO = new UserCartDTO();
             RestTemplate restTemplate = new RestTemplate();
             final String url = "http://localhost:8083/merchant/getnameandstock/"+it.getMerchantId()+"/"+it.getProductId();
-            ResponseEntity<JSONObject> response
-                    = restTemplate.getForEntity(url, JSONObject.class);
+            ResponseEntity<JSONObject> response = restTemplate.getForEntity(url, JSONObject.class);
             BeanUtils.copyProperties(it,userCartDTO);
-            userCartDTO.setMerchantName((String) response.getBody().get("name"));
-            userCartDTO.setStock((Integer) response.getBody().get("stock"));
-            resultArray.add(userCartDTO);
+            if(response.getBody()!=null) {
+                userCartDTO.setMerchantName((String) response.getBody().get("name"));
+                userCartDTO.setStock((Integer) response.getBody().get("stock"));
+                resultArray.add(userCartDTO);
+            }
         }
         return resultArray;
     }
 
     @Override
     @Transactional
-    public List<CartEntity> deleteCarts(String emailId) {
-        List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
+    public void deleteCarts(String emailId) {
+        /*ArrayList<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
         for (CartEntity cartEntity:cartEntities) {
             cartRepository.delete(cartEntity);
-        }
-        return cartEntities;
+        }*/
+        //cartRepository.delete(emailId);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.hobo.user.controller;
 
 import com.hobo.user.exceptions.merchantuser.MerchantUserAlreadyExists;
 import com.hobo.user.exceptions.merchantuser.MerchantUserNotFound;
+import com.hobo.user.model.MerchantProfileDTO;
 import com.hobo.user.model.MerchantUserDTO;
 import com.hobo.user.service.MerchantUserService;
 import org.json.simple.JSONObject;
@@ -45,15 +46,15 @@ public class MerchantUserController {
     }
 
     @PutMapping(value="/merchantuser", consumes = {"application/json"})
-    public JSONObject updateUser(@RequestBody MerchantUserDTO merchantUserDTO) throws MerchantUserNotFound {
-        MerchantUserDTO result = merchantUserService.putUser(merchantUserDTO);
+    public JSONObject updateUser(@RequestBody MerchantProfileDTO merchantProfileDTO) throws MerchantUserNotFound {
+        MerchantProfileDTO result = merchantUserService.putUser(merchantProfileDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "updating successful");
         return response;
     }
 
     @DeleteMapping("/merchantuser")
-    public JSONObject updateUser(@RequestParam String emailId) {
+    public JSONObject deleteUser(@RequestParam String emailId) {
         MerchantUserDTO merchantUserDTO = merchantUserService.deleteUser(emailId);
         JSONObject response = getJSONResponse(merchantUserDTO);
         response.replace("message", "success", "deleting successful");

@@ -9,7 +9,7 @@ public class OrderEmail {
 
     public void sendEmail(String email, String date, Float price) throws IOException {
         try {
-            SendGrid sg = new SendGrid("Key hai yaaha par chupi huyi hai");
+            SendGrid sg = new SendGrid("Arre Ha bhai yahi chupi huyi hai");
             Request request = new Request();
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");

@@ -3,6 +3,7 @@ package com.hobo.user.service;
 import com.hobo.user.entity.MerchantUserEntity;
 import com.hobo.user.exceptions.merchantuser.MerchantUserAlreadyExists;
 import com.hobo.user.exceptions.merchantuser.MerchantUserNotFound;
+import com.hobo.user.model.MerchantProfileDTO;
 import com.hobo.user.model.MerchantUserDTO;
 
 public interface MerchantUserService {
@@ -11,7 +12,7 @@ public interface MerchantUserService {
 
     MerchantUserDTO deleteUser(String email);
 
-    MerchantUserDTO putUser(MerchantUserDTO userDTO) throws MerchantUserNotFound;
+    MerchantProfileDTO putUser(MerchantProfileDTO merchantProfileDTO) throws MerchantUserNotFound;
 
     MerchantUserDTO saveUser(MerchantUserDTO userDTO) throws MerchantUserAlreadyExists;
 

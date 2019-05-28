@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
 import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductAlreadyExists;
 import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductNotFound;
-import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.service.MerchantProductService;
 import com.hobo.merchant.service.MerchantService;
@@ -98,14 +97,14 @@ public class MerchantProductController {
     @GetMapping("/productmerchants")
     public JSONObject getAllMerchants(@RequestParam Integer productId) throws MerchantProductNotFound{
         try {
-            List<MerchantProduct> merchantProducts=merchantProductService.getAllMerchants(productId);
+            List<MerchantProductDTO> merchantProducts=merchantProductService.getAllMerchants(productId);
             //Object merchantProducts = merchantProductService.getAllMerchants(productId);
             String name;
             JSONParser parser = new JSONParser();
             JSONObject data = new JSONObject();
             JSONArray dataArray = new JSONArray();
             ObjectMapper mapper = new ObjectMapper();
-            for (MerchantProduct m:merchantProducts) {
+            for (MerchantProductDTO m:merchantProducts) {
                 name = merchantService.getName(m.getMerchantId());
                 data = (JSONObject)parser.parse(mapper.writeValueAsString(m));
                 data.put("merchantName",name);
@@ -141,7 +140,7 @@ public class MerchantProductController {
     @GetMapping("/getallproduct")
     public JSONObject read(@RequestParam Integer merchantId) throws MerchantProductNotFound{
         try {
-            List<MerchantProduct> merchantProducts=merchantProductService.readMerchantProductById(merchantId);
+            List<MerchantProductDTO> merchantProducts=merchantProductService.readMerchantProductById(merchantId);
             JSONObject response=getJSONResponse(merchantProducts);
             return response;
         }
@@ -179,6 +178,12 @@ public class MerchantProductController {
     @GetMapping("/checkqty/{id}/{prodid}/{qty}")
     public String checkQuantity(@PathVariable final int id, @PathVariable final int qty,@PathVariable final int prodid) {
         String result = merchantProductService.checkQuantity(id,qty,prodid);
+        return result;
+    }
+
+    @GetMapping("/confirmqty/{id}/{prodid}/{qty}")
+    public String confirmQuantity(@PathVariable final int id, @PathVariable final int qty,@PathVariable final int prodid) {
+        String result = merchantProductService.confirmQuantity(id,qty,prodid);
         return result;
     }
 

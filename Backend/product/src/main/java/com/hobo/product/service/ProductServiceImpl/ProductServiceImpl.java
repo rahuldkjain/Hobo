@@ -10,9 +10,13 @@ import com.hobo.product.repository.ProductRepository;
 import com.hobo.product.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.json.simple.JSONObject;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,25 +47,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductDTO createProduct(ProductDTO productDTO) throws ProductAlreadyExists {
         if(repository.exists(productDTO.getProductId())){
             JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content Already Exists");
-            error.put("message", "Content you are inserting is already present in the database");
-            throw new ProductAlreadyExists(error);
+            throw new ProductAlreadyExists("Product already Exists");
         }
         Product product = new Product();
         BeanUtils.copyProperties(productDTO, product);
         Product result = repository.save(product);
 
-        ProductDTO resultDTO = new ProductDTO();
+        RestTemplate restTemplate = new RestTemplate();
+        final String url = "http://localhost:8085/search";
+        HttpEntity<ProductDTO> payload = new HttpEntity<>(productDTO);
+        ProductDTO resultDTO = restTemplate.postForObject(url, payload, ProductDTO.class);
         BeanUtils.copyProperties(result, resultDTO);
         return resultDTO;
     }
 
     @Override
+    @Transactional
     public ProductDTO updateProduct(ProductDTO productDTO) {
         Product product = new Product();
         BeanUtils.copyProperties(productDTO, product);
@@ -76,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductDTO deleteProduct(String productId) throws ProductNotFound {
         if(!repository.exists(productId)){
             JSONObject error = new JSONObject();

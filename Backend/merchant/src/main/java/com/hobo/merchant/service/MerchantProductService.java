@@ -33,4 +33,6 @@ public interface MerchantProductService {
     void calculateScore(int indexx);
 
     String checkQuantity(int id, int qty, int prodid);
+
+    String confirmQuantity(int id, int qty, int prodid);
 }

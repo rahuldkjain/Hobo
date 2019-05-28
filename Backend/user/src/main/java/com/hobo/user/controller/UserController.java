@@ -4,6 +4,7 @@ package com.hobo.user.controller;
 import com.hobo.user.exceptions.user.UserAlreadyExists;
 import com.hobo.user.exceptions.user.UserNotFound;
 import com.hobo.user.model.UserDTO;
+import com.hobo.user.model.UserProfileDTO;
 import com.hobo.user.service.UserService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class UserController {
     }
 
     @PutMapping(value="/user", consumes = {"application/json"})
-    public JSONObject updateUser(@RequestBody UserDTO userDTO) throws UserNotFound {
-        UserDTO result = userService.putUser(userDTO);
+    public JSONObject updateUser(@RequestBody UserProfileDTO userProfileDTO) throws UserNotFound {
+        UserProfileDTO result = userService.putUser(userProfileDTO);
         JSONObject response = getJSONResponse(result);
         response.replace("message", "success", "updating successful");
         return response;

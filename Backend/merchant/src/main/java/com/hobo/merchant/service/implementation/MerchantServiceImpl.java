@@ -100,7 +100,9 @@ public  class MerchantServiceImpl implements MerchantService {
         Merchant merchant = merchantRepository.findOne(merchantId);
         MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(productId,merchantId);
         NameAndStockDTO result = new NameAndStockDTO();
-        result.setName(merchant.getMerchantName());
+        if(merchant !=null)
+            result.setName(merchant.getMerchantName());
+        if (merchantProduct!=null)
         result.setStock(merchantProduct.getStock());
         return result;
     }
