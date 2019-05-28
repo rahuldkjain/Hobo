@@ -202,7 +202,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 String searchText = searchEditText.getText().toString();
                 if (!searchText.equals("")) {
                     Intent intent  =  new Intent(getApplicationContext(),ProductListActivity.class);
-                    intent.putExtra("type","Search");
+                    intent.putExtra("type","SearchQuery");
                     intent.putExtra("SearchQuery",searchText);
                     startActivity(intent);
 

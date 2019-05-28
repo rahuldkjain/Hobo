@@ -28,6 +28,15 @@ public class MerchantProduct {
     @SerializedName("indexx")
     private int indexx;
 
+    @SerializedName("merchantName")
+    private String merchantName;
+
+    public void setMerchantScore(float merchantScore) {
+        this.merchantScore = merchantScore;
+    }
+
+
+
     public void setProductId(int productId){
         this.productId = productId;
     }
@@ -90,6 +99,14 @@ public class MerchantProduct {
 
     public int getIndexx(){
         return indexx;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     @Override

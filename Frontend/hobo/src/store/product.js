@@ -18,7 +18,8 @@ export default {
         buyNowProductQuantity: 1,
         buyNowProductMerchantId: '',
         UserCartItem: {},
-        UserCartItems: []
+        UserCartItems: [],
+        cartProductDetails: []
     },
     getters: {
         getProduct: (state) => state.product,
@@ -37,7 +38,8 @@ export default {
         getBuyNowProductQuantity: (state) => state.buyNowProductQuantity,
         getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId,
         getUserCartItem: (state) => state.UserCartItem,
-        getUserCartItems: (state) => state.UserCartItems
+        getUserCartItems: (state) => state.UserCartItems,
+        getCartProductDetails: (state) => state.cartProductDetails
 
     },
     mutations: {
@@ -48,16 +50,19 @@ export default {
             state.productDetails = result.data
         },
         SET_CART_PRODUCT: (state, result) => {
+            state.cartProduct = []
             if (localStorage.getItem('loggedIn') == 'false') {
                 state.cartProduct.push(result.data.productName)
                 state.cartProductId.push(result.data.productId)
                 state.cartImage.push(result.data.productImage)
             } else {
                 for (var index = 0; index < result.data.length; index++) {
-                    state.cartProduct.push(result.data[index])
-                        //state.cartProduct.push(result.data[index].productName)
-                    state.cartProductId.push(result.data[index].productId)
-                    state.cartImage.push(result.data[index].productImage)
+                    if (!state.cartProduct.includes(result.data[index])) {
+                        state.cartProduct.push(result.data[index])
+                            //state.cartProduct.push(result.data[index].productName)
+                        state.cartProductId.push(result.data[index].productId)
+                        state.cartImage.push(result.data[index].productImage)
+                    }
                 }
             }
         },
@@ -66,6 +71,11 @@ export default {
             if (!state.cartProductPrice.includes(result.data[0].price)) {
                 state.cartProductPrice.push(result.data[0].price)
                 state.cartProductMerchantId.push(result.data[0].merchantId)
+            }
+        },
+        SET_CART_PRODUCT_DETAILS: (state, result) => {
+            if (!state.cartProductDetails.includes(result.data)) {
+                state.cartProductDetails.push(result.data)
             }
         },
         SET_CART_QUANTITY: (state, result) => {
@@ -93,7 +103,11 @@ export default {
             state.UserCartItems.push(result.data)
         },
         SET_REMOVE_USER_CART_ITEMS: (state, result) => {
-            state.cartProduct.pop(result.data)
+            for (var index = 0; index < state.cartProduct.length; index++) {
+                if (state.cartProduct[index].productId == result.data.productId) {
+                    state.cartProduct.splice(index, 1)
+                }
+            }
         }
     },
     actions: {
@@ -115,6 +129,11 @@ export default {
         cartProductPrice: (context, pid) => {
             productAPI.getProductDetails((result) => {
                 context.commit('SET_CART_PRODUCT_PRICE', result.data)
+            }, pid)
+        },
+        cartProductDetails: (context, pid) => {
+            productAPI.getProductDetails((result) => {
+                context.commit('SET_CART_PRODUCT_DETAILS', result.data)
             }, pid)
         },
         cartQuantity: (context, quantity) => {

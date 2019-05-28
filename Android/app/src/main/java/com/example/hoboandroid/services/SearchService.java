@@ -3,6 +3,8 @@ package com.example.hoboandroid.services;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.product.Product;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -12,7 +14,7 @@ import retrofit2.http.Query;
 public interface SearchService {
 
     @GET("/search/suggestions")
-    Call<ApiResponse<List<Product>>> searchQuery(@Query("query") String query);
+    Call<ApiResponse<Object>> searchQuery(@Query("query") String query);
 
 
     @GET("/suggestions")

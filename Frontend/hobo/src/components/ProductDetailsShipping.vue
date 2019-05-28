@@ -61,7 +61,7 @@
                 <div class="buyNowItem" id="getBuyNowProductId">
                     <img :src='getBuyNowProductImage'>
                     <div class="head">
-                        <h4> Name: bn{{getBuyNowProduct}}</h4>
+                        <h4> Name: {{getBuyNowProduct}}</h4>
                         <h4> price: {{getBuyNowProductPrice ? getBuyNowProductPrice : '' }}</h4>
                         <h4>Quantity: {{getBuyNowProductQuantity}}</h4>
                     </div>
@@ -170,6 +170,8 @@ export default {
             total: [],
             buyNow: false,
             userLoggedIn: false,
+            cartItem: [],
+            quantity: []
         }
     },
     computed: {
@@ -205,7 +207,21 @@ export default {
                     this.totalAmount += product.productPrice * product.quantity
                 }
                 console.log("total" + this.totalAmount)
+                var index = 0
+                 this.getCartProduct.forEach(value => {
+                var payload = {
+                    productId: value.productId,
+                    content: value
+                }
+                this.cartItem.push(payload)
+                this.quantity.push(this.getCartQuantity[index])
+                index++
+
+                // console.log("cart item "+this.cartItem)
+            })
+                
             }
+            console.log("mounteddd "+this.cartItem)
             
         }
             
