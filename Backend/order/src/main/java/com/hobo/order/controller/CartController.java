@@ -87,7 +87,7 @@ public class CartController {
     @DeleteMapping("/deleteallcart")
     public JSONObject delteCart(@RequestParam String emailId){
         try {
-            List<CartEntity> cartEntities=cartService.deleteCart(emailId);
+            List<CartEntity> cartEntities=cartService.deleteCarts(emailId);
             JSONObject response=getJSONResponse(cartEntities);
             return response;
         }
