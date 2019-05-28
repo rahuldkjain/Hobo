@@ -33,7 +33,6 @@ public class ProductListActivity extends BaseActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("type",intent.getStringExtra("type"));
-        ProductListFragment productsFragment = new ProductListFragment();
         //based on which we should search
         switch (intent.getStringExtra("type")){
             case "SearchQuery":
@@ -45,8 +44,11 @@ public class ProductListActivity extends BaseActivity {
                 break;
         }
 
-
+        ProductListFragment productsFragment = new ProductListFragment();
         productsFragment.setArguments(bundle);
+
+
+
         getSupportFragmentManager().beginTransaction()
                 /*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*/
                 .add(R.id.fragment_category_product, productsFragment, "ProductsFragment").commit();

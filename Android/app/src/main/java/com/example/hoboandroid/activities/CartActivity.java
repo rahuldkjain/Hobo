@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +61,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         deleteall = findViewById(R.id.cart_deleteAll);
         checkout = findViewById(R.id.cart_checkOut);
 
+        cartButton.setVisibility(View.GONE);
 
 
         cartRecyclerView = findViewById(R.id.cart_recycler_view);

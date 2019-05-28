@@ -22,8 +22,6 @@ public interface MerchantService {
     Call<ApiResponse<List<MerchantProduct>>> getAllMerchants(@Query("productId") Integer productId);
 
 
-    @GET("/merchant/getallmerchant")
-    Call<ApiResponse<MerchantProduct>> getMerchantProduct(@Query("merchantId") String merchantId, @Query("productId") String productId);
 
     @GET("/merchantproduct/gettopproductmerchant")
     Call<ApiResponse<MerchantProductResponse>> getTopProductMerchant(@Query("productId") Integer productId);
