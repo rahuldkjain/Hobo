@@ -101,6 +101,7 @@ export default {
         },
         SET_REMOVE_USER_CART_ITEMS: (state, result) => {
             state.cartProduct.pop(result.data)
+           // state.cartProductDetails.pop(result.data)
         }
     },
     actions: {
