@@ -3,12 +3,13 @@
     <b-card bg-variant="light">
      
             <b-row id="products" v-for="(product,index) in cartItem" :key="index">
-                <div class="cartItem" id="getCartProductId[index]">
-                    <img :src='product.content.image[index]'>
+                <div class="cartItem">
+                    <img :src='product.content.productImage'>
                     <div class="head">
-                        <h3> name: {{product.content.name}}</h3>
-                        <h3> price: {{cartItemDetails[index] ? cartItemDetails[index].price : '' }}</h3>
+                        <h3> name: {{product.content.productName}}</h3>
 
+                        <h3 v-if="userLoggedIn"> price: {{product? product.content.productPrice : '' }}</h3>
+                        <h3 v-if="!userLoggedIn"> price: {{cartItemDetails[index] ? cartItemDetails[index].price : '' }}</h3>
                     </div>
                     <div class="quantity">
                         <!-- <Quantity/> -->
@@ -29,38 +30,6 @@
                     </div>
                 </div>
             </b-row>
-       
-        <!-- <div v-else>
-            <b-row id="products" v-for="(product,index) in getCartProduct" :key="index">
-                <div class="cartItem" id="getCartProductId[index]">
-                    <img :src='getCartImage[index]'>
-                    <div class="head">
-                        <h3> name: {{product.productName}}</h3>
-                        <h3> price: ₹ {{product.productPrice}}</h3>
-
-                    </div>
-                    <div class="quantity">
-                        <Quantity/> -->
-
-                        <!-- <b-form-group>
-                         <b-form-select v-model="quantity[index]" class="mb-3">
-                            <option :value="null">Quantity</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </b-form-select>
-                
-                        </b-form-group>
-
-                    </div>
-                    <div class="button">
-                        <b-button @click="removeCartItem(product.productId,index)" variant="danger">Remove Item</b-button>
-                    </div>
-                </div>
-            </b-row>
-        </div> -->
-        
-        
         <b-button class="success" @click="checkoutFunction" variant="danger">Checkout</b-button>
     </b-card>
 
@@ -73,7 +42,7 @@ export default {
     name: 'CartItem',
     data() {
         return {
-            quantity: ["1","1","1 "],
+            quantity: [],
             total: [],
             totalAmount: 0,
             orderDetails: [],
@@ -114,7 +83,12 @@ export default {
 
             // if(!this.userLoggedIn){
                 for(var i=0;i<this.getCartQuantity.length;i++){
-                    var totalPrice = this.quantity[i]*this.cartItemDetails[i].content.price
+                    if(this.userLoggedIn){
+                        var totalPrice = this.quantity[i]*this.cartItem[i].content.productPrice
+                    }
+                    else{
+                        var totalPrice = this.quantity[i]*this.cartItemDetails[i].content.price
+                    }
                     this.total.push(totalPrice)
                  }
             // }
@@ -139,9 +113,9 @@ export default {
                 dummyProduct["userId"] = JSON.parse(localStorage.getItem("userDetails")).emailId
                 dummyProduct["pid"] = this.cartItem[index].productId
                 dummyProduct["pname"] = this.cartItem[index].content.productName
-                dummyProduct["price"] = this.cartItemDetails[index].content.price
+                dummyProduct["price"] = this.cartItem[index].content.productPrice
                 dummyProduct["image"] = this.cartItem[index].content.image
-                dummyProduct["merchantId"] = this.cartItemDetails[index].content.merchantId
+                dummyProduct["merchantId"] = this.cartItem[index].content.merchantId
 
                 this.orderDetails.push(dummyProduct)
             }
@@ -174,15 +148,21 @@ export default {
     watch: {
         getCartProduct: function(newValue, oldValue){
             console.log("getCartProduct: " + this.getCartProduct)
+            // let unique = [...new Set(newValue)]
             //window.location.reload()
             this.cartItem = []
+            console.log("in watch before for "+this.cartItem.length)
             newValue.forEach(value => {
                 var payload = {
                     productId: value.productId,
                     content: value
                 }
                 this.cartItem.push(payload)
+                this.quantity.push("1")
             })
+            console.log("in watch"+this.cartItem.length)
+            
+            
         },
         getCartProductDetails: function(newValue, oldValue){
             this.cartItemDetails = []
@@ -194,8 +174,10 @@ export default {
                 this.cartItemDetails.push(payload)
             })
         },
+
     },
     mounted() {
+        this.cartItem = []
         console.log("in mounted ")
         if(localStorage.getItem("loggedIn") == "false"){
             var keys = Object.keys(sessionStorage)
@@ -212,10 +194,7 @@ export default {
             this.userLoggedIn = true
             var emailId = JSON.parse(localStorage.getItem("userDetails")).emailId
             this.$store.dispatch('cartItems', emailId)
-            this.getCartProduct.forEach(product =>{
-                this.$store.dispatch('cartProduct', product.productId)
-                this.$store.dispatch('cartProductDetails', product.productId)
-            })
+            
         }
     }
 }

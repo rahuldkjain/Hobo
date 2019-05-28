@@ -108,6 +108,8 @@ export default {
           pincode:''
           
         },
+        cartItem: [],
+        cartItemDetails: [],
         logIn: false,
         show: true
       }
