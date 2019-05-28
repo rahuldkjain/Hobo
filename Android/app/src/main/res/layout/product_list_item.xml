@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:background="@color/white"
     android:padding="2dp">
+
     <ImageView
         android:id="@+id/product_list_image"
         android:layout_width="104dp"
@@ -16,19 +18,21 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/product_list_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="item"
-        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@id/product_list_image"
+        app:layout_constraintStart_toEndOf="@+id/product_list_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -39,7 +43,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="Price"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
@@ -51,12 +55,12 @@
         android:layout_width="68dp"
         android:layout_height="21dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:text="Rating"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/product_list_image" />
+        app:layout_constraintStart_toEndOf="@+id/product_list_image"
+        app:layout_constraintTop_toBottomOf="@+id/product_list_price" />
 
     <TextView
         android:id="@+id/product_list_rating"
@@ -65,15 +69,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Rating"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/product_list_rate_text"
-        app:layout_constraintTop_toBottomOf="@+id/product_list_price"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintTop_toBottomOf="@+id/product_list_price" />
 
     <TextView
         android:id="@+id/textView7"
@@ -82,8 +83,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:text="Rs."
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/product_list_price"
         app:layout_constraintStart_toEndOf="@+id/product_list_image" />
+
 
 
 </android.support.constraint.ConstraintLayout>

@@ -5,7 +5,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity"
+    android:background="@color/lightOrange">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/text_input_layout_email"
@@ -64,6 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="24dp"
+        android:background="@color/orange"
         android:layout_marginTop="72dp"
         android:layout_marginEnd="24dp"
         android:enabled="true"
@@ -88,6 +90,7 @@
     <Button
         android:id="@+id/login_sign_up_button"
         android:layout_width="wrap_content"
+        android:background="@color/orange"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"

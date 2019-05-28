@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightOrange"
     android:padding="20dp"
     tools:context=".activities.ProductInfoActivity">
 
@@ -24,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="@id/scrollViewProductInfo"
             app:layout_constraintStart_toStartOf="@id/scrollViewProductInfo"
             app:layout_constraintTop_toTopOf="@id/scrollViewProductInfo">
@@ -54,52 +56,63 @@
                 android:text="@string/product_info_name"
                 android:textIsSelectable="true"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toTopOf="@+id/productInfoPrice"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/text1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/productInfoPrice"
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                android:text="@string/product_info_price"
+                android:id="@+id/text1"
+                android:layout_width="42dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/rs"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/productInfoName"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productInfoName" />
 
             <TextView
                 android:id="@+id/productDescription1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/product_info_description"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/productInfoPrice"
-                app:layout_constraintTop_toBottomOf="@+id/productInfoPrice" />
+                app:layout_constraintHorizontal_bias="0.03"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text1" />
 
             <TextView
                 android:id="@+id/productDescription2"
                 android:layout_width="348dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/product_description_zone"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/productDescription1"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productDescription1" />
 
             <TextView
                 android:id="@+id/attributes1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="36dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/product_attributes"
-                app:layout_constraintStart_toStartOf="@+id/productDescription2"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.023"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/productDescription2" />
 
             <TextView
@@ -107,22 +120,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/attributes_zone"
+                android:text=""
+                android:maxLines="10"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.027"
+                app:layout_constraintHorizontal_bias="0.019"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/attributes1" />
+
+
+            <TextView
+                android:id="@+id/textMerchant"
+                android:layout_width="99dp"
+                android:layout_height="29dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/merchant"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/attributes2"
+                app:layout_constraintVertical_bias="1.0" />
+
             <Spinner
+                android:id="@+id/spinner_product_list_merchants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner_product_list_merchants"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textMerchant"
                 app:layout_constraintTop_toBottomOf="@+id/attributes2"
+                app:layout_constraintVertical_bias="0.631" />
 
-                />
+            <TextView
+                android:id="@+id/productInfoPrice"
+                android:layout_width="0dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/text1"
+                app:layout_constraintTop_toBottomOf="@+id/productInfoName" />
+
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
@@ -141,10 +188,12 @@
         <Button
             android:id="@+id/addToCartButton"
             android:layout_width="180dp"
-            android:layout_height="90dp"
+            android:layout_height="70dp"
             android:layout_marginStart="4dp"
+            android:background="@color/orange"
             android:layout_marginTop="8dp"
             android:text="@string/add_to_cart"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/buyNowButton"
             app:layout_constraintStart_toStartOf="parent"
@@ -154,10 +203,12 @@
         <Button
             android:id="@+id/buyNowButton"
             android:layout_width="179dp"
-            android:layout_height="87dp"
+            android:layout_height="70dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
             android:text="@string/buy_now"
+            android:background="@color/orange"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/addToCartButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.2"

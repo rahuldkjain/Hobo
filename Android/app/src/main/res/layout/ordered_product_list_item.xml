@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="wrap_content">
 
 
@@ -20,6 +21,7 @@
         android:layout_marginTop="4dp"
         android:text="Product Id :"
         android:textSize="15sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +34,7 @@
         android:layout_marginEnd="116dp"
         android:text="Merchant Id:"
         android:textSize="15sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
@@ -44,6 +47,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
         android:text="Product Name"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +62,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Merchant Name"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
@@ -71,6 +76,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/ItemPrice"
         android:textSize="15sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/orderedProductListItemImage"
         app:layout_constraintTop_toBottomOf="@+id/orderedProductMerchantName" />
@@ -83,6 +89,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="productId"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/order_text1"
@@ -95,6 +102,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="MerchantId"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/order_text2"
@@ -104,6 +112,7 @@
         android:id="@+id/ratingBar"
         android:layout_width="240dp"
         android:layout_height="54dp"
+        android:outlineAmbientShadowColor="@color/black"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orderedProductPrice" />
@@ -113,6 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,6 +137,7 @@
         android:layout_marginBottom="8dp"
         android:text="Rate Product"
         android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/ratingBar2"
         app:layout_constraintEnd_toStartOf="@+id/ratingBar"
         app:layout_constraintTop_toBottomOf="@+id/orderedProductListItemImage"
@@ -137,6 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/black"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Rate Merchant"

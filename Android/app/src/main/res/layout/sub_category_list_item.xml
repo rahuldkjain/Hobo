@@ -3,20 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
 
     <ImageView
         android:id="@+id/sub_category_image"
-        android:layout_width="195dp"
-        android:layout_height="194dp"
+        android:layout_width="183dp"
+        android:layout_height="167dp"
         android:layout_marginStart="16dp"
-        android:background="@color/steelGrey"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
         android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
 
@@ -26,11 +28,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/textview"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="@id/sub_category_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sub_category_image"
         app:layout_constraintTop_toTopOf="@id/sub_category_image" />
+
+    <View
+        android:id="@+id/view_landing_page"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/lightOrange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sub_category_image" />
 </android.support.constraint.ConstraintLayout>
