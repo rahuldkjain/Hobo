@@ -22,7 +22,7 @@
                             {{product.description}}
                             </b-card-text>
                              <!-- <router-link to="/product"> -->
-                            <b-button @click="goToProduct(product.productId)"  variant="primary">Product Page</b-button>
+                            <b-button @click="goToProduct(product.productId)" style="background-color:#FDCA40;color:black">Product Page</b-button>
                              <!-- </router-link> -->
                         </b-card>
                        

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/frame_fragment_cprc"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_category_product_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+</android.support.v7.widget.RecyclerView>
+    <include layout="@layout/failure_layout" android:id="@+id/product_list_failure"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"/>
+</FrameLayout>

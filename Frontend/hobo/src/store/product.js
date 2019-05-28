@@ -18,7 +18,8 @@ export default {
         buyNowProductQuantity: 1,
         buyNowProductMerchantId: '',
         UserCartItem: {},
-        UserCartItems: []
+        UserCartItems: [],
+        cartProductDetails: []
     },
     getters: {
         getProduct: (state) => state.product,
@@ -37,7 +38,8 @@ export default {
         getBuyNowProductQuantity: (state) => state.buyNowProductQuantity,
         getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId,
         getUserCartItem: (state) => state.UserCartItem,
-        getUserCartItems: (state) => state.UserCartItems
+        getUserCartItems: (state) => state.UserCartItems,
+        getCartProductDetails: (state) => state.cartProductDetails
 
     },
     mutations: {
@@ -68,6 +70,11 @@ export default {
                 state.cartProductMerchantId.push(result.data[0].merchantId)
             }
         },
+        SET_CART_PRODUCT_DETAILS: (state, result) => {
+            if (!state.cartProductDetails.includes(result.data)) {
+                state.cartProductDetails.push(result.data)
+            }
+        },
         SET_CART_QUANTITY: (state, result) => {
             state.cartQuantity = result
         },
@@ -94,6 +101,7 @@ export default {
         },
         SET_REMOVE_USER_CART_ITEMS: (state, result) => {
             state.cartProduct.pop(result.data)
+           // state.cartProductDetails.pop(result.data)
         }
     },
     actions: {
@@ -117,6 +125,11 @@ export default {
                 context.commit('SET_CART_PRODUCT_PRICE', result.data)
             }, pid)
         },
+        cartProductDetails: (context, pid) => {
+            productAPI.getProductDetails((result) => {
+                context.commit('SET_CART_PRODUCT_DETAILS', result.data)
+            }, pid)
+        },
         cartQuantity: (context, quantity) => {
 
             context.commit('SET_CART_QUANTITY', quantity)
@@ -124,8 +137,9 @@ export default {
         checkoutAmount: (context, total) => {
             context.commit('SET_TOTAL_AMOUNT', total)
         },
-        buyNowProduct: (context, pid) => {
+        buyNowProduct: (context, { pid, success }) => {
             productAPI.fetchBuyNow((result) => {
+                success(pid)
                 context.commit('SET_BUY_NOW_PRODUCT', result.data)
             }, pid)
         },

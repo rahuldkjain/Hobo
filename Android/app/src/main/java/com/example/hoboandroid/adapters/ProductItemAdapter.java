@@ -21,15 +21,15 @@ import com.example.hoboandroid.activities.ProductListActivity;
 import com.example.hoboandroid.fragments.ProductListFragment;
 import com.example.hoboandroid.models.category.Category;
 import com.example.hoboandroid.models.product.Product;
-import com.example.hoboandroid.models.product.ProductListItem;
+import com.example.hoboandroid.models.product.Product;
 
 import java.util.List;
 
 public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter.RecyclerViewHolder> {
 
-    private List<ProductListItem> list;
+    private List<Product> list;
 
-    public ProductItemAdapter(List<ProductListItem> list){
+    public ProductItemAdapter(List<Product> list){
         this.list = list;
     }
 
@@ -47,7 +47,7 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int position) {
-        recyclerViewHolder.bind((ProductListItem) list.get(position));
+        recyclerViewHolder.bind((Product) list.get(position));
     }
 
     @Override
@@ -63,29 +63,31 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
             super(itemView);
             itemView.setOnClickListener(this);
         }
-        public void bind(ProductListItem productListItem){
+        public void bind(Product Product){
 
 
-            Log.e("ProductListFragment","adapter "+productListItem.toString());
+            Log.e("ProductListFragment","adapter "+Product.toString());
             TextView productName = itemView.findViewById(R.id.product_list_name);
-            productName.setText(productListItem.getProductName());
+            productName.setText(Product.getProductName());
 
+/*
 
             TextView productPrice = itemView.findViewById(R.id.product_list_price);
-            productPrice.setText(""+productListItem.getProductPrice());
+            productPrice.setText(""+Product.getProductPrice());
 
 
             //TextView title = itemView.findViewById(R.id.?);
-            //title.setText(productListItem.getProductId());
+            //title.setText(Product.getProductId());
 
             TextView rating = itemView.findViewById(R.id.product_list_rating);
-            rating.setText(""+productListItem.getRating());
+            rating.setText("Rating:"+Product.getRating());
 
+*/
 
 
             //Loading image from below url into imageView
             Glide.with(itemView.getContext())
-                    .load( productListItem.getImage())
+                    .load( Product.getProductImage().get(0))
                     .apply(new RequestOptions().override(100,100))
                     .into((ImageView) itemView.findViewById(R.id.product_list_image));
 
@@ -105,6 +107,6 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
             view.getContext().startActivity(intent);
 
         }
-        
+
     }
 }

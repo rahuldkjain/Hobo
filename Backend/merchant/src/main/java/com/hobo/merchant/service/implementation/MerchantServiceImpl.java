@@ -24,7 +24,7 @@ public  class MerchantServiceImpl implements MerchantService {
 
         Merchant merchant=new Merchant();
         BeanUtils.copyProperties(merchantDTO,merchant);
-        merchant.setMerchantRating(0);
+        merchant.setMerchantRating(5);
         Merchant merchant1=merchantRepository.save(merchant);
 
         MerchantDTO merchantDTO1=new MerchantDTO();
@@ -81,6 +81,12 @@ public  class MerchantServiceImpl implements MerchantService {
         merchant = merchantRepository.save(merchant);
         MerchantDTO result = new MerchantDTO();
         BeanUtils.copyProperties(merchant,result);
+        return result;
+    }
+
+    public String getName(Integer merchantId) {
+        Merchant merchant = merchantRepository.findOne(merchantId);
+        String result = merchant.getMerchantName();
         return result;
     }
 }

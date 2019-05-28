@@ -1,15 +1,17 @@
 package com.hobo.order.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hobo.order.email.OrderEmail;
 import com.hobo.order.exceptions.orderExceptions.OrderAlreadyExists;
 import com.hobo.order.exceptions.orderExceptions.OrderNotFound;
 import com.hobo.order.entity.OrderEntity;
 import com.hobo.order.model.OrderDTO;
 import com.hobo.order.service.OrderService;
-import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.errors.MailjetSocketTimeoutException;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +32,19 @@ public class OrderController {
     public JSONObject readOrder(@RequestParam Integer orderId) throws OrderNotFound {
         try {
             OrderDTO orderDTO= orderService.readOrder(orderId);
-            JSONObject response=getJSONResponse(orderDTO);
+            JSONParser parser = new JSONParser();
+            ObjectMapper mapper = new ObjectMapper();
+            JSONObject data = (JSONObject)parser.parse(mapper.writeValueAsString(orderDTO));
+            data.replace("deliveryDate",orderDTO.getDeliveryDate().toString());
+            data.replace("orderDate",orderDTO.getOrderDate().toString());
+            JSONObject response=getJSONResponse(data);
+            response.replace("message", "success", "Order fetch successful");
             return response;
         } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
@@ -43,8 +55,11 @@ public class OrderController {
         try {
             OrderDTO orderDTO1= orderService.createOrder(orderDTO);
             JSONObject response=getJSONResponse(orderDTO1);
+            response.replace("message", "success", "Order successful");
             return response;
         } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -55,6 +70,7 @@ public class OrderController {
         try {
             OrderDTO orderDTO1= orderService.updateOrder(orderDTO);
             JSONObject response=getJSONResponse(orderDTO1);
+            response.replace("message", "success", "Order update successful");
             return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -67,6 +83,7 @@ public class OrderController {
         try {
             OrderDTO orderDTO= orderService.deleteOrder(orderItemId);
             JSONObject response=getJSONResponse(orderDTO);
+            response.replace("message", "success", "Order delete successful");
             return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -84,6 +101,7 @@ public class OrderController {
 
             OrderDTO orderDTO=orderService.updateDeliveryDate(orderId,dateOfBirth);
             JSONObject response=getJSONResponse(orderDTO);
+            response.replace("message", "success", "Date update successful");
             return response;
         }
         catch (RuntimeException e){
@@ -99,10 +117,24 @@ public class OrderController {
     public JSONObject getAll(@RequestParam String email){
         try {
             List<OrderEntity> orderEntities=orderService.getAllOrder(email);
-            JSONObject response=getJSONResponse(orderEntities);
+            JSONParser parser = new JSONParser();
+            JSONObject data = new JSONObject();
+            JSONArray dataArray = new JSONArray();
+            ObjectMapper mapper = new ObjectMapper();
+            for (OrderEntity o:orderEntities) {
+                data = (JSONObject)parser.parse(mapper.writeValueAsString(o));
+                data.replace("deliveryDate",o.getDeliveryDate().toString());
+                data.replace("orderDate",o.getOrderDate().toString());
+                dataArray.add(data);
+            }
+            JSONObject response=getJSONResponse(dataArray);
             return response;
         }
         catch (RuntimeException e){
+            e.printStackTrace();
+        } catch (org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
@@ -112,10 +144,8 @@ public class OrderController {
     public JSONObject sendEmail() {
         OrderEmail orderEmail = new OrderEmail();
         try {
-            orderEmail.sendEmail();
-        } catch (MailjetSocketTimeoutException e) {
-            e.printStackTrace();
-        } catch (MailjetException e) {
+            orderEmail.sendEmail("muditjoshi98@gmail.com","2019-05-27",(float)12000);
+        } catch (IOException e) {
             e.printStackTrace();
         }
         JSONObject response=getJSONResponse("");

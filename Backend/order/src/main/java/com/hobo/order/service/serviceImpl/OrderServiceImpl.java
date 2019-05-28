@@ -1,6 +1,7 @@
 package com.hobo.order.service.serviceImpl;
 
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.hobo.order.email.OrderEmail;
 import com.hobo.order.exceptions.orderExceptions.OrderAlreadyExists;
 import com.hobo.order.exceptions.orderExceptions.OrderNotFound;
 import com.hobo.order.entity.OrderEntity;
@@ -11,24 +12,35 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
 
+    private OrderEmail orderEmail = new OrderEmail();
+
     @Override
-    public OrderDTO createOrder(OrderDTO orderDTO) throws OrderAlreadyExists {
+    @Transactional(readOnly = false)
+    public OrderDTO createOrder(OrderDTO orderDTO) throws OrderAlreadyExists, IOException {
         if(orderRepository.exists(orderDTO.getOrderId())){
             throw new OrderAlreadyExists("Data already present");
         }
         OrderEntity orderEntity = new OrderEntity();
         BeanUtils.copyProperties(orderDTO, orderEntity);
         OrderEntity orderEntityCheck = orderRepository.save(orderEntity);
+        orderEntityCheck.getUserEmailId();
+        orderEmail.sendEmail(orderEntityCheck.getUserEmailId(),orderEntityCheck.getOrderDate().toString(),orderEntityCheck.getOrderPrice());
         BeanUtils.copyProperties(orderEntityCheck,orderDTO);
         return orderDTO;
     }
@@ -39,7 +51,6 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderNotFound("Data not found");
         }
         OrderEntity orderEntity = orderRepository.findOne(orderItemId);
-
         OrderDTO orderDTO = new OrderDTO();
         BeanUtils.copyProperties(orderEntity, orderDTO);
         return orderDTO;
@@ -58,6 +69,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public OrderDTO updateOrder(OrderDTO orderDTO) throws OrderNotFound{
         //OrderDTO checkAlreadyExists = readOrder(orderDTO.getOrderId());
 

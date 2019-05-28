@@ -180,11 +180,24 @@
         </b-col>
         <b-col>
             <h3>Order History</h3>
+            <b-row v-for="(order,index) in (getOrderHistory ? getOrderHistory : null)" :key="index">
+                 <b-card>
+                        
+                        <div class="head">
+                            <h6> <b>Order Id:</b> {{order.orderId}}</h6>
+                            <h6> <b>Order Date:</b> {{order.orderDate}}</h6>
+                            <h6> <b>Order Price:</b> ₹ {{order.orderPrice}}</h6>
+                           
+                        </div>
+                        
+                    </b-card>
+            </b-row>
         </b-col>
         </b-row>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -225,6 +238,11 @@ export default {
         }
         
     },
+    created() {
+        this.$store.dispatch("fetchOrderHistory",this.$route.params.emailId)
+
+
+    },
     mounted(){
         var userDetails = JSON.parse(localStorage.getItem("userDetails"))
         this.form.email = userDetails.emailId
@@ -237,6 +255,9 @@ export default {
         this.form.state = userDetails.state
         this.form.pincode = userDetails.pincode
         this.form.password = userDetails.password
+    },
+    computed: {
+        ...mapGetters(['getOrderHistory'])
     }
 }
 </script>

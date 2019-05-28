@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 public interface OrderService {
 
     @GET("/orders/getall")
-    Call<ApiResponse<List<OrderData>>> getOrders(@Query("userId") String userId);
+    Call<ApiResponse<List<OrderData>>> getOrders(@Query("email") String email);
 
 
     @GET("/orders/getorderdetails")
@@ -44,7 +44,7 @@ public interface OrderService {
     Call<ApiResponse<List<CartItem>>> getCartItems(@Query("emailId") String userEmailId);
 
     @POST("/cart")
-    Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody params);
+    Call<ApiResponse<CartItem>> createCartItem(@Body RequestBody body);
 
     @PUT("/cart")
     Call<ApiResponse<CartItem>> updateCartItem(CartItem cartItem);

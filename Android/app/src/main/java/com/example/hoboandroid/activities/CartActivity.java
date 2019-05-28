@@ -28,24 +28,26 @@ import com.example.hoboandroid.services.OrderService;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartActivity extends BaseActivity implements View.OnClickListener {
 
-    List<CartItem> cartItemsList;
+    List<CartItem> cartItemsList = new ArrayList<>();
     public CartItemAdapter cartItemAdapter;
     RecyclerView cartRecyclerView;
     CartItem cartItem;
-    Retrofit retrofit;
-    OrderService orderService;
     TextView totalPrice;
     Button deleteall,checkout;
 
@@ -60,32 +62,57 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
 
 
-        retrofit = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+        cartRecyclerView = findViewById(R.id.cart_recycler_view);
+        cartItemAdapter = new CartItemAdapter(cartItemsList,CartActivity.this);
 
-        orderService = retrofit.create(OrderService.class);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        cartRecyclerView.setLayoutManager(linearLayoutManager);
 
+        cartRecyclerView.setAdapter(cartItemAdapter);
 
-
+        Log.e("CartActivity","inside cartactivity method");
 
         if(getIntent().getBundleExtra("AddToCart") != null){
-            Bundle bundle = getIntent().getBundleExtra("AddToExtra");
+            Bundle bundle = getIntent().getBundleExtra("AddToCart");
 
+            //Bundle bundle = getIntent().getBundleExtra()
             if(isLoggedIn()) {
+
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                OrderService orderService = retrofit.create(OrderService.class);
                 Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("userEmail", getUserEmailId());
-                jsonParams.put("productId", bundle.getInt("ProductId"));
-                jsonParams.put("merchantId", bundle.getString("MerchantId"));
-                jsonParams.put("productImage", bundle.getString("ProductImage"));
+                jsonParams.put("userEmail", bundle.getString("EmailId"));
+                jsonParams.put("productId",bundle.getInt("ProductId") );
+                jsonParams.put("merchantId", bundle.getInt("MerchantId"));
+                String[] array = new String[1];
+                array[0] = bundle.getString("ProductImage");
+                jsonParams.put("productImage",array);
+                jsonParams.put("productName",bundle.getString("ProductName") );
                 jsonParams.put("productPrice", bundle.getInt("ProductPrice"));
+                jsonParams.put("quantity", 1);
+
 
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
 
-                orderService.createCartItem(body).enqueue(new Callback<ApiResponse<CartItem>>() {
+                Log.d("CartActivity","Request body" + jsonParams.toString());
+
+                orderService.createCartItem(body)
+                        .enqueue(new Callback<ApiResponse<CartItem>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                        if (response.body() != null && response.body().getData() != null) {
-                            Log.d("CartActivity", response.body().getData().toString());
+                        if (response.body() != null) {
+                                Log.e("CartActivity", "response body in add cart"+response.body().getData().toString());
+
                         }
+                      //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
+                        getCartItems();
                     }
 
                     @Override
@@ -102,12 +129,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
         }
 
-        cartRecyclerView = findViewById(R.id.cart_recycler_view);
-        cartItemAdapter = new CartItemAdapter(cartItemsList,CartActivity.this);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        cartRecyclerView.setLayoutManager(linearLayoutManager);
 
 
         // cartRecyclerView.setAdapter(cartItemAdapter); //Commented the setting because it tells to the recycler to display something from list
@@ -115,12 +137,13 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         //TODO now load cart items from user or from guest phone storage and store in the list
                                                                     //Adapter.notifyDataSetChanged
 
+        Log.e("CartActivity","before get cart Items method");
         getCartItems();
 
-
-        //implemented inside on click function
         checkout.setOnClickListener(this);
         deleteall.setOnClickListener(this);
+        //implemented inside on click function
+
 
 
 
@@ -136,18 +159,28 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
     public void getCartItems() {
         if(isLoggedIn()){
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            OrderService orderService  = retrofit.create(OrderService.class);
+
+            Log.e("CartActivity","inside get cart Items method");
             //TODO check backend url endpoint & variable name if it matches the get cart
             orderService.getCartItems(getUserEmailId()).enqueue(new Callback<ApiResponse<List<CartItem>>>() {
                 @Override
                 public void onResponse(Call<ApiResponse<List<CartItem>>> call, Response<ApiResponse<List<CartItem>>> response) {
 
-                    Log.d("CartActivity",response.toString());
+                    Log.e("CartActivity","inside get cart Items method Response");
                     if(response.body() == null){
                         //TODO handle null body
                     }
                     else if(response.body().getData() != null && response.body().getData().size()!=0) {
 
-                        cartItemsList.clear();
+                        if(!cartItemsList.isEmpty())
+                            cartItemsList.clear();
 
                         cartItemsList.addAll(response.body().getData());
                         Log.d("CartActivity", "CartItems list " + cartItemsList.toString());
@@ -204,9 +237,13 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
             else {
                 cartItem.setQuantity(cartItem.getQuantity()-1);
 
-                Retrofit retrofitDelete = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://172.16.20.84:8082/")
+                        .client(new OkHttpClient())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-                OrderService orderService = retrofitDelete.create(OrderService.class);
+                OrderService orderService = retrofit.create(OrderService.class);
 
                 orderService.deleteCartItem(cartItem.getCartItemId())
                         .enqueue(new Callback<ApiResponse<CartItem>>() {
@@ -240,6 +277,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         try {
             i += Integer.parseInt(totalPrice.getText().toString());
             totalPrice.setText(i);
+            Log.e("CartActivity","addToTotal"+i);
         }catch (Exception exception){
             if(exception != null)
                 Log.e("CartActivity",exception.toString());

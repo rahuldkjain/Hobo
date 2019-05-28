@@ -11,4 +11,5 @@ public interface MerchantService {
     MerchantDTO deleteMerchantById(Integer merchantId) throws MerchantNotFound;
 
     MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating)throws MerchantNotFound;
+    String getName(Integer merchantId);
 }

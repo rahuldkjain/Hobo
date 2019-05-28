@@ -74,6 +74,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
         }
         public void bind(final CartItem cartItem){
 
+            Log.e("CartActivity","inside viewholder "+cartItem.toString());
             Retrofit retrofit = Api.getclient(CONSTANTS.MERCHANT_BASE_URL);
 
             MerchantService merchantService = retrofit.create(MerchantService.class);
@@ -81,20 +82,20 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
             TextView productName = itemView.findViewById(R.id.cartProductItemName);
             productName.setText(cartItem.getProductName());
 
-            TextView productPriceTextView = itemView.findViewById(R.id.cartProductItemPrice);
-            productPriceTextView.setText(cartItem.getProductPrice());
+            TextView productPriceTextView = itemView.findViewById(R.id.cartItemProductPrice);
+            productPriceTextView.setText(""+cartItem.getProductPrice());
 
-            ((CartActivity)context).addToTotalPrice(cartItem.getProductPrice()*cartItem.getQuantity());
+            ((CartActivity)(context)).addToTotalPrice((int)cartItem.getProductPrice());
 
 
 
             Glide.with(itemView.getContext())
                     .load( cartItem.getProductImage())
                     .apply(new RequestOptions().override(100,100))
-                    .into((ImageView) itemView.findViewById(R.id.product_list_image));
+                    .into((ImageView) itemView.findViewById(R.id.cartProductItemImage));
 
             final TextView quantity = itemView.findViewById(R.id.cartItem_quantity);
-            quantity.setText(cartItem.getQuantity());
+            quantity.setText(""+cartItem.getQuantity());
 
             //To update the price and alert us in the cart
             merchantService.getTopProductMerchant(cartItem.getProductId())
@@ -105,8 +106,8 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
                                 int productPrice = (int)Float.parseFloat(response.body().getData().getPrice());
                                 if( productPrice != cartItem.getProductPrice()){
-                                    TextView productPriceTextView = itemView.findViewById(R.id.cartProductItemPrice);
-                                    productPriceTextView.setText(productPrice);
+                                    TextView productPriceTextView = itemView.findViewById(R.id.cartItemProductPrice);
+                                    productPriceTextView.setText(""+productPrice);
 
                                     TextView priceChanged = itemView.findViewById(R.id.cartPriceUpdatedText);
                                     priceChanged.setText("Price has been updated");

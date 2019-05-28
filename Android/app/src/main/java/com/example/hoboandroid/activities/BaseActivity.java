@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
 
     private TextView logoTextView;
-    private AutoCompleteTextView autoTextView;
+    private EditText searchEditText;
     private Button navigationDrawerButton, searchButton, cartButton;
     List<String> searchAutoTextList = new ArrayList<>();
 
@@ -71,6 +72,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationDrawerButton = toolbar.findViewById(R.id.drawerButton);
         searchButton = toolbar.findViewById(R.id.toolbar_search_button);
         cartButton = toolbar.findViewById(R.id.toolbar_cart_button);
+        searchEditText = toolbar.findViewById(R.id.globalSearch);
 
 
 
@@ -197,17 +199,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
 
-                String searchText = autoTextView.getText().toString();
+                String searchText = searchEditText.getText().toString();
                 if (!searchText.equals("")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("type","Search");
-                    bundle.putString("SearchQuery",searchText);
-
-
-                    Intent intent  =  new Intent(getApplicationContext(),ProductInfoActivity.class);
+                    Intent intent  =  new Intent(getApplicationContext(),ProductListActivity.class);
+                    intent.putExtra("type","SearchQuery");
+                    intent.putExtra("SearchQuery",searchText);
                     startActivity(intent);
 
 
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please type anything and search",Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -381,7 +382,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
 
 
-        //        super.setContentView(fullLayout);
+        //super.setContentView(fullLayout);
 
         //Your drawer content...
 
@@ -402,7 +403,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         switch(menuItem.getTitle().toString()) {
 
-            case "Login":
+            case "Login/SignUp":
                 if(isLoggedIn())
                     Toast.makeText(getApplicationContext(),"Already logged in",Toast.LENGTH_SHORT).show();
                 else{
@@ -413,7 +414,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
             case "Order History":
                 if(isLoggedIn())
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    startActivity(new Intent(getApplicationContext(), OrderHistoryActivity.class));
 
                 else{
 

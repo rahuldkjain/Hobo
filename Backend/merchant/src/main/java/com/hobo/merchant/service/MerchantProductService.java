@@ -15,6 +15,7 @@ public interface MerchantProductService {
 
     MerchantProductDTO getTopMerchant(Integer producctId) throws MerchantProductNotFound;
     List<MerchantProduct> getAllMerchants(Integer productId) throws MerchantProductNotFound;
+    //Object getAllMerchants(Integer productId) throws MerchantProductNotFound;
     MerchantProductDTO updateProductRating(Integer index, float productRating) throws MerchantProductNotFound, MerchantNotFound;
     List<MerchantProduct> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound;
     float getProductRating(Integer productId) throws MerchantProductNotFound;

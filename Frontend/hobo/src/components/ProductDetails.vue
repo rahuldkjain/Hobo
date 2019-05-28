@@ -8,27 +8,36 @@
         </b-row>
         <b-row>
             <b-col>
-                <img :src='getProduct.productImage'>
+                <img :src='product.image'>
             </b-col>
             <b-col>
                 <b-row>
-                <span class="texttop"><b>Product name: </b>{{getProduct.productName}}</span>
+                <span class="texttop"><b>Product name: </b>{{product.pName}}</span>
                 </b-row>
+                
                 <b-row>
-                <span class="text"><b>Product Description:</b> {{getProduct.description}}</span>
+                <span class="text"><b>Product Description:</b> {{product.description}}</span>
                 </b-row>
                 <b-row>    
-                <span class="text"><b>Product Price:</b>{{getProductDetails ? getProductDetails[0].price : ''}}</span>
+                <span class="text"><b>Product Price:</b> ₹ {{product.merchants[selected].price}}</span>
+                </b-row>
+                <b-row>
+                <span class="text"><b>Product Attributes: </b>{{product.attributes}}</span>
                 </b-row>
 
             </b-col>
             <b-col >
               
-                    <b-button class="button" @click="addToCart(getProduct.productId, getProductDetails[0].merchantId, getProductDetails[0].price, getProduct.productName, getProduct.productImage)" variant="primary">Add to Cart</b-button>
-                    <b-button @click="directCheckout(getProduct.productId)" class="button" variant="success">Buy</b-button><br><br><br>
+                    <b-button class="button" @click="addToCart(product.merchants[selected].mId)" variant="primary">Add to Cart</b-button>
+                    <b-button @click="directCheckout()" class="button" variant="success">Buy</b-button><br><br><br>
                     <span class="textmerchant">Merchant Details</span>
                     <br>
-                    <div v-for="(product,index) in getProductDetails" :key="index" row="text">{{product.merchantId}}</div>
+                    <b-form-select id="merchantDetails" v-model="selected">
+                            <option :value="null">Select Merchant </option>
+                            <option :value="index" v-for="(product,index) in product.merchants" :key="index" row="text">>{{product.mName}}</option>
+                        
+                    </b-form-select>
+        
                
             </b-col>
         </b-row>
@@ -42,11 +51,26 @@ export default {
     data() {
         return {
             product: {
-                
-                    image: 'https://i.imgur.com/VgoUWI5.jpg',
-                    name: 'product 1',
-                    price: '15000'
-                }
+                    pName: '',
+                    pId: '',
+                    image: [],
+                    description: '',
+                    category: '',
+                    subCategory: '',
+                    brand: '',
+                    merchants: [
+                        // {
+                        //     mId: null,
+                        //     price: null,
+                        //     mName: null
+                        // }
+                    ],
+                    attributes: {
+
+                    }
+                },
+                selected: 0,
+            
             
         }
     },
@@ -57,51 +81,35 @@ export default {
     computed: {
         ...mapGetters(['getProduct','getProductDetails','getLoggedIn', 'getBuyNowProductId', 'getBuyNowProductPrice', 'getUserCartItem'])
     },
-    methods: {
-        addToCart(pid, merchantId, productPrice, productName, productImage) {
-            
-            if(localStorage.getItem("loggedIn") == "false"){
-                // console.log("not logged in")
-                var product_number = sessionStorage.length + 1
-                var productValues = {'pid':pid}
-                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
-                alert("the item is added")
-            }
-            else{
-                var userDetails = JSON.parse(localStorage.getItem("userDetails"))
-                var payload = {
-                        'userEmail': userDetails.emailId,
-                        'productId': pid,
-                        'merchantId': merchantId,
-                        'quantity': 1,
-                        'productPrice': productPrice,
-                        'productName': productName,
-                        'productImage': productImage
-                }
-                this.$store.dispatch('addItemToCart', payload)
-            }
-        },
-        directCheckout(pid) {
-            if(this.getLoggedIn == false){
-                // console.log("not logged in")
-                var product_number = sessionStorage.length + 1
-                var productValues = {'pid':pid}
-                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
-                alert("direct checkout")
-
-                this.$store.dispatch('buyNowProduct', pid)
-                this.$store.dispatch('buyNowProductPrice', pid)
-
-            }
-            else{
-                
-            }
-        }
-    },
     watch: {
+        getProduct: function(newValue, oldValue){
+            this.product.pName = newValue.productName
+            this.product.pId = newValue.productId
+            this.product.image = newValue.productImage
+            this.product.description = newValue.description
+            this.product.category = newValue.category
+            this.product.subCategory = newValue.subCategory
+            this.product.attributes = newValue.attributes
+            this.product.brand = newValue.productBrand
+        },
+        getProductDetails: function(newValue, oldValue){
+            newValue.forEach(value => {
+                var prodDetails = {
+                    mId: value.merchantId,
+                    price: value.price,
+                    mName: value.merchantName
+                }
+                this.product.merchants.push(prodDetails)
+            });
+        },
+        getLoggedIn: function(newValue, oldValue){
+
+        },
+        getBuyNowProductId: function(newValue, oldValue){
+
+        },
         getBuyNowProductPrice: function(newValue, oldValue) {
                 console.log('buyNowProductPrice:', newValue)
-            
             //order is placed!
             this.$router.push("/checkout");
         },
@@ -109,6 +117,52 @@ export default {
             alert("Item added to cart")
         }
     },
+    methods: {
+        addToCart(merchantId) {
+            
+            if(localStorage.getItem("loggedIn") == "false"){
+                // console.log("not logged in")
+                var product_number = sessionStorage.length + 1
+                var productValues = {'pid':this.product.pId}
+                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
+                alert("the item is added")
+            }
+            else{
+                var userDetails = JSON.parse(localStorage.getItem("userDetails"))
+                var payload = {
+                        'userEmail': userDetails.emailId,
+                        'productId': this.product.pId,
+                        'merchantId': merchantId,
+                        'quantity': 1,
+                        'productPrice': this.product.merchants[this.selected].price,
+                        'productName': this.product.pName,
+                        'productImage': this.product.image
+                }
+                this.$store.dispatch('addItemToCart', payload)
+            }
+        },
+        directCheckout() {
+           // if(this.getLoggedIn == false){
+                // console.log("not logged in")
+                var product_number = sessionStorage.length + 1
+                var productValues = {'pid': this.product.pId}
+                sessionStorage.setItem('product' + product_number, JSON.stringify(productValues))
+                alert("direct checkout")
+
+                this.$store.dispatch('buyNowProduct', {pid: this.product.pId, success: this.removalSuccess})
+                this.$store.dispatch('buyNowProductPrice', this.product.pId)
+
+            //}
+           // else{
+                
+           // }
+        },
+        removalSuccess(id) {
+            console.log('***', id)
+            //alert("Item added to cart")
+        }
+    }
+    
 
     }
 

@@ -38,7 +38,6 @@ public class ProductServiceImpl implements ProductService {
         Product result = repository.findOne(productId);
         ProductDTO resultDTO = new ProductDTO();
         BeanUtils.copyProperties(result, resultDTO);
-        System.out.println("Result: " + result);
         return resultDTO;
 
     }

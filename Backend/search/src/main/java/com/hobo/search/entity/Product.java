@@ -6,6 +6,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.util.List;
+
 
 @Document(indexName = "hobo_index", type="product")
 public class Product {
@@ -16,7 +18,7 @@ public class Product {
     private String description;
     private String category;
     private String subCategory;
-    private String productImage;
+    private List<String> productImage;
     private String productBrand;
     private JSONObject attributes;
 
@@ -60,11 +62,25 @@ public class Product {
         this.subCategory = subCategory;
     }
 
-    public String getProductImage() {
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                ", subCategory='" + subCategory + '\'' +
+                ", productImage=" + productImage +
+                ", productBrand='" + productBrand + '\'' +
+                ", attributes=" + attributes +
+                '}';
+    }
+
+    public List<String> getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(String productImage) {
+    public void setProductImage(List<String> productImage) {
         this.productImage = productImage;
     }
 
@@ -84,17 +100,4 @@ public class Product {
         this.attributes = attributes;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productId='" + productId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", subCategory='" + subCategory + '\'' +
-                ", productImage='" + productImage + '\'' +
-                ", productBrand='" + productBrand + '\'' +
-                ", attributes=" + attributes +
-                '}';
-    }
 }

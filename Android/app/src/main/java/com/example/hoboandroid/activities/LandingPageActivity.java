@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hoboandroid.Api;
+import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.CategoryAdapter;
 import com.example.hoboandroid.adapters.LandingPageProductAdapter;
@@ -59,7 +60,9 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         categoryRecyclerView.setLayoutManager(linearLayoutManager);
         categoryRecyclerView.setAdapter(categoryAdapter);
 
-        Retrofit retrofit = Api.getclient("http://172.16.20.80:8080/","product/listcategory/");
+
+
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL);
         ProductService service = retrofit.create(ProductService.class);
         service.getCategories()
                 .enqueue(new Callback<ApiResponse<List<Category>>>() {
@@ -100,7 +103,7 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
         productRecyclerView.setOnClickListener(this);
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
 
-        Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address),"/product/getall/");
+        Retrofit retrofit = Api.getclient(CONSTANTS.PRODUCT_BASE_URL);
 
         ProductService service = retrofit.create(ProductService.class);
 
@@ -140,33 +143,6 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
 
     }
-    @Override
-    public void onBackPressed()
-    {
-
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
-            getSupportFragmentManager().popBackStack();
-        else
-            super.onBackPressed();
-
-        this.doubleBackToExitPressedOnce = true;
-        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
-    }
-
-    boolean doubleBackToExitPressedOnce = false;
 
 
 }

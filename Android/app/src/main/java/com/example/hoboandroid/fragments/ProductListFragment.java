@@ -6,10 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.ProductService;
 import com.example.hoboandroid.services.SearchService;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +42,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductListFragment extends Fragment{
     RecyclerView productRecyclerView;
-    ProductListItem productListItem;
     ProductItemAdapter productItemAdapter;
     List<Product> productList = new ArrayList<>();
-    List<ProductListItem> productListItems = new ArrayList<>();
-
+    View failureView;
+    ImageView failureViewImage;
+    TextView failureViewText;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -53,7 +58,7 @@ public class ProductListFragment extends Fragment{
 
 
 
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_category_product_recycler_view, container, false);
     }
 
 
@@ -62,7 +67,7 @@ public class ProductListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView subCatName = view.findViewById(R.id.category_name_fragment);
+        //TextView subCatName = view.findViewById(R.id.category_name_fragment);
 
 
         Bundle bundle = getArguments();
@@ -70,32 +75,38 @@ public class ProductListFragment extends Fragment{
             case "SearchQuery":
 
                 getSearchedProducts(bundle.getString("SearchQuery"));
-                subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
+                //subCatName.setText("Search Results for "+bundle.getString("SearchQuery"));
 
                 break;
             case "SubCategory":
-                //Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
+                Log.e("ProductListFragment","Inside Onview Created method "+bundle.getString("SubCategory"));
                 getProducts(bundle.getString("SubCategory"));
-                subCatName.setText(bundle.getString("SubCategory"));
+                //subCatName.setText(bundle.getString("SubCategory"));
 
                 break;
         }
 
-        //Log.e("ProductListFragment","Inside OnviewCreated method");
+        Log.e("ProductListFragment","Inside OnviewCreated method");
 
 
-        productRecyclerView = view.findViewById(R.id.recyclerView);
+        productRecyclerView = view.findViewById(R.id.fragment_category_product_id);
 
-        productItemAdapter = new ProductItemAdapter(productListItems);
+        productItemAdapter = new ProductItemAdapter(productList);
 
 
-        productRecyclerView.setAdapter(productItemAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         productRecyclerView.setLayoutManager(linearLayoutManager);
 
 
+
+        FrameLayout frameLayout = view.findViewById(R.id.frame_fragment_cprc);
+
+        failureView = ((ViewGroup)frameLayout).findViewById(R.id.product_list_failure);
+
+        failureViewImage = failureView.findViewById(R.id.oops_image_view);
+        failureViewText = failureView.findViewById(R.id.oops_text_view);
 
 
 
@@ -107,26 +118,36 @@ public class ProductListFragment extends Fragment{
     public void getSearchedProducts(String searchQuery) {
         Log.d("ProductListFragment",searchQuery);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.search_port_address)+"search/")
+                .baseUrl(CONSTANTS.SEARCH_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client( new OkHttpClient())
                 .build();
 
         SearchService service = retrofit.create(SearchService.class);
 
-        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<List<Product>>>() {
+        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<Object>>() {
             @Override
-            public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
-                if(response.body() != null) {
-                    productList.addAll(response.body().getData());
-                    Log.d("ProductListFragment","product list response body "+response.body().toString());
+            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
+                Log.d("ProductListFragment","product list response "+response.body().toString());
 
-                    getOtherAttributes();
+                if(response.body() != null) {
+                    Log.d("ProductListFragment","inside response and not null - "+response.body().toString());
+                    response.body().getData();
+                    /*if(productList.size()!= 0 ){
+                        productRecyclerView.setAdapter(productItemAdapter);
+                        productItemAdapter.notifyDataSetChanged();
+                    }
+                    else{
+                        Toast.makeText(getContext(),"No items found.",Toast.LENGTH_LONG).show();
+                        failureViewImage.setVisibility(View.VISIBLE);
+                        failureViewText.setVisibility(View.VISIBLE);
+                        failureViewText.setText(failureViewText.getText()+"! No items found");
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
 
             }
         });
@@ -158,7 +179,16 @@ public class ProductListFragment extends Fragment{
                             productList.addAll(response.body().getData());
                             Log.d("ProductListFragment","product list response body"+response.body().toString());
 
-                            getOtherAttributes();
+                            if(productList.size()!= 0 ){
+                                productRecyclerView.setAdapter(productItemAdapter);
+                                productItemAdapter.notifyDataSetChanged();
+                            }
+                            else{
+                                Toast.makeText(getContext(),"No items found.",Toast.LENGTH_LONG).show();
+                                failureViewImage.setVisibility(View.VISIBLE);
+                                failureViewText.setVisibility(View.VISIBLE);
+                                failureViewText.setText(failureViewText.getText()+"! No items found");
+                            }
 
                         }
 
@@ -178,63 +208,6 @@ public class ProductListFragment extends Fragment{
 
     }
 
-    private void getOtherAttributes() {
-
-        for(final Product product: productList){
-
-            productListItem = new ProductListItem(
-                    product.getProductId(),
-                    product.getProductName(),
-                    product.getProductImage().get(0));
-            //productListItems.add(productListItem);
-
-            //productListItems.add(productListItem);
-
-            //To get the top rated product
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(CONSTANTS.MERCHANT_BASE_URL)
-                    .client(new OkHttpClient())
-                    .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
-                    .build();
-
-            Log.e("ProductListFragment","getOtherAttributes "+CONSTANTS.MERCHANT_BASE_URL + "   "+product.getProductName());
-            final MerchantService merchantService =  retrofit.create(MerchantService.class);
-
-            merchantService.getTopProductMerchant(product.getProductId())
-                    .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
-                        @Override
-                        public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response) {
-                            if(response.body() != null){
-                                //Log.e("Inmerchant",response.body().getData().toString()+"");
-
-
-                                productListItem.setProductPrice((int)Float.parseFloat(response.body().getData().getPrice()));
-                                productListItem.setRating(Float.parseFloat(response.body().getData().getProductRating()));
-
-
-                                productListItems.add(productListItem);
-
-                                productItemAdapter.notifyDataSetChanged();
-
-                                Log.e("Inside ",productListItem.toString());
-
-                                //productMerchantName.setText(response1.body().getData().getMerchantId())
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<ApiResponse<MerchantProductResponse>> call, Throwable t) {
-                            Toast.makeText(getContext(),"Check your connection in merchant",Toast.LENGTH_LONG).show();
-                            Log.e("HOBOLandingPage",t.getMessage()+" failure");
-                        }
-                    });
-
-
-        }
-        Log.e("ProductListFragment",productListItems.toString());
-
-
-        
-    }
 
 
 

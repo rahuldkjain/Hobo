@@ -60,7 +60,7 @@ export default new Router({
         },
         {
             name: 'Profile',
-            path: '/profile',
+            path: '/profile/:emailId',
             component: Profile
         },
         // {
@@ -77,6 +77,11 @@ export default new Router({
             name: 'ViewProduct',
             path: '/viewproduct',
             component: ViewProduct
+        },
+        {
+            name: 'Search',
+            path: '/search/:query',
+            component: Search
         }
     ]
 
