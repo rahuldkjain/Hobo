@@ -5,16 +5,19 @@ import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductAlr
 import com.hobo.merchant.exceptions.merchantproductexceptions.MerchantProductNotFound;
 import com.hobo.merchant.entity.Merchant;
 import com.hobo.merchant.entity.MerchantProduct;
+import com.hobo.merchant.model.MerchantDTO;
 import com.hobo.merchant.model.MerchantProductDTO;
 import com.hobo.merchant.repository.MerchantProductRepository;
 import com.hobo.merchant.repository.MerchantRepository;
 import com.hobo.merchant.service.MerchantProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -109,16 +112,20 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
-    public List<MerchantProduct> getAllMerchants(Integer productId) throws MerchantProductNotFound{
+    public List<MerchantProductDTO> getAllMerchants(Integer productId) throws MerchantProductNotFound{
     //public Object getAllMerchants(Integer productId) throws MerchantProductNotFound{
         List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductIdOrderByMerchantScoreDesc(productId);
         //Object merchantProducts = merchantProductRepository.test(productId);
+        List<MerchantProductDTO> resultArray = new ArrayList<>();
+        for (MerchantProduct it: merchantProducts) {
+
+        }
         if(merchantProducts==null)
         {
             throw new MerchantProductNotFound("Data not found");
         }
 
-        return merchantProducts;
+        return resultArray;
     }
 
     @Override
@@ -136,13 +143,18 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
-    public List<MerchantProduct> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound{
-        MerchantProductDTO merchantProductDTO=null;
+    public List<MerchantProductDTO> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound{
         List<MerchantProduct> merchantProduct=merchantProductRepository.findByMerchantId(merchantId);
+        List<MerchantProductDTO> resultArray = new ArrayList<>();
+        for (MerchantProduct it: merchantProduct) {
+            MerchantProductDTO merchantProductDTO = new MerchantProductDTO();
+            BeanUtils.copyProperties(it,merchantProductDTO);
+            resultArray.add(merchantProductDTO);
+        }
         if(merchantProduct==null){
             throw new MerchantProductNotFound("Data not found");
         }
-        return merchantProduct;
+        return resultArray;
     }
 
     @Override
