@@ -1,9 +1,12 @@
 package com.hobo.merchant.service.implementation;
 
+import com.hobo.merchant.entity.MerchantProduct;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantAlreadyExists;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
 import com.hobo.merchant.entity.Merchant;
 import com.hobo.merchant.model.MerchantDTO;
+import com.hobo.merchant.model.NameAndStockDTO;
+import com.hobo.merchant.repository.MerchantProductRepository;
 import com.hobo.merchant.repository.MerchantRepository;
 import com.hobo.merchant.service.MerchantService;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +18,8 @@ public  class MerchantServiceImpl implements MerchantService {
 
     @Autowired
     private MerchantRepository merchantRepository;
+    @Autowired
+    private MerchantProductRepository merchantProductRepository;
 
     @Override
     public MerchantDTO createMerchant(MerchantDTO merchantDTO) throws MerchantAlreadyExists {
@@ -89,4 +94,15 @@ public  class MerchantServiceImpl implements MerchantService {
         String result = merchant.getMerchantName();
         return result;
     }
+
+
+    public NameAndStockDTO getNameAndStock(Integer merchantId, Integer productId) {
+        Merchant merchant = merchantRepository.findOne(merchantId);
+        MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(productId,merchantId);
+        NameAndStockDTO result = new NameAndStockDTO();
+        result.setName(merchant.getMerchantName());
+        result.setStock(merchantProduct.getStock());
+        return result;
+    }
+
 }

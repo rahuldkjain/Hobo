@@ -20,6 +20,7 @@ import com.example.hoboandroid.CONSTANTS;
 import com.example.hoboandroid.R;
 import com.example.hoboandroid.adapters.ProductItemAdapter;
 import com.example.hoboandroid.models.ApiResponse;
+import com.example.hoboandroid.models.merchantproduct.MerchantProduct;
 import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
 import com.example.hoboandroid.models.product.Product;
 import com.example.hoboandroid.models.product.ProductListItem;
@@ -47,6 +48,7 @@ public class ProductListFragment extends Fragment{
     View failureView;
     ImageView failureViewImage;
     TextView failureViewText;
+    List<MerchantProduct> merchantProductList  = new ArrayList<>();
 
 
     @Override
@@ -125,15 +127,15 @@ public class ProductListFragment extends Fragment{
 
         SearchService service = retrofit.create(SearchService.class);
 
-        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<Object>>() {
+        service.searchQuery(searchQuery).enqueue(new Callback<ApiResponse<List<Product>>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
-                Log.d("ProductListFragment","product list response "+response.body().toString());
+            public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
+                //Log.d("ProductListFragment","product list response "+response.body().toString());
 
                 if(response.body() != null) {
                     Log.d("ProductListFragment","inside response and not null - "+response.body().toString());
-                    response.body().getData();
-                    /*if(productList.size()!= 0 ){
+                    productList.addAll(response.body().getData());
+                    if(productList.size()!= 0 ){
                         productRecyclerView.setAdapter(productItemAdapter);
                         productItemAdapter.notifyDataSetChanged();
                     }
@@ -142,12 +144,12 @@ public class ProductListFragment extends Fragment{
                         failureViewImage.setVisibility(View.VISIBLE);
                         failureViewText.setVisibility(View.VISIBLE);
                         failureViewText.setText(failureViewText.getText()+"! No items found");
-                    }*/
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
 
             }
         });
@@ -182,6 +184,7 @@ public class ProductListFragment extends Fragment{
                             if(productList.size()!= 0 ){
                                 productRecyclerView.setAdapter(productItemAdapter);
                                 productItemAdapter.notifyDataSetChanged();
+
                             }
                             else{
                                 Toast.makeText(getContext(),"No items found.",Toast.LENGTH_LONG).show();
@@ -194,6 +197,8 @@ public class ProductListFragment extends Fragment{
 
 
                     }
+
+
 
 
                     @Override

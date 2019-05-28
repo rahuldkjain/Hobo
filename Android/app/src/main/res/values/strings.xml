@@ -53,6 +53,9 @@
     <string name="address">Address :</string>
     <string name="addres">Address</string>
     <string name="rs">Rs.</string>
+    <string name="item">item</string>
+    <string name="rating">Rating</string>
+    <string name="rating">Rating</string>
 
 
 </resources>

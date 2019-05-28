@@ -1,14 +1,9 @@
-package com.hobo.order.entity;
+package com.hobo.order.model;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 
-@Entity
-@Table(name = "cart")
-public class CartEntity {
+public class UserCartDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartItemId;
     private String userEmail;
     private int productId;
@@ -17,14 +12,21 @@ public class CartEntity {
     private int merchantId;
     private int quantity;
     private float productPrice;
+    private String merchantName;
+    private int stock;
 
 
-    //getters and setters for cart defined variables
+    public String getProductName() {
+        return productName;
+    }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
     @Override
     public String toString() {
-        return "CartEntity{" +
+        return "UserCartDTO{" +
                 "cartItemId=" + cartItemId +
                 ", userEmail='" + userEmail + '\'' +
                 ", productId=" + productId +
@@ -33,15 +35,25 @@ public class CartEntity {
                 ", merchantId=" + merchantId +
                 ", quantity=" + quantity +
                 ", productPrice=" + productPrice +
+                ", merchantName='" + merchantName + '\'' +
+                ", stock=" + stock +
                 '}';
     }
 
-    public String getProductName() {
-        return productName;
+    public int getStock() {
+        return stock;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public ArrayList<String> getProductImage() {
@@ -99,9 +111,5 @@ public class CartEntity {
     public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
-
-
-    //Overriding toString
-
 
 }

@@ -1,20 +1,30 @@
 package com.hobo.order.service.serviceImpl;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.hobo.order.exceptions.cartExceptions.CartAlreadyExists;
 import com.hobo.order.exceptions.cartExceptions.CartNotFound;
 import com.hobo.order.entity.CartEntity;
 import com.hobo.order.model.CartDTO;
+import com.hobo.order.model.UserCartDTO;
 import com.hobo.order.repository.CartRepository;
 import com.hobo.order.service.CartService;
+import javafx.util.Pair;
 import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -25,19 +35,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional(readOnly = false)
-    public CartDTO createCart(CartDTO cartDTO) throws CartAlreadyExists {
+    public CartDTO createCart(CartDTO cartDTO) {
 
-        if(cartRepository.existsByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId())){
-            throw new CartAlreadyExists("Data already exists");
+        CartEntity cartEntity = cartRepository.findByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId());
+        if(cartEntity != null){
+            cartEntity.setQuantity(cartEntity.getQuantity()+cartDTO.getQuantity());
         }
-        CartEntity cartEntity =new CartEntity();
-        BeanUtils.copyProperties(cartDTO,cartEntity);
-        cartEntity.setProductImage(cartDTO.getProductImage().get(0));
+        else {
+            cartEntity = new CartEntity();
+            BeanUtils.copyProperties(cartDTO,cartEntity);
+        }
         CartEntity cartEntityCheck=cartRepository.save(cartEntity);
         BeanUtils.copyProperties(cartEntityCheck,cartDTO);
-        ArrayList<String> tmpImage = new ArrayList<>();
-        tmpImage.add(cartEntityCheck.getProductImage());
-        cartDTO.setProductImage(tmpImage);
         return cartDTO;
     }
 
@@ -54,29 +63,45 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO deleteCart(int cartItemId) throws CartNotFound{
-        CartDTO cartDTO=readCart(cartItemId);
-        CartEntity cartEntity=new CartEntity();
-        BeanUtils.copyProperties(cartDTO,cartEntity);
+
+        CartEntity cartEntity= cartRepository.findOne(cartItemId);
         cartRepository.delete(cartEntity);
+        CartDTO cartDTO = new CartDTO();
+        BeanUtils.copyProperties(cartEntity,cartDTO);
         return cartDTO;
     }
 
     @Override
     @Transactional(readOnly = false)
     public CartDTO updateCart(CartDTO cartDTO) throws CartNotFound{
-        CartDTO checkAlreadyExists=readCart(cartDTO.getCartItemId());
-
-        CartEntity cartEntity=new CartEntity();
-        BeanUtils.copyProperties(cartDTO,cartEntity);
-        CartEntity cartEntityCheck=cartRepository.save(cartEntity);
-        BeanUtils.copyProperties(cartEntityCheck,cartDTO);
-        return cartDTO;
+        CartEntity cartEntity = cartRepository.findByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId());
+        if(cartEntity != null){
+            BeanUtils.copyProperties(cartDTO,cartEntity);
+            cartEntity = cartRepository.save(cartEntity);
+            BeanUtils.copyProperties(cartEntity,cartDTO);
+            return cartDTO;
+        }
+        else {
+            throw new CartNotFound("Data not found");
+        }
     }
 
     @Override
-    public List<CartEntity> userCart(String emailId) {
+    public List<UserCartDTO> userCart(String emailId) {
         List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
-        return cartEntities;
+        List<UserCartDTO> resultArray = new ArrayList<>();
+        for (CartEntity it: cartEntities) {
+            UserCartDTO userCartDTO = new UserCartDTO();
+            RestTemplate restTemplate = new RestTemplate();
+            final String url = "http://localhost:8083/merchant/getnameandstock/"+it.getMerchantId()+"/"+it.getProductId();
+            ResponseEntity<JSONObject> response
+                    = restTemplate.getForEntity(url, JSONObject.class);
+            BeanUtils.copyProperties(it,userCartDTO);
+            userCartDTO.setMerchantName((String) response.getBody().get("name"));
+            userCartDTO.setStock((Integer) response.getBody().get("stock"));
+            resultArray.add(userCartDTO);
+        }
+        return resultArray;
     }
 
     @Override
@@ -87,5 +112,27 @@ public class CartServiceImpl implements CartService {
             cartRepository.delete(cartEntity);
         }
         return cartEntities;
+    }
+
+    @Override
+    public UserCartDTO updateQuantity(int cartItemId, int quantity) {
+        CartEntity cartEntity = cartRepository.findOne(cartItemId);
+        UserCartDTO userCartDTO = new UserCartDTO();
+        if(cartEntity != null) {
+            RestTemplate restTemplate = new RestTemplate();
+            final String url = "http://localhost:8083/merchantproduct/checkqty/"+cartEntity.getMerchantId()+"/"+cartEntity.getProductId()+"/"+quantity;
+            ResponseEntity<String> response
+                    = restTemplate.getForEntity(url, String.class);
+            if(response.getBody()!= null) {
+                cartEntity.setQuantity(quantity);
+            }
+            cartEntity = cartRepository.save(cartEntity);
+            BeanUtils.copyProperties(cartEntity, userCartDTO);
+            userCartDTO.setMerchantName(response.getBody());
+            return userCartDTO;
+        }
+        else {
+            return null;
+        }
     }
 }

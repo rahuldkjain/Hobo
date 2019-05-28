@@ -15,7 +15,7 @@
                         id="email-box"
                         v-model="form.email"
                         type="email"
-                        required
+                        disabled
                         placeholder="Enter email">
                     </b-form-input>
 
@@ -27,34 +27,24 @@
                 id="name-box"
                 type="text"
                 v-model="form.name"
-                required
+                disabled
                 placeholder="Enter name">
             </b-form-input>
             </b-form-group>
-            <b-form-group id="address1" label="Address 1:" label-for="address1-box">
+            <b-form-group id="address1" label="Delivery Address:" label-for="address1-box">
                 <b-form-input
                 id="address1-box"
                 type="text"
-                v-model="form.address1"
-                required
-                placeholder="Enter Address1">
+                v-model="form.address"
+                placeholder="Enter Delivery Address">
             </b-form-input>
             </b-form-group>
-            <b-form-group id="address2" label="Address 2:" label-for="address2-box">
-                <b-form-input
-                id="address2-box"
-                type="text"
-                v-model="form.address2"
-                required
-                placeholder="Enter Address2">
-            </b-form-input>
-            </b-form-group>
+            
             <b-form-group id="city" label="City" label-for="city-box">
                 <b-form-input
                 id="city-box"
                 type="text"
                 v-model="form.city"
-                required
                 placeholder="Enter City">
             </b-form-input>
             </b-form-group>
@@ -63,11 +53,10 @@
                 id="pincode-box"
                 type="text"
                 v-model="form.pincode"
-                required
                 placeholder="Enter Pin Code">
             </b-form-input>
             </b-form-group>
-            <!-- <b-form-group id="phone" label="Your Phone No:" label-for="phone-box">
+            <b-form-group id="phone" label="Your Phone No:" label-for="phone-box">
                 <b-form-input
                 id="phone-box"
                 type="text"
@@ -75,7 +64,7 @@
                 required
                 placeholder="Enter phone no">
             </b-form-input>
-            </b-form-group> -->
+            </b-form-group>
 
       
 
@@ -100,17 +89,28 @@ export default {
       return {
         form: {
           email: '',
-          password: '',
           name: '',
-          address1:'',
-          address2:'',
+          address:'',
           city:'',
-          pincode:''
+          pincode:'',
+          phone:''
           
         },
         logIn: false,
         show: true
       }
+    },
+    mounted() {
+        //console.log(localStorage.getItem("userDetails"))
+        var userDetails = JSON.parse(localStorage.getItem("userDetails"))
+        //console.log("user details "+userDetails)
+        this.form.email = userDetails.emailId
+        this.form.name = userDetails.name
+        this.form.address = userDetails.address1
+        this.form.city = userDetails.city
+        this.form.pincode = userDetails.pincode
+        this.form.phone = userDetails.phoneNumber
+        //console.log(this.form.email)
     },
     methods: {
         onSubmit() {

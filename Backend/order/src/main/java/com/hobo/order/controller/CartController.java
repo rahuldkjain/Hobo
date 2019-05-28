@@ -5,6 +5,7 @@ import com.hobo.order.exceptions.cartExceptions.CartAlreadyExists;
 import com.hobo.order.exceptions.cartExceptions.CartNotFound;
 import com.hobo.order.entity.CartEntity;
 import com.hobo.order.model.CartDTO;
+import com.hobo.order.model.UserCartDTO;
 import com.hobo.order.service.CartService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class CartController {
     public JSONObject deleteCart(@RequestParam int cartItemId) throws CartNotFound{
         try {
             CartDTO cartDTO= cartService.deleteCart(cartItemId);
-            JSONObject response=getJSONResponse(cartDTO);
+            JSONObject response=getJSONResponse("Cart Entry Deleted");
             return response;
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -71,7 +72,7 @@ public class CartController {
     @GetMapping("/usercart")
     public  JSONObject userCart(@RequestParam String emailId){
         try {
-            List<CartEntity> cartEntities=cartService.userCart(emailId);
+            List<UserCartDTO> cartEntities=cartService.userCart(emailId);
 
             JSONObject response=getJSONResponse(cartEntities);
             return response;
@@ -94,6 +95,14 @@ public class CartController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @GetMapping("/updateqty")
+    public  JSONObject updateQuantity(@RequestParam int cartItemId, int quantity){
+        UserCartDTO result = cartService.updateQuantity(cartItemId,quantity);
+        JSONObject response=getJSONResponse(result);
+        return response;
+
     }
 
     public JSONObject getJSONResponse(Object data){

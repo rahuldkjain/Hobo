@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.example.hoboandroid.adapters.MerchantsAdapter;
 import com.example.hoboandroid.models.ApiResponse;
 import com.example.hoboandroid.models.merchantproduct.MerchantProduct;
 import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
@@ -43,13 +44,12 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
     TextView productDesc,productName,productAttributes,productPrice;
     Button buyNow,addToCart;
     Spinner merchantsListSpinner;
-    ArrayAdapter<MerchantProduct> merchantsListAdapter;
+    MerchantsAdapter merchantsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-        //Retrofit retrofit= Api.getclient("http://172.16.20.80:8080/","product/");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(CONSTANTS.PRODUCT_BASE_URL)
                 .client(new OkHttpClient())
@@ -67,7 +67,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         productId = getIntent().getIntExtra("Product", 1);
 
         merchantsListSpinner = findViewById(R.id.spinner_product_list_merchants);
-        merchantsListAdapter = new ArrayAdapter<MerchantProduct>(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,merchantProductObject);
+        merchantsListAdapter = new MerchantsAdapter(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,merchantProductObject);
         merchantsListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
@@ -92,7 +92,13 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             Log.d("ProductInfoPage", response.body().toString());
                             productName.setText(response.body().getData().getProductName());
                             productDesc.setText(response.body().getData().getDescription());
-                            productAttributes.setText(response.body().getData().getAttributes().getColor());
+
+                            for(String key : response.body().getData().getAttributes().keySet()){
+                                productAttributes.setText(productAttributes.getText().toString()+key+" : "+response.body().getData().getAttributes().get(key)+"\n");
+                            }
+
+
+                            //productAttributes.setText(response.body().getData().getAttributes().getColor());
                             Glide.with(productImage.getContext())
                                     .load(response.body().getData().getProductImage().get(1))
                                     .into((productImage));
@@ -103,7 +109,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onFailure(Call<ApiResponse<Product>> call, Throwable t) {
                         Toast.makeText(ProductInfoActivity.this, "Check your connection", Toast.LENGTH_LONG).show();
-                        Log.e("HOBOLandingPage", t.getMessage() + " failure");
+                        Log.e("ProductInfoActivity", t.getMessage() + " failure");
                     }
                 });
         Retrofit retrofit1 = new Retrofit.Builder()
@@ -119,7 +125,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response1) {
                         if (response1.body() != null) {
                             Log.e("Inmerchant", response1.body().getData().getPrice() + "");
-                            productPrice.setText(response1.body().getData().getPrice());
+                            productPrice.setText(productPrice.getText().toString()+response1.body().getData().getPrice());
                             merchantid = Integer.parseInt(response1.body().getData().getMerchantId());
                             addToCart.setEnabled(true);
                             buyNow.setEnabled(true);

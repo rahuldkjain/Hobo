@@ -17,6 +17,6 @@ public interface MerchantProductRepository extends CrudRepository<MerchantProduc
     @Query("select mp.indexx, m.merchantId, mp.productId, mp.stock, mp.price, mp.productRating, mp.productsSold, mp.merchantScore, m.merchantName from MerchantProduct mp, Merchant m where mp.merchantId=m.merchantId and mp.productId=:productId order by mp.merchantScore desc")
     List<Object> test (@Param("productId") Integer productId);
 
-
     List<MerchantProduct> findByProductIdOrderByMerchantScoreDesc(Integer productId);
+    MerchantProduct findByProductIdAndMerchantId(int id,int prodid);
 }

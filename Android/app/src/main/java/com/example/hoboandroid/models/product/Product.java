@@ -4,6 +4,7 @@ import com.example.hoboandroid.models.Attributes;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Map;
 
 public class Product{
 
@@ -23,7 +24,7 @@ public class Product{
 	private String description;
 
 	@SerializedName("attributes")
-	private Attributes attributes;
+	private Map<String,String> attributes;
 
 	@SerializedName("category")
 	private String category;
@@ -71,11 +72,11 @@ public class Product{
 		this.description = description;
 	}
 
-	public Attributes getAttributes(){
+	public Map<String, String> getAttributes(){
 		return attributes;
 	}
 
-	public void setAttributes(Attributes attributes){
+	public void setAttributes(Map attributes){
 		this.attributes = attributes;
 	}
 

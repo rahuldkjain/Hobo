@@ -4,6 +4,7 @@ export default {
     state: {
         product: {},
         productDetails: {},
+        productDetailsList: [],
         cartProduct: [],
         cartProductId: [],
         cartImage: [],
@@ -39,8 +40,8 @@ export default {
         getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId,
         getUserCartItem: (state) => state.UserCartItem,
         getUserCartItems: (state) => state.UserCartItems,
-        getCartProductDetails: (state) => state.cartProductDetails
-
+        getCartProductDetails: (state) => state.cartProductDetails,
+        getProductDetailsList: (state) => state.productDetailsList
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -48,18 +49,23 @@ export default {
         },
         SET_PRODUCT_DETAILS: (state, result) => {
             state.productDetails = result.data
+                // console.log("RESULT DATA " + JSON.stringify(result.data[0]))
+            state.productDetailsList.push(result.data[0])
         },
         SET_CART_PRODUCT: (state, result) => {
+            state.cartProduct = []
             if (localStorage.getItem('loggedIn') == 'false') {
                 state.cartProduct.push(result.data.productName)
                 state.cartProductId.push(result.data.productId)
                 state.cartImage.push(result.data.productImage)
             } else {
                 for (var index = 0; index < result.data.length; index++) {
-                    state.cartProduct.push(result.data[index])
-                        //state.cartProduct.push(result.data[index].productName)
-                    state.cartProductId.push(result.data[index].productId)
-                    state.cartImage.push(result.data[index].productImage)
+                    if (!state.cartProduct.includes(result.data[index])) {
+                        state.cartProduct.push(result.data[index])
+                            //state.cartProduct.push(result.data[index].productName)
+                        state.cartProductId.push(result.data[index].productId)
+                        state.cartImage.push(result.data[index].productImage)
+                    }
                 }
             }
         },
@@ -100,8 +106,11 @@ export default {
             state.UserCartItems.push(result.data)
         },
         SET_REMOVE_USER_CART_ITEMS: (state, result) => {
-            state.cartProduct.pop(result.data)
-           // state.cartProductDetails.pop(result.data)
+            for (var index = 0; index < state.cartProduct.length; index++) {
+                if (state.cartProduct[index].productId == result.data.productId) {
+                    state.cartProduct.splice(index, 1)
+                }
+            }
         }
     },
     actions: {

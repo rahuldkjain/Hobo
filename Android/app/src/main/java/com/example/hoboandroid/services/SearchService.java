@@ -13,8 +13,8 @@ import retrofit2.http.Query;
 
 public interface SearchService {
 
-    @GET("/search/suggestions")
-    Call<ApiResponse<Object>> searchQuery(@Query("query") String query);
+    @GET("/search/suggestion")
+    Call<ApiResponse<List<Product>>> searchQuery(@Query("query") String query);
 
 
     @GET("/suggestions")

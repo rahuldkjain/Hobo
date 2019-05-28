@@ -170,6 +170,8 @@ export default {
             total: [],
             buyNow: false,
             userLoggedIn: false,
+            cartItem: [],
+            quantity: []
         }
     },
     computed: {
@@ -180,6 +182,7 @@ export default {
         this.userLoggedIn = localStorage.getItem("loggedIn")
         console.log("quantity on shipping page "+this.getCartQuantity)
         if(this.getBuyNowProduct){
+            console.log("in get buy now product")
             this.buyNow = true
             sessionStorage.setItem("buyNow", true)
             console.log("quantity on shipping page "+this.getBuyNowProduct)
@@ -201,11 +204,28 @@ export default {
                 console.log("total "+this.totalAmount)
             }
             else{
+                
                 for(var product in this.getCartProduct){
                     this.totalAmount += product.productPrice * product.quantity
                 }
                 console.log("total" + this.totalAmount)
+                var index = 0
+                 this.getCartProduct.forEach(value => {
+                    var payload = {
+                    productId: value.productId,
+                    content: value
+                }
+                this.cartItem.push(payload)
+                this.quantity.push(this.getCartQuantity[index])
+                index++
+
+                // sessionStorage.setItem("cartItem",JSON.stringify(this.cartItem))
+                // sessionStorage.setItem("quantity",this.quantity)
+                // console.log("cart item "+this.cartItem)
+            })
+                
             }
+            
             
         }
             

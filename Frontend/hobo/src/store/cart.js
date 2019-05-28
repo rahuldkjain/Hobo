@@ -2,7 +2,8 @@ import cartApis from '../apis/cartApis.js'
 export default {
     state: {
         cartItem: {},
-        cartItems: []
+        cartItems: [],
+        cartItemList: []
     },
     getters: {
         getCartItem: (state) => state.cartItem
@@ -13,6 +14,9 @@ export default {
         },
         SET_FETCH_CART_ITEMS: (state, result) => {
             state.cartItems = result.data
+        },
+        SET_ADD_CART_ITEM_LIST: (state, result) => {
+            state.cartItemList.push(result.data)
         }
     },
     actions: {
@@ -27,6 +31,12 @@ export default {
             cartApis.fetchCartItems((result) => {
                 context.commit('SET_FETCH_CART_ITEMS', result.data)
             }, emailId)
+        },
+        addCartItemList: (context, payload) => {
+            // console.log('data in action'+payload)
+            cartApis.putCartItemList((result) => {
+                context.commit('SET_ADD_CART_ITEM_LIST', result.data)
+            }, payload)
         }
     }
 }

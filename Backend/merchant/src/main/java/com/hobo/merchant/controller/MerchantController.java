@@ -3,6 +3,7 @@ package com.hobo.merchant.controller;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantAlreadyExists;
 import com.hobo.merchant.exceptions.merchantexceptions.MerchantNotFound;
 import com.hobo.merchant.model.MerchantDTO;
+import com.hobo.merchant.model.NameAndStockDTO;
 import com.hobo.merchant.service.MerchantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +80,18 @@ public class MerchantController{
         }
         return null;
 
+    }
+
+    @GetMapping("/getnameandstock/{merchId}/{prodId}")
+    public NameAndStockDTO getNameAndStock(@PathVariable final int merchId, @PathVariable final int prodId) throws MerchantNotFound {
+        try {
+            NameAndStockDTO nameAndStockDTO =  merchantService.getNameAndStock(merchId,prodId);
+            return nameAndStockDTO;
+        }
+        catch (RuntimeException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public JSONObject getJSONResponse(Object data){
