@@ -44,37 +44,23 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_landing_page);
-
         getProducts();
-
-        //loadSlidingImages();
-
-        //categoryList = new ArrayList<>();
-        //categoryList.add(new Category());
-
         getCategories();
-
-
     }
+
 
     private void getCategories() {
 
         categoryRecyclerView = findViewById(R.id.landing_page_category_recycler_view);
-
         categoryAdapter = new CategoryAdapter(categoryList);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(linearLayoutManager);
-
-
         categoryRecyclerView.setAdapter(categoryAdapter);
 
-
         Retrofit retrofit = Api.getclient("http://172.16.20.80:8080/","product/listcategory/");
-
         ProductService service = retrofit.create(ProductService.class);
-
         service.getCategories()
                 .enqueue(new Callback<ApiResponse<List<Category>>>() {
                     @Override
@@ -110,12 +96,8 @@ public class LandingPageActivity extends BaseActivity implements View.OnClickLis
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-
         productRecyclerView.setLayoutManager(linearLayoutManager);
         productRecyclerView.setOnClickListener(this);
-
-
         productRecyclerView.setAdapter(productRecyclerViewAdapter);
 
         Retrofit retrofit = Api.getclient(getResources().getString(R.string.product_host_address),"/product/getall/");
