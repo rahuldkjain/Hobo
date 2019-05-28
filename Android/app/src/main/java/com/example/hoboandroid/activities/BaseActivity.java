@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private TextView logoTextView;
     private EditText searchEditText;
-    private Button navigationDrawerButton, searchButton, cartButton;
+    public Button navigationDrawerButton, searchButton, cartButton;
     List<String> searchAutoTextList = new ArrayList<>();
 
 
@@ -200,12 +201,26 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
 
                 String searchText = searchEditText.getText().toString();
-                if (!searchText.equals("")) {
+                /*Fragment fragmentSearch = getSupportFragmentManager().findFragmentByTag("ProductsFragment");
+                if (!searchText.equals("") && fragmentSearch != null) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type","SearchQuery");
+                    bundle.putString("SearchQuery",searchText);
+
+
+                    getSupportFragmentManager().beginTransaction()
+                            *//*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
+                            .replace(R.id.base_activity_frame, fragmentSearch, "ProductsFragment").commit();
+
+                }else */
+
+                if(!searchText.equals("")){
+
                     Intent intent  =  new Intent(getApplicationContext(),ProductListActivity.class);
                     intent.putExtra("type","SearchQuery");
                     intent.putExtra("SearchQuery",searchText);
                     startActivity(intent);
-
 
                 }else{
                     Toast.makeText(getApplicationContext(),"Please type anything and search",Toast.LENGTH_SHORT).show();

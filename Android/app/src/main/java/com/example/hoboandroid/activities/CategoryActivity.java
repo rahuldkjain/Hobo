@@ -1,6 +1,7 @@
 package com.example.hoboandroid.activities;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,12 +103,25 @@ public class CategoryActivity extends BaseActivity implements View.OnClickListen
         SubCategory item = subCategoryList.get(itemPosition);
         Toast.makeText(getApplicationContext(), "A Sub category is clicked", Toast.LENGTH_LONG).show();
 
+        /*Fragment fragmentSearch = getSupportFragmentManager().findFragmentByTag("ProductsFragment");
+        if (fragmentSearch != null) {
+
+            Bundle bundle = new Bundle();
+            bundle.putString("type","SubCategory");
+            bundle.putString("SubCategory",item.getSubCategoryName());
 
 
+            getSupportFragmentManager().beginTransaction()
+                    *//*.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)*//*
+                    .replace(R.id.reusable_categories_xml, fragmentSearch, "ProductsFragment").commit();
+
+        }
+        else{*/
         //opening a sub category activity
-        Intent intent = new Intent(getApplicationContext(),ProductListActivity.class);
-        intent.putExtra("type","SubCategory");
-        intent.putExtra("SubCategory",item.getSubCategoryName());
+        Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
+        intent.putExtra("type", "SubCategory");
+        intent.putExtra("SubCategory", item.getSubCategoryName());
         view.getContext().startActivity(intent);
+        // }
     }
 }

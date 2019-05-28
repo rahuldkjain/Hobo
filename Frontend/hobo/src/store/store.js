@@ -6,7 +6,7 @@ import allProductsModule from './allProductsModule.js'
 import product from './product.js'
 import order from './order.js'
 import category from './category.js'
-//import cart from './cart.js'
+import cart from './cart.js'
 
 Vue.use(Vuex)
 
@@ -17,6 +17,7 @@ export default new Vuex.Store({
         allProductsModule,
         product,
         order,
-        category
+        category,
+        cart
     }
 })
