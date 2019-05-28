@@ -10,5 +10,5 @@ import java.util.List;
 public interface CartRepository extends CrudRepository<CartEntity, Integer> {
     List<CartEntity> findByUserEmail(String emailId);
 
-    boolean existsByUserEmailAndProductIdAndMerchantId(String userEmail, int productId, int merchantId);
+    CartEntity findByUserEmailAndProductIdAndMerchantId(String userEmail, int productId, int merchantId);
 }

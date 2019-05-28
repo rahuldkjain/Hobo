@@ -195,4 +195,16 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         merchantProduct.setMerchantScore(updateScore);
         merchantProductRepository.save(merchantProduct);
     }
+
+    @Override
+    public String checkQuantity(int id, int qty, int prodid) {
+        MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(prodid,id);
+        if(qty > (merchantProduct.getStock()*0.8)) {
+            return null;
+        }
+        else {
+            Merchant merchant = merchantRepository.findOne(id);
+            return merchant.getMerchantName();
+        }
+    }
 }

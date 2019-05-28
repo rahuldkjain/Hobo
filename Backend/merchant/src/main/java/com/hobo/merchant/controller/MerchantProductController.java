@@ -176,6 +176,11 @@ public class MerchantProductController {
         }
         return null;
     }
+    @GetMapping("/checkqty/{id}/{prodid}/{qty}")
+    public String checkQuantity(@PathVariable final int id, @PathVariable final int qty,@PathVariable final int prodid) {
+        String result = merchantProductService.checkQuantity(id,qty,prodid);
+        return result;
+    }
 
     public JSONObject getJSONResponse(Object data){
         JSONObject response = new JSONObject();
