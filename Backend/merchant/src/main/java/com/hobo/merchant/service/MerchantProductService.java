@@ -14,10 +14,10 @@ public interface MerchantProductService {
     MerchantProductDTO deleteMerchantProductById(Integer index) throws MerchantProductNotFound;
 
     MerchantProductDTO getTopMerchant(Integer producctId) throws MerchantProductNotFound;
-    List<MerchantProduct> getAllMerchants(Integer productId) throws MerchantProductNotFound;
+    List<MerchantProductDTO> getAllMerchants(Integer productId) throws MerchantProductNotFound;
     //Object getAllMerchants(Integer productId) throws MerchantProductNotFound;
     MerchantProductDTO updateProductRating(Integer index, float productRating) throws MerchantProductNotFound, MerchantNotFound;
-    List<MerchantProduct> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound;
+    List<MerchantProductDTO> readMerchantProductById(Integer merchantId) throws MerchantProductNotFound;
     float getProductRating(Integer productId) throws MerchantProductNotFound;
 
     MerchantProductDTO findByMerchantProductId(Integer merchantId, Integer productId) throws MerchantProductNotFound;

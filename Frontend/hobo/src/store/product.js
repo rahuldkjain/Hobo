@@ -4,6 +4,7 @@ export default {
     state: {
         product: {},
         productDetails: {},
+        productDetailsList: [],
         cartProduct: [],
         cartProductId: [],
         cartImage: [],
@@ -39,8 +40,8 @@ export default {
         getBuyNowProductMerchantId: (state) => state.buyNowProductMerchantId,
         getUserCartItem: (state) => state.UserCartItem,
         getUserCartItems: (state) => state.UserCartItems,
-        getCartProductDetails: (state) => state.cartProductDetails
-
+        getCartProductDetails: (state) => state.cartProductDetails,
+        getProductDetailsList: (state) => state.productDetailsList
     },
     mutations: {
         SET_PRODUCT: (state, result) => {
@@ -48,6 +49,8 @@ export default {
         },
         SET_PRODUCT_DETAILS: (state, result) => {
             state.productDetails = result.data
+                // console.log("RESULT DATA " + JSON.stringify(result.data[0]))
+            state.productDetailsList.push(result.data[0])
         },
         SET_CART_PRODUCT: (state, result) => {
             state.cartProduct = []

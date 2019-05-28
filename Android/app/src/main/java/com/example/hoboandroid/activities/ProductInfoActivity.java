@@ -2,7 +2,6 @@ package com.example.hoboandroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.ArrayMap;
 import android.view.View;
 
 import com.example.hoboandroid.CONSTANTS;
@@ -19,27 +18,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.hoboandroid.adapters.MerchantsAdapter;
 import com.example.hoboandroid.models.ApiResponse;
-import com.example.hoboandroid.models.Merchant;
 import com.example.hoboandroid.models.merchantproduct.MerchantProduct;
 import com.example.hoboandroid.models.merchantproduct.MerchantProductResponse;
-import com.example.hoboandroid.models.order.OrderMe;
-import com.example.hoboandroid.models.order.OrderProductMe;
 import com.example.hoboandroid.models.product.Product;
-import com.example.hoboandroid.models.user.UserPOST;
 import com.example.hoboandroid.services.MerchantService;
-import com.example.hoboandroid.services.OrderService;
 import com.example.hoboandroid.services.ProductService;
-import com.example.hoboandroid.services.UserService;
 
-import org.json.JSONObject;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +62,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
         productDesc = findViewById(R.id.productDescription2);
         productName = findViewById(R.id.productInfoName);
         productAttributes = findViewById(R.id.attributes2);
-        productPrice = findViewById(R.id.productInfoPrice);
+        productPrice = findViewById(R.id.text1);
 
         productId = getIntent().getIntExtra("Product", 1);
 
@@ -396,7 +384,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
             bundle.putString("EmailId",getUserEmailId());
             bundle.putInt("ProductId",productId);
-            bundle.putInt("MerchantId",merchantid);
+            bundle.putInt("MerchantId",merchantProductObject.get(merchantsListSpinner.getSelectedItemPosition()).getMerchantId());
             bundle.putString("ProductName",productName.getText().toString());
             bundle.putString("ProductImage",productStringImage);
             bundle.putInt("ProductPrice",(int)Float.parseFloat(productPrice.getText().toString()));

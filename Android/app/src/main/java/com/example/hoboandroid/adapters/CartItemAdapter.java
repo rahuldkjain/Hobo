@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +28,19 @@ import com.example.hoboandroid.services.MerchantService;
 import com.example.hoboandroid.services.OrderService;
 import com.example.hoboandroid.services.ProductService;
 
-import java.util.List;
+import org.json.JSONObject;
 
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.RecyclerViewHolder> {
 
@@ -85,12 +93,12 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
             TextView productPriceTextView = itemView.findViewById(R.id.cartItemProductPrice);
             productPriceTextView.setText(""+cartItem.getProductPrice());
 
-            ((CartActivity)(context)).addToTotalPrice((int)cartItem.getProductPrice());
 
-
+            TextView cartItemMerchant = itemView.findViewById(R.id.cartItem_merchant);
+            cartItemMerchant.setText(""+cartItem.getMerchantName());
 
             Glide.with(itemView.getContext())
-                    .load( cartItem.getProductImage())
+                    .load( cartItem.getProductImage().get(0))
                     .apply(new RequestOptions().override(100,100))
                     .into((ImageView) itemView.findViewById(R.id.cartProductItemImage));
 
@@ -98,7 +106,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
             quantity.setText(""+cartItem.getQuantity());
 
             //To update the price and alert us in the cart
-            merchantService.getTopProductMerchant(cartItem.getProductId())
+          /*  merchantService.getTopProductMerchant(cartItem.getProductId())
                     .enqueue(new Callback<ApiResponse<MerchantProductResponse>>() {
                         @Override
                         public void onResponse(Call<ApiResponse<MerchantProductResponse>> call, Response<ApiResponse<MerchantProductResponse>> response) {
@@ -122,7 +130,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
                         }
                     });
-
+*/
 
             //for deletion of cart item
             Button deleteItemCart = itemView.findViewById(R.id.cartItem_delete);
@@ -131,8 +139,10 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                 @Override
                 public void onClick(View v) {
 
-                    if(((CartActivity)context).isLoggedIn())
-                            deletingCartItem(cartItem);
+                    if(((CartActivity)context).isLoggedIn()) {
+                        deletingCartItem(cartItem);
+                        notifyDataSetChanged();
+                    }
 
                 }
             });
@@ -144,8 +154,10 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
             addItemCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(((CartActivity)context).isLoggedIn())
-                            addingCartItem(cartItem);
+                    if(((CartActivity)context).isLoggedIn()) {
+                        addingCartItem(cartItem);
+
+                    }
 
                 }
             });
@@ -159,9 +171,10 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                 @Override
                 public void onClick(View v) {
 
-                    if(((CartActivity)context).isLoggedIn())
-                            removingCartItemByOne(cartItem);
-
+                    if(((CartActivity)context).isLoggedIn()) {
+                        removingCartItemByOne(cartItem);
+                        notifyDataSetChanged();
+                    }
                 }
             });
 
@@ -173,29 +186,48 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
             if(cartItem.getQuantity() - 1 == 0){
                 deletingCartItem(cartItem);
-                //TODO refresh
+                Toast.makeText(itemView.getContext(),"Cannot delete more further",Toast.LENGTH_SHORT).show();
             }
             else {
-                cartItem.setQuantity(cartItem.getQuantity()-1);
 
-                Retrofit retrofitDelete = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-                OrderService orderService = retrofitDelete.create(OrderService.class);
+                OrderService orderService = retrofit.create(OrderService.class);
+                Map<String, Object> jsonParams = new ArrayMap<>();
+                jsonParams.put("cartItemId",cartItem.getCartItemId());
+                jsonParams.put("userEmail", cartItem.getUserEmail());
+                jsonParams.put("productId",cartItem.getProductId() );
+                jsonParams.put("merchantId", cartItem.getMerchantId());
+                jsonParams.put("productImage",cartItem.getProductImage());
+                jsonParams.put("productName",cartItem.getProductName() );
+                jsonParams.put("productPrice", cartItem.getProductPrice());
+                jsonParams.put("quantity", cartItem.getQuantity()-1);
 
-                orderService.updateCartItem(cartItem)
+
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+                Log.d("Cart deleting one item","Request body" + jsonParams.toString());
+
+                orderService.updateCartItem(body)
                         .enqueue(new Callback<ApiResponse<CartItem>>() {
                             @Override
                             public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                                if(response.body() != null && response.body().getData()!=null){
-                                    Log.d("CartItemAdapter","Successfully Updated - "+response.body().getData().toString());
+                                Log.e("one removing Cart", "response in cart"+response.message());
+                                if (response.body() != null) {
+                                    Log.e("one removing Cart", "response body in cart"+response.body().getData().toString());
+                                    notifyDataSetChanged();
                                 }
-                                ((CartActivity)context).cartItemAdapter.notifyItemChanged(getAdapterPosition());
+                                //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
                             }
 
                             @Override
                             public void onFailure(Call<ApiResponse<CartItem>> call, Throwable t) {
-                                Toast.makeText(itemView.getContext(),"Couldn't connect please try again",Toast.LENGTH_SHORT).show();
-                                Log.d("CartItemAdapter","onFailure in removingCartItem response couldn't connect - Cart" );
+                                //TODO add code to handle the failure no response
+                                Log.d("CartActivity", "Response Failure");
                             }
                         });
             }
@@ -205,33 +237,30 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
         private void deletingCartItem(final CartItem cartItem) {
 
 
-            cartItem.setQuantity(cartItem.getQuantity()-1);
+            Retrofit retrofitDelete= new Retrofit.Builder()
+                    .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                    .client(new OkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-            Retrofit retrofitDelete = Api.getclient(CONSTANTS.ORDER_BASE_URL);
-
-            OrderService orderService = retrofitDelete.create(OrderService.class);
+            OrderService orderService=retrofitDelete.create(OrderService.class);
 
             orderService.deleteCartItem(cartItem.getCartItemId())
-                    .enqueue(new Callback<ApiResponse<CartItem>>() {
+                    .enqueue(new Callback<ApiResponse<String>>() {
                         @Override
-                        public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                            if(response.body() != null && response.body().getData()!=null){
-                                if(cartItem.getCartItemId()==response.body().getData().getCartItemId()) {
-                                    Toast.makeText(itemView.getContext(),"Deleting the product from cart",Toast.LENGTH_SHORT).show();
-                                    Log.d("CartItemAdapter", "Successfully deleted - " + response.body().getData().toString());
-                                }
-                                else{
-                                    Log.d("CartItemAdapter", "cart Item deletion didn't return same item Id - " + response.body().getData().toString());
-                                }
+                        public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
+                            Log.e("In cart delete", "in response");
+                            if(response.body()!=null){
+                                //Log.e("Inside cart response", response.body().toString());
 
+                                Toast.makeText(itemView.getContext(),response.body().getData(),Toast.LENGTH_SHORT).show();
                             }
-                            ((CartActivity)context).getCartItems();
+                            notifyDataSetChanged();
                         }
 
                         @Override
-                        public void onFailure(Call<ApiResponse<CartItem>> call, Throwable t) {
-                            Toast.makeText(itemView.getContext(),"Couldn't connect please try again",Toast.LENGTH_SHORT).show();
-                            Log.d("CartItemAdapter","onFailure response in deletingCartItem couldn't connect - Cart" );
+                        public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
+                            Log.e("Cart delete", "failed");
                         }
                     });
 
@@ -239,36 +268,49 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
         }
 
         private void addingCartItem(final CartItem cartItem) {
-            if(cartItem.getQuantity() + 1 > 2){
+            if(cartItem.getQuantity() + 1 > 10){
                 Toast.makeText(itemView.getContext(),"Cannot have more than two at same time",Toast.LENGTH_SHORT).show();
             }
             else {
-                cartItem.setQuantity(cartItem.getQuantity()+1);
 
-                Retrofit retrofitDelete = Api.getclient(CONSTANTS.ORDER_BASE_URL);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                        .client(new OkHttpClient())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-                OrderService orderService = retrofitDelete.create(OrderService.class);
+                OrderService orderService = retrofit.create(OrderService.class);
+                Map<String, Object> jsonParams = new ArrayMap<>();
+                jsonParams.put("cartItemId",cartItem.getCartItemId());
+                jsonParams.put("userEmail", cartItem.getUserEmail());
+                jsonParams.put("productId",cartItem.getProductId() );
+                jsonParams.put("merchantId", cartItem.getMerchantId());
+                jsonParams.put("productImage",cartItem.getProductImage());
+                jsonParams.put("productName",cartItem.getProductName() );
+                jsonParams.put("productPrice", cartItem.getProductPrice());
+                jsonParams.put("quantity", cartItem.getQuantity()+1);
 
-                orderService.updateCartItem(cartItem)
+
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonParams)).toString());
+
+                Log.d("Cart deleting one item","Request body" + jsonParams.toString());
+
+                orderService.updateCartItem(body)
                         .enqueue(new Callback<ApiResponse<CartItem>>() {
                             @Override
                             public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                                if(response.body() != null && response.body().getData()!=null){
-                                    if(cartItem.getCartItemId()==response.body().getData().getCartItemId()) {
-                                        Toast.makeText(itemView.getContext(),"Added the product from cart",Toast.LENGTH_SHORT).show();
-                                        Log.d("CartItemAdapter", "Successfully added - " + response.body().getData().toString());
-                                    }
-                                    else{
-                                        Log.d("CartItemAdapter", "cart Item deletion didn't return same item Id - " + response.body().getData().toString());
-                                    }
-                                    ((CartActivity)context).cartItemAdapter.notifyItemChanged(getAdapterPosition());
+                                Log.e("one removing Cart", "response in cart"+response.message());
+                                if (response.body() != null) {
+                                    Log.e("one removing Cart", "response body in cart"+response.body().getData().toString());
                                 }
+                                notifyDataSetChanged();
+                                //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
                             }
 
                             @Override
                             public void onFailure(Call<ApiResponse<CartItem>> call, Throwable t) {
-                                Toast.makeText(itemView.getContext(),"Couldn't connect please try again",Toast.LENGTH_SHORT).show();
-                                Log.d("CartItemAdapter","onFailure response couldn't connect - Cart" );
+                                //TODO add code to handle the failure no response
+                                Log.d("CartActivity", "Response Failure");
                             }
                         });
             }

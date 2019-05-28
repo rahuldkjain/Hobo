@@ -126,6 +126,10 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
 
                             //productMerchantName.setText(response1.body().getData().getMerchantId())
                                 }
+                            else{
+                                productPrice.setText("Out of stock!");
+                                rating.setText("-");
+                            }
 
                             }
                     @Override

@@ -10,19 +10,30 @@
 
                         <h3 v-if="userLoggedIn"> price: {{product? product.content.productPrice : '' }}</h3>
                         <h3 v-if="!userLoggedIn"> price: {{cartItemDetails[index] ? cartItemDetails[index].price : '' }}</h3>
+                        
+                        <h3> Stock: {{getProductDetailsList[index] ? getProductDetailsList[index].stock : ''}}</h3>
                     </div>
                     <div class="quantity">
                         <!-- <Quantity/> -->
 
-                        <b-form-group>
+                        <!-- <b-form-group>
                             <b-form-select v-model="quantity[index]" class="mb-3">
-                            <!-- <option :value="null">Quantity</option> -->
+                            
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
-                        </b-form-select>
-                
-                        </b-form-group>
+                        </b-form-select> 
+                        </b-form-group> -->
+
+                        <b-form>
+                        <b-form-input
+                        id="quantity"
+                        type="number"
+                        v-model="quantity[index]"
+                        required
+                        placeholder="Enter quantity" @input="quantityChange(index)">
+                        </b-form-input>
+                        </b-form>
 
                     </div>
                     <div class="button">
@@ -49,6 +60,7 @@ export default {
             userLoggedIn: false,
             cartItem: [],
             cartItemDetails: [],
+            flag: 0
         }
     },
     methods:{
@@ -64,24 +76,41 @@ export default {
                         this.cartItemDetails.splice(index,1)
                     }
                 })
-                // this.forceRerender();
+               
             }
             else{
                 this.$store.dispatch('removeCartItem', this.cartItem[index].content.cartItemId)
-                // this.forceRerender()
-
+                
                 // remove from cartItemDetails too
             }
         },
-        // forceRerender() {
-           
-        //     window.location.reload()
-        // },
+       
         checkoutFunction() {
-
+            this.quantity.forEach(value => {
+                if(value == 0){
+                    this.flag=1
+                }
+            })
+            if(this.flag==0){
             this.$store.dispatch('cartQuantity',this.quantity)
 
-            // if(!this.userLoggedIn){
+                // console.log("on clicking checkout"+JSON.stringify(this.cartItem))
+                var index = 0
+                var cartItemList = []
+                this.cartItem.forEach(eachCartItem => {
+                    var payload = {}
+                    eachCartItem.content.quantity = this.quantity[index]
+                    index++
+                    payload = eachCartItem.content
+
+                    this.$store.dispatch("addCartItemList",payload)
+                    cartItemList.push(payload)
+                })
+
+                console.log("our cart Item list "+JSON.stringify(cartItemList))
+                
+                
+
                 for(var i=0;i<this.getCartQuantity.length;i++){
                     if(this.userLoggedIn){
                         var totalPrice = this.quantity[i]*this.cartItem[i].content.productPrice
@@ -91,13 +120,7 @@ export default {
                     }
                     this.total.push(totalPrice)
                  }
-            // }
-            // else{
-            //     for(var i=0;i<this.getCartQuantity.length;i++){
-            //     var totalPrice = this.getCartQuantity[i]*this.getCartProduct[i].productPrice
-            //     this.total.push(totalPrice)
-            //     }
-            // }
+            
             
             
             this.total.forEach(price => {
@@ -136,22 +159,35 @@ export default {
             sessionStorage.setItem("orderDetails",JSON.stringify(this.orderDetails))
 
             this.$router.push('/checkout')
+            }
+            else{
+                alert("quantity cannot be 0")
+            }
+        },
+        quantityChange(index) {
+            console.log("in quantity change function ")
+            if(this.getProductDetailsList){
+            if(this.quantity[index] > this.getProductDetailsList[index].stock ){
+                alert("quantity is exceeding the stock")
+                this.quantity[index] = "1"
+                }
+            }
         }
 
     },
     computed: {
-        ...mapGetters(['getCartItems','getCartProductDetails','getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity','getCartProductMerchantId'])
+        ...mapGetters(['getCartItems','getCartProductDetails','getLoggedIn','getCartProduct','getProductDetails','getCartImage', 'getCartProductPrice', 'getCartProductId','getCartQuantity','getCartProductMerchantId','getProductDetailsList'])
     },
     components: {
         Quantity
     },
     watch: {
         getCartProduct: function(newValue, oldValue){
-            console.log("getCartProduct: " + this.getCartProduct)
+            // console.log("getCartProduct: " + this.getCartProduct)
             // let unique = [...new Set(newValue)]
             //window.location.reload()
             this.cartItem = []
-            console.log("in watch before for "+this.cartItem.length)
+            // console.log("in watch before for "+this.cartItem.length)
             newValue.forEach(value => {
                 var payload = {
                     productId: value.productId,
@@ -160,8 +196,12 @@ export default {
                 this.cartItem.push(payload)
                 this.quantity.push("1")
             })
-            console.log("in watch"+this.cartItem.length)
+            console.log("in watch"+JSON.stringify(this.cartItem))
             
+            this.cartItem.forEach(eachCartItem => {
+                this.$store.dispatch("productDetails",eachCartItem.content.productId)
+                
+            })
             
         },
         getCartProductDetails: function(newValue, oldValue){
@@ -178,10 +218,10 @@ export default {
     },
     mounted() {
         this.cartItem = []
-        console.log("in mounted ")
+        // console.log("in mounted ")
         if(localStorage.getItem("loggedIn") == "false"){
             var keys = Object.keys(sessionStorage)
-            console.log(keys)
+            // console.log(keys)
             keys.forEach(key => {
                 var pid = JSON.parse(sessionStorage.getItem(key)).pid
                 console.log("pid: " + pid)

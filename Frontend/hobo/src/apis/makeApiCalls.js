@@ -11,7 +11,7 @@ export default {
             .catch((error) => { console.log(error) })
     },
     makePutRequest(path, callback, payload) {
-        axios.put(path)
+        axios.put(path, payload)
             .then(callback)
             .catch((error) => { console.log(error) })
     },

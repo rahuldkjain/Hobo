@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightOrange"
     tools:context=".activities.SignUpActivity">
 
     <ScrollView
@@ -308,6 +309,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="start"
                 android:layout_marginTop="40dp"
+                android:background="@color/orange"
                 android:layout_marginBottom="40dp"
                 android:enabled="true"
                 android:text="Sign Up"
