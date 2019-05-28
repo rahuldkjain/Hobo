@@ -11,5 +11,9 @@ export default {
     deleteCartItem(callback, cartItemId) {
         var url = '/Cart/cart?cartItemId=' + cartItemId
         makeApiCalls.makeDeleteRequest(url, callback)
-    }
+    },
+    putCartItemList(callback, payload) {
+        var url = '/Cart/cart'
+        makeApiCalls.makePutRequest(url, callback, payload)
+    },
 }
