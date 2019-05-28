@@ -122,6 +122,7 @@ public class GuestActivity extends BaseActivity {
             jsonParams.put("city", guest_city.getText().toString());
             jsonParams.put("deliveryDate", deliveryDate);
             jsonParams.put("orderDate", orderDate);
+
             jsonParams.put("orderPrice", bundle.getInt("ProductPrice", 8500));
             jsonParams.put("pincode", guest_pincode.getText().toString());
             jsonParams.put("userEmailId", guest_email.getText().toString());

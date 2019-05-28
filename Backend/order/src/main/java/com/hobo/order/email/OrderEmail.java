@@ -8,7 +8,7 @@ import java.io.IOException;
 public class OrderEmail {
 
     public void sendEmail(String email, String date, Float price) throws IOException {
-        try {
+        /*try {
             SendGrid sg = new SendGrid("Key hai yaaha par chupi huyi hai");
             Request request = new Request();
             request.setMethod(Method.POST);
@@ -25,6 +25,6 @@ public class OrderEmail {
             System.out.println(response.getHeaders());
         } catch (IOException ex) {
             throw ex;
-        }
+        }*/
     }
 }

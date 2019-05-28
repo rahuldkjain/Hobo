@@ -5,24 +5,21 @@ import com.hobo.order.entity.OrderProductEntity;
 import com.hobo.order.model.OrderProductDTO;
 import com.hobo.order.repository.OrderProductRepository;
 import com.hobo.order.service.OrderProductService;
-import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class OrderProductServiceImpl implements OrderProductService {
 
     @Autowired
     private OrderProductRepository orderProductRepository;
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public OrderProductDTO createOrderProduct(OrderProductDTO orderProductDTO) throws OrderProductAlreadyExists {
         if(orderProductRepository.exists(orderProductDTO.getIndexx())){
             throw new OrderProductAlreadyExists("Data already exists");

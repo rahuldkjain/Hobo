@@ -1,5 +1,6 @@
 package com.example.hoboandroid.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,7 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartActivity extends BaseActivity implements View.OnClickListener {
 
-    List<CartItem> cartItemsList = new ArrayList<>();
+    ArrayList<CartItem> cartItemsList = new ArrayList<>();
     public CartItemAdapter cartItemAdapter;
     RecyclerView cartRecyclerView;
     CartItem cartItem;
@@ -143,7 +144,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         getCartItems();
 
         checkout.setOnClickListener(this);
-        deleteall.setOnClickListener(this);
+        //deleteall.setOnClickListener(this);
         //implemented inside on click function
 
 
@@ -159,6 +160,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+
     public void getCartItems() {
         if(isLoggedIn()){
 
@@ -170,7 +172,6 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
             OrderService orderService  = retrofit.create(OrderService.class);
 
             Log.e("CartActivity","inside get cart Items method");
-            //TODO check backend url endpoint & variable name if it matches the get cart
             orderService.getCartItems(getUserEmailId()).enqueue(new Callback<ApiResponse<List<CartItem>>>() {
                 @Override
                 public void onResponse(Call<ApiResponse<List<CartItem>>> call, Response<ApiResponse<List<CartItem>>> response) {
@@ -188,6 +189,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                         Log.d("CartActivity", "CartItems list " + cartItemsList.toString());
 
                         cartRecyclerView.setAdapter(cartItemAdapter);
+                        cartItemAdapter.notifyDataSetChanged();
 
                     }
                     else {
@@ -223,6 +225,17 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         }
         else if(v.getId() == R.id.cart_checkOut){
 
+                 /*       Bundle bundle =  new  Bundle();
+                        bundle.putParcelableArrayList("cartItems",cartItemsList);
+                        bundle.putInt("totalPrice",(int)Float.parseFloat(totalPrice.getText().toString()));
+
+
+
+                        Intent intent = new Intent(getApplicationContext(),GuestActivity.class);
+                        intent.putExtra("cartItem",bundle);
+                        v.getContext().startActivity(intent);
+*/
+
         }
 
     }
@@ -240,7 +253,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                 cartItem.setQuantity(cartItem.getQuantity()-1);
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://172.16.20.84:8082/")
+                        .baseUrl(CONSTANTS.ORDER_BASE_URL)
                         .client(new OkHttpClient())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();

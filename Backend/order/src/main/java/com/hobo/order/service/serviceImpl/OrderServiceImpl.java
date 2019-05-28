@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -31,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderEmail orderEmail = new OrderEmail();
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public OrderDTO createOrder(OrderDTO orderDTO) throws OrderAlreadyExists, IOException {
         if(orderRepository.exists(orderDTO.getOrderId())){
             throw new OrderAlreadyExists("Data already present");
@@ -57,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO deleteOrder(int orderItemId) throws OrderNotFound{
         OrderDTO orderDTO = readOrder(orderItemId);
         if (orderDTO != null) {
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public OrderDTO updateOrder(OrderDTO orderDTO) throws OrderNotFound{
         //OrderDTO checkAlreadyExists = readOrder(orderDTO.getOrderId());
 
@@ -81,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO updateDeliveryDate(Integer orderId, Date deliveryDate) throws OrderNotFound{
         OrderDTO orderDTO=readOrder(orderId);
         orderDTO.setDeliveryDate(deliveryDate);

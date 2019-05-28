@@ -27,14 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartRepository cartRepository;
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public CartDTO createCart(CartDTO cartDTO) {
 
         CartEntity cartEntity = cartRepository.findByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId());
@@ -62,17 +61,18 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartDTO deleteCart(int cartItemId) throws CartNotFound{
 
         CartEntity cartEntity= cartRepository.findOne(cartItemId);
-        cartRepository.delete(cartEntity);
+        cartRepository.delete(cartItemId);
         CartDTO cartDTO = new CartDTO();
         BeanUtils.copyProperties(cartEntity,cartDTO);
         return cartDTO;
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public CartDTO updateCart(CartDTO cartDTO) throws CartNotFound{
         CartEntity cartEntity = cartRepository.findByUserEmailAndProductIdAndMerchantId(cartDTO.getUserEmail(),cartDTO.getProductId(),cartDTO.getMerchantId());
         if(cartEntity != null){
@@ -105,8 +105,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public List<CartEntity> deleteCart(String emailId) {
+    @Transactional
+    public List<CartEntity> deleteCarts(String emailId) {
         List<CartEntity> cartEntities=cartRepository.findByUserEmail(emailId);
         for (CartEntity cartEntity:cartEntities) {
             cartRepository.delete(cartEntity);
@@ -115,6 +115,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public UserCartDTO updateQuantity(int cartItemId, int quantity) {
         CartEntity cartEntity = cartRepository.findOne(cartItemId);
         UserCartDTO userCartDTO = new UserCartDTO();

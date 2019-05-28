@@ -106,7 +106,7 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
                             productDesc.setText(response.body().getData().getDescription());
 
                             for(String key : response.body().getData().getAttributes().keySet()){
-                                productAttributes.setText(productAttributes.getText().toString()+key+" : "+response.body().getData().getAttributes().get(key)+"\n");
+                                productAttributes.setText(productAttributes.getText().toString()+key+" : "+response.body().getData().getAttributes().get(key)+"\n\n");
                             }
 
 
@@ -144,6 +144,9 @@ public class ProductInfoActivity extends BaseActivity implements View.OnClickLis
 
                             getMerchantsList();
                             //productMerchantName.setText(response1.body().getData().getMerchantId())
+                        }
+                        else{
+                            productPrice.setText("Out of Stock");
                         }
                     }
 
