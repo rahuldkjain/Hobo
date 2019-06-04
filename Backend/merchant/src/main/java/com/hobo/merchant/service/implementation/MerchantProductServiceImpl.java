@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
 public class MerchantProductServiceImpl  implements MerchantProductService {
     @Autowired
     private MerchantProductRepository merchantProductRepository;
@@ -30,7 +29,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     private MerchantRepository merchantRepository;
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public MerchantProductDTO createMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductAlreadyExists, MerchantNotFound {
 
         if(merchantProductRepository.exists(merchantProductDTO.getIndexx())){
@@ -65,7 +64,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public MerchantProductDTO updateMerchantProduct(MerchantProductDTO merchantProductDTO) throws MerchantProductNotFound, MerchantNotFound{
         if(!merchantProductRepository.exists(merchantProductDTO.getIndexx()))
         {
@@ -84,6 +83,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
+    @Transactional
     public MerchantProductDTO deleteMerchantProductById(Integer index) throws MerchantProductNotFound{
         MerchantProductDTO merchantProductDTO=readMerchantProduct(index);
         if(merchantProductDTO!=null){
@@ -108,6 +108,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         {
             throw new MerchantProductNotFound("Data not found");
         }
+        merchantProductDTO.setStock((int)(Math.floor(merchantProductDTO.getStock()*0.8)));
         return merchantProductDTO;
     }
 
@@ -118,7 +119,10 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         //Object merchantProducts = merchantProductRepository.test(productId);
         List<MerchantProductDTO> resultArray = new ArrayList<>();
         for (MerchantProduct it: merchantProducts) {
-
+            it.setStock((int)(Math.floor(it.getStock()*0.8)));
+            MerchantProductDTO merchantProductDTO = new MerchantProductDTO();
+            BeanUtils.copyProperties(it,merchantProductDTO);
+            resultArray.add(merchantProductDTO);
         }
         if(merchantProducts==null)
         {
@@ -129,7 +133,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
-    @Transactional(readOnly = false )
+    @Transactional
     public MerchantProductDTO updateProductRating(Integer index, float productRating) throws MerchantProductNotFound,MerchantNotFound{
         if(!merchantProductRepository.exists(index))
         {
@@ -178,21 +182,15 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
 
     @Override
     public MerchantProductDTO findByMerchantProductId(Integer merchantId, Integer productId) throws MerchantProductNotFound {
-        MerchantProductDTO merchantProductDTO=null;
-        List<MerchantProduct> merchantProducts=readMerchantProductById(merchantId);
-        for (MerchantProduct merchantProduct:merchantProducts) {
-            if (merchantProduct.getProductId()==productId)
-            {
-                merchantProductDTO =new MerchantProductDTO();
-                BeanUtils.copyProperties(merchantProduct,merchantProductDTO);
-            }
-        }
+        MerchantProductDTO merchantProductDTO=new MerchantProductDTO();
+        MerchantProduct merchantProduct = new MerchantProduct();
+
 
         return merchantProductDTO;
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public void calculateScore(int indexx) {
         MerchantProduct merchantProduct = merchantProductRepository.findOne(indexx);
         double updateScore;
@@ -211,10 +209,26 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     @Override
     public String checkQuantity(int id, int qty, int prodid) {
         MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(prodid,id);
-        if(qty > (merchantProduct.getStock()*0.8)) {
+        if(qty > Math.floor(merchantProduct.getStock()*0.8)) {
             return null;
         }
         else {
+            Merchant merchant = merchantRepository.findOne(id);
+            return merchant.getMerchantName();
+        }
+    }
+
+    @Override
+    @Transactional
+    public String confirmQuantity(int id, int qty, int prodid) {
+        MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(prodid,id);
+        if(qty > (merchantProduct.getStock())) {
+            return null;
+        }
+        else {
+            merchantProduct.setProductsSold(merchantProduct.getProductsSold()+qty);
+            merchantProduct.setStock(merchantProduct.getStock()-qty);
+            merchantProduct = merchantProductRepository.save(merchantProduct);
             Merchant merchant = merchantRepository.findOne(id);
             return merchant.getMerchantName();
         }

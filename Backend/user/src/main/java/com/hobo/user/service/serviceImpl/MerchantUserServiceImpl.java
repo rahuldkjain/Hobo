@@ -3,6 +3,7 @@ package com.hobo.user.service.serviceImpl;
 import com.hobo.user.entity.MerchantUserEntity;
 import com.hobo.user.exceptions.merchantuser.MerchantUserAlreadyExists;
 import com.hobo.user.exceptions.merchantuser.MerchantUserNotFound;
+import com.hobo.user.model.MerchantProfileDTO;
 import com.hobo.user.model.MerchantUserDTO;
 import com.hobo.user.repository.MerchantUserRepository;
 import com.hobo.user.service.MerchantUserService;
@@ -10,9 +11,9 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -42,6 +43,7 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
+    @Transactional
     public MerchantUserDTO deleteUser(String email) {
         MerchantUserEntity result = merchantUserRepository.findByEmailId(email);
         merchantUserRepository.delete(result.getMerchantId());
@@ -52,20 +54,23 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
-    public MerchantUserDTO putUser(MerchantUserDTO merchantUserDTO) throws MerchantUserNotFound {
-        if(!merchantUserRepository.existsByEmailId(merchantUserDTO.getEmailId())) {
+    @Transactional
+    public MerchantProfileDTO putUser(MerchantProfileDTO merchantProfileDTO) throws MerchantUserNotFound {
+        MerchantUserEntity user = merchantUserRepository.findByEmailId(merchantProfileDTO.getEmailId());
+        if(user == null) {
             throw new MerchantUserNotFound("Data not found");
         }
-        MerchantUserEntity user = new MerchantUserEntity();
-        BeanUtils.copyProperties(merchantUserDTO, user);
-        MerchantUserEntity result = merchantUserRepository.save(user);
-        MerchantUserDTO resultDTO= new MerchantUserDTO();
+        MerchantUserEntity result = new MerchantUserEntity();
+        BeanUtils.copyProperties(merchantProfileDTO, result);
+        result.setMerchantId(user.getMerchantId());
+        result = merchantUserRepository.save(result);
+        MerchantProfileDTO resultDTO= new MerchantProfileDTO();
         BeanUtils.copyProperties(result,resultDTO);
-        resultDTO.setPassword("");
         return resultDTO;
     }
 
     @Override
+    @Transactional
     public MerchantUserDTO saveUser(MerchantUserDTO merchantUserDTO) throws MerchantUserAlreadyExists {
         if(merchantUserRepository.existsByEmailId(merchantUserDTO.getEmailId())) {
             throw new MerchantUserAlreadyExists("Data already exists");
@@ -82,6 +87,7 @@ public class MerchantUserServiceImpl implements MerchantUserService {
     }
 
     @Override
+    @Transactional
     public boolean addToMerchantdb(MerchantUserEntity merchantUserEntity) {
         RestTemplate restTemplate = new RestTemplate();
         JSONObject data = new JSONObject();

@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @Transactional
     public SubCategoryDTO deleteSubCategory(String subCategoryName) {
         SubCategory subCategory = repository.findBySubCategoryName(subCategoryName);
         if(subCategory != null){
@@ -41,14 +43,10 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @Transactional
     public SubCategoryDTO createSubCategory(SubCategoryDTO subCategoryDTO) throws ProductAlreadyExists {
         if(repository.exists(subCategoryDTO.getSubCategoryId())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content Already Exists");
-            error.put("message", "Content you are inserting is already present in the database");
-            throw new ProductAlreadyExists(error);
+            throw new ProductAlreadyExists("Data already Stored");
         }
         SubCategory subCategory = new SubCategory();
         BeanUtils.copyProperties(subCategoryDTO, subCategory);
@@ -60,6 +58,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
+    @Transactional
     public SubCategoryDTO updateSubCategory(SubCategoryDTO subCategoryDTO) {
         if(repository.exists(subCategoryDTO.getSubCategoryId())){
             SubCategory subCategory = new SubCategory();

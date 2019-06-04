@@ -20,5 +20,4 @@ public interface ProductServiceImpl {
 
     JSONArray query(String query) throws ParseException;
 
-    List<List<ProductDTO>> result(String query);
 }

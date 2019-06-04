@@ -73,14 +73,6 @@ public class SearchController {
         return response;
     }
 
-
-    @GetMapping(value = "/result")
-    public JSONObject getResult(@RequestParam String query) {
-        JSONObject response = getJSONResponse(productService.result(query));
-        response.replace("message", "success", "fetching successful");
-        return response;
-    }
-
     @PostMapping(value="/addall",consumes = {"application/json"})
     public JSONObject saveallProduct(@RequestBody List<ProductDTO> productDTO) {
         ProductDTO result = new ProductDTO();

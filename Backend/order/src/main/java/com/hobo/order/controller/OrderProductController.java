@@ -1,5 +1,6 @@
 package com.hobo.order.controller;
 
+import com.hobo.order.exceptions.orderProductExceptions.DontHaveStock;
 import com.hobo.order.exceptions.orderProductExceptions.OrderProductAlreadyExists;
 import com.hobo.order.entity.OrderProductEntity;
 import com.hobo.order.model.OrderProductDTO;
@@ -25,6 +26,8 @@ public class OrderProductController {
         }
         catch (RuntimeException e){
             e.printStackTrace();
+        } catch (DontHaveStock dontHaveStock) {
+            dontHaveStock.printStackTrace();
         }
         return null;
     }

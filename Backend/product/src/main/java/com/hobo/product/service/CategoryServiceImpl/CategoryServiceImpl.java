@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,14 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryRepository repository;
 
     @Override
+    @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO) throws ProductAlreadyExists {
         if(repository.exists(categoryDTO.getCategoryId())){
-            JSONObject error = new JSONObject();
-            error.put("code", "500");
-            error.put("data", "{}");
-            error.put("error", "Content Already Exists");
-            error.put("message", "Content you are inserting is already present in the database");
-            throw new ProductAlreadyExists(error);
+            throw new ProductAlreadyExists("Data Already Stored");
         }
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
@@ -50,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDTO deleteCategory(String categoryName) {
         Category category = repository.findByCategoryName(categoryName);
         if (category != null){
@@ -62,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDTO updateCategory(CategoryDTO categoryDTO) {
         if(repository.exists(categoryDTO.getCategoryId())){
             Category category = new Category();

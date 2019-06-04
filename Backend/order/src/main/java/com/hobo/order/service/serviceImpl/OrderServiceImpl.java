@@ -41,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
         orderEntityCheck.getUserEmailId();
         orderEmail.sendEmail(orderEntityCheck.getUserEmailId(),orderEntityCheck.getOrderDate().toString(),orderEntityCheck.getOrderPrice());
         BeanUtils.copyProperties(orderEntityCheck,orderDTO);
+        //CartServiceImpl cartService = new CartServiceImpl();
+        //cartService.deleteCarts(orderDTO.getUserEmailId());
         return orderDTO;
     }
 
