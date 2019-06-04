@@ -29,6 +29,7 @@ import com.example.hoboandroid.services.OrderService;
 import com.example.hoboandroid.services.ProductService;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,9 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
     @Override
     public void onBindViewHolder(@NonNull CartItemAdapter.RecyclerViewHolder recyclerViewHolder, int position) {
+
         recyclerViewHolder.bind(list.get(position));
+
     }
 
     @Override
@@ -77,10 +80,13 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder{
+        TextView quantity;
         public RecyclerViewHolder(View itemView){
             super(itemView);
         }
         public void bind(final CartItem cartItem){
+
+
 
             Log.e("CartActivity","inside viewholder "+cartItem.toString());
             Retrofit retrofit = Api.getclient(CONSTANTS.MERCHANT_BASE_URL);
@@ -102,7 +108,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                     .apply(new RequestOptions().override(100,100))
                     .into((ImageView) itemView.findViewById(R.id.cartProductItemImage));
 
-            final TextView quantity = itemView.findViewById(R.id.cartItem_quantity);
+            quantity = itemView.findViewById(R.id.cartItem_quantity);
             quantity.setText(""+cartItem.getQuantity());
 
             //To update the price and alert us in the cart
@@ -182,7 +188,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
         }
 
-        private void removingCartItemByOne(CartItem cartItem) {
+        public void removingCartItemByOne(final CartItem cartItem) {
 
             if(cartItem.getQuantity() - 1 == 0){
                 deletingCartItem(cartItem);
@@ -219,8 +225,11 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                                 Log.e("one removing Cart", "response in cart"+response.message());
                                 if (response.body() != null) {
                                     Log.e("one removing Cart", "response body in cart"+response.body().getData().toString());
-                                    notifyDataSetChanged();
-                                }
+                                    }
+                                notifyItemChanged(getAdapterPosition());
+                                int updatedQuantity = cartItem.getQuantity()-1;
+                                list.get(getAdapterPosition()).setQuantity(updatedQuantity);
+                                quantity.setText(""+updatedQuantity);
                                 //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
                             }
 
@@ -234,7 +243,7 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
         }
 
-        private void deletingCartItem(final CartItem cartItem) {
+        public void deletingCartItem(final CartItem cartItem) {
 
 
             Retrofit retrofitDelete= new Retrofit.Builder()
@@ -255,6 +264,9 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
                                 Toast.makeText(itemView.getContext(),response.body().getData(),Toast.LENGTH_SHORT).show();
                             }
+                            list.remove(getAdapterPosition());
+                            ((CartActivity)context).cartItemsList.remove(getAdapterPosition());
+                            notifyItemRemoved(getAdapterPosition());
                             notifyDataSetChanged();
                         }
 
@@ -267,9 +279,9 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
 
         }
 
-        private void addingCartItem(final CartItem cartItem) {
+        public void addingCartItem(final CartItem cartItem) {
             if(cartItem.getQuantity() + 1 > 10){
-                Toast.makeText(itemView.getContext(),"Cannot have more than two at same time",Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(),"Cannot have more than at same time",Toast.LENGTH_SHORT).show();
             }
             else {
 
@@ -303,7 +315,10 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                                 if (response.body() != null) {
                                     Log.e("one removing Cart", "response body in cart"+response.body().getData().toString());
                                 }
-                                notifyDataSetChanged();
+                                notifyItemChanged(getAdapterPosition());
+                                int updatedQuantity = cartItem.getQuantity()+1;
+                                list.get(getAdapterPosition()).setQuantity(updatedQuantity);
+                                quantity.setText(""+updatedQuantity);
                                 //  Log.e("CartActivity", "in add cart response "+response.body().toString() );
                             }
 
@@ -315,5 +330,6 @@ public class CartItemAdapter  extends RecyclerView.Adapter<CartItemAdapter.Recyc
                         });
             }
         }
+
     }
 }

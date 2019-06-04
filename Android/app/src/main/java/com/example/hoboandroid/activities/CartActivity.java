@@ -49,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartActivity extends BaseActivity implements View.OnClickListener {
 
-    ArrayList<CartItem> cartItemsList = new ArrayList<>();
+    public ArrayList<CartItem> cartItemsList = new ArrayList<>();
     public CartItemAdapter cartItemAdapter;
     RecyclerView cartRecyclerView;
     CartItem cartItem;
@@ -147,7 +147,10 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         getCartItems();
 
         checkout.setOnClickListener(this);
-        //deleteall.setOnClickListener(this);
+        checkout.setEnabled(false);
+
+
+        deleteall.setOnClickListener(this);
         //implemented inside on click function
 
 
@@ -162,6 +165,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
 
     }
+
 
 
     public void getCartItems() {
@@ -194,6 +198,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                         cartRecyclerView.setAdapter(cartItemAdapter);
                         cartItemAdapter.notifyDataSetChanged();
                         calculateTotalPrice();
+                        checkout.setEnabled(true);
 
                     }
                     else {
@@ -235,7 +240,7 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.cart_deleteAll){
-            //deleteAllCartItems();
+            deleteAllCartItems();
         }
         else if(v.getId() == R.id.cart_checkOut){
             checkout();
@@ -243,54 +248,45 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-   /* private void deleteAllCartItems() {
+   private void deleteAllCartItems() {
 
         if(isLoggedIn()){
 
-            if(cartItem.getQuantity() - 1 == 0){
-                Toast.makeText(getApplicationContext(),"Deleting the product from cart",Toast.LENGTH_SHORT).show();
-
-                //TODO refresh
-            }
-            else {
-                cartItem.setQuantity(cartItem.getQuantity()-1);
-
-                Retrofit retrofit = new Retrofit.Builder()
+            for(CartItem cartItem:cartItemsList) {
+                Retrofit retrofitDelete = new Retrofit.Builder()
                         .baseUrl(CONSTANTS.ORDER_BASE_URL)
                         .client(new OkHttpClient())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
-                OrderService orderService = retrofit.create(OrderService.class);
+                OrderService orderService = retrofitDelete.create(OrderService.class);
 
                 orderService.deleteCartItem(cartItem.getCartItemId())
-                        .enqueue(new Callback<ApiResponse<C>>() {
+                        .enqueue(new Callback<ApiResponse<String>>() {
                             @Override
-                            public void onResponse(Call<ApiResponse<CartItem>> call, Response<ApiResponse<CartItem>> response) {
-                                if(response.body() != null && response.body().getData()!=null){
-                                    if(cartItem.getCartItemId()==response.body().getData().getCartItemId()) {
-                                        Toast.makeText(getApplicationContext(),"Deleting the product from cart",Toast.LENGTH_SHORT).show();
-                                        Log.d("CartItemAdapter", "Successfully deleted - " + response.body().getData().toString());
-                                    }
-                                    else{
-                                        Log.d("CartItemAdapter", "cart Item deletion didn't return same item Id - " + response.body().getData().toString());
-                                    }
+                            public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
+                                Log.e("In cart delete", "in response");
+                                if (response.body() != null) {
+                                    //Log.e("Inside cart response", response.body().toString());
 
+                                    Toast.makeText(getApplicationContext(), response.body().getData(), Toast.LENGTH_SHORT).show();
                                 }
-                                getCartItems();
+
                             }
 
                             @Override
-                            public void onFailure(Call<ApiResponse<CartItem>> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(),"Couldn't connect please try again",Toast.LENGTH_SHORT).show();
-                                Log.d("CartItemAdapter","onFailure response in deletingCartItem couldn't connect - Cart" );
+                            public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
+                                Log.e("Cart delete", "failed");
                             }
                         });
+
             }
+            startActivity(new Intent(getApplicationContext(),CartActivity.class));
+            finish();
+
         }
 
     }
-*/
     /*public void addToTotalPrice(int i) {
         try {
             i += Integer.parseInt(totalPriceTextView.getText().toString());
@@ -302,6 +298,15 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 */
+
+    @Override
+    protected void onResume() {
+        if(!isLoggedIn())
+            finish();
+        super.onResume();
+
+    }
+
     public void checkout(){
         float totalPrice=0;
         // ArrayList<CartItem>  cartItemList= cartItems.getParcelableArrayList("cartItems");
@@ -381,8 +386,10 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
 
                                             }
                                         });
+                                deleteCartItem(cartItemsList.get(i));
                             }
 
+                            cartItemAdapter.notifyDataSetChanged();
                             startActivity(new Intent(getApplicationContext(),CheckoutPromptActivity.class));
                             finish();
                         }
@@ -395,6 +402,36 @@ public class CartActivity extends BaseActivity implements View.OnClickListener {
                     }
                 });
 
+
+    }
+
+    private void deleteCartItem(CartItem cartItem) {
+        Retrofit retrofitDelete= new Retrofit.Builder()
+                .baseUrl(CONSTANTS.ORDER_BASE_URL)
+                .client(new OkHttpClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        OrderService orderService=retrofitDelete.create(OrderService.class);
+
+        orderService.deleteCartItem(cartItem.getCartItemId())
+                .enqueue(new Callback<ApiResponse<String>>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse<String>> call, Response<ApiResponse<String>> response) {
+                        Log.e("In cart delete", "in response");
+                        if(response.body()!=null){
+                            //Log.e("Inside cart response", response.body().toString());
+
+                            Toast.makeText(getApplicationContext(),response.body().getData(),Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiResponse<String>> call, Throwable t) {
+                        Log.e("Cart delete", "failed");
+                    }
+                });
 
     }
 }
