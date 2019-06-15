@@ -15,6 +15,18 @@ public class Merchant {
     private String email;
     private long phoneNumber;
 
+    public Merchant(int merchantId, String merchantName, float merchantRating, String address, String email, long phoneNumber) {
+        this.merchantId = merchantId;
+        this.merchantName = merchantName;
+        this.merchantRating = merchantRating;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Merchant() {
+    }
+
     public int getMerchantId() {
         return merchantId;
     }

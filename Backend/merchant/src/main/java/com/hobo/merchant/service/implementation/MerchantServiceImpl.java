@@ -82,6 +82,10 @@ public  class MerchantServiceImpl implements MerchantService {
     @Override
     public MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating) throws MerchantNotFound {
         Merchant merchant = merchantRepository.findOne(merchantId);
+        if(merchant == null)
+        {
+            throw new MerchantNotFound("Data not found");
+        }
         merchant.setMerchantRating(merchantRating);
         merchant = merchantRepository.save(merchant);
         MerchantDTO result = new MerchantDTO();
@@ -89,15 +93,21 @@ public  class MerchantServiceImpl implements MerchantService {
         return result;
     }
 
-    public String getName(Integer merchantId) {
+    public String getName(Integer merchantId) throws MerchantNotFound {
         Merchant merchant = merchantRepository.findOne(merchantId);
+        if(merchant == null) {
+            throw new MerchantNotFound("Data not found");
+        }
         String result = merchant.getMerchantName();
         return result;
     }
 
 
-    public NameAndStockDTO getNameAndStock(Integer merchantId, Integer productId) {
+    public NameAndStockDTO getNameAndStock(Integer merchantId, Integer productId) throws MerchantNotFound {
         Merchant merchant = merchantRepository.findOne(merchantId);
+        if(merchant == null) {
+            throw new MerchantNotFound("Data not found");
+        }
         MerchantProduct merchantProduct = merchantProductRepository.findByProductIdAndMerchantId(productId,merchantId);
         NameAndStockDTO result = new NameAndStockDTO();
         if(merchant !=null)

@@ -17,6 +17,19 @@ public class MerchantProduct {
     private int productsSold;
     private double merchantScore;
 
+    public MerchantProduct(int indexx, int merchantId, int productId, int stock, float price, float productRating, int productsSold, double merchantScore) {
+        this.indexx = indexx;
+        this.merchantId = merchantId;
+        this.productId = productId;
+        this.stock = stock;
+        this.price = price;
+        this.productRating = productRating;
+        this.productsSold = productsSold;
+        this.merchantScore = merchantScore;
+    }
+
+    public MerchantProduct() {
+    }
 
     public int getIndexx() {
         return indexx;

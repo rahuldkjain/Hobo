@@ -12,6 +12,14 @@ public class NameAndStockDTO {
                 '}';
     }
 
+    public NameAndStockDTO(String name, int stock) {
+        this.name = name;
+        this.stock = stock;
+    }
+
+    public NameAndStockDTO() {
+    }
+
     public String getName() {
         return name;
     }

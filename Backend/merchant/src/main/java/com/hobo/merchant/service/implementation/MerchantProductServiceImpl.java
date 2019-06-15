@@ -78,7 +78,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         BeanUtils.copyProperties(merchantProductDTO,merchantProduct1);
         merchantProductRepository.save(merchantProduct1);
         //UpdateScore
-        calculateScore(merchantProduct1.getIndexx());
+        //calculateScore(merchantProduct1.getIndexx());
         return merchantProductDTO;
     }
 
@@ -93,9 +93,9 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
     }
 
     @Override
-    public MerchantProductDTO getTopMerchant(Integer producctId) throws MerchantProductNotFound{
+    public MerchantProductDTO getTopMerchant(Integer productId) throws MerchantProductNotFound{
         MerchantProductDTO merchantProductDTO=new MerchantProductDTO();
-        List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(producctId);
+        List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductId(productId);
 
         double merchantScore=0;
         for (MerchantProduct merchantProduct:merchantProducts) {
@@ -118,15 +118,15 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         List<MerchantProduct> merchantProducts=merchantProductRepository.findByProductIdOrderByMerchantScoreDesc(productId);
         //Object merchantProducts = merchantProductRepository.test(productId);
         List<MerchantProductDTO> resultArray = new ArrayList<>();
+        if(merchantProducts==null)
+        {
+            throw new MerchantProductNotFound("Data not found");
+        }
         for (MerchantProduct it: merchantProducts) {
             it.setStock((int)(Math.floor(it.getStock()*0.8)));
             MerchantProductDTO merchantProductDTO = new MerchantProductDTO();
             BeanUtils.copyProperties(it,merchantProductDTO);
             resultArray.add(merchantProductDTO);
-        }
-        if(merchantProducts==null)
-        {
-            throw new MerchantProductNotFound("Data not found");
         }
 
         return resultArray;
@@ -141,8 +141,7 @@ public class MerchantProductServiceImpl  implements MerchantProductService {
         }
         MerchantProductDTO merchantProductDTO=readMerchantProduct(index);
         merchantProductDTO.setProductRating(productRating);
-        MerchantProductDTO merchantProductDTO1=new MerchantProductDTO();
-        merchantProductDTO1=updateMerchantProduct(merchantProductDTO);
+        MerchantProductDTO merchantProductDTO1 = updateMerchantProduct(merchantProductDTO);
         return merchantProductDTO1;
     }
 

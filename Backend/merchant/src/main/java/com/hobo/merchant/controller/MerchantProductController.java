@@ -120,6 +120,8 @@ public class MerchantProductController {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (MerchantNotFound merchantNotFound) {
+            merchantNotFound.printStackTrace();
         }
         return null;
     }

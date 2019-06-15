@@ -13,7 +13,7 @@ public interface MerchantService {
 
     MerchantDTO updateMerchantRating(Integer merchantId, float merchantRating)throws MerchantNotFound;
 
-    String getName(Integer merchantId);
+    String getName(Integer merchantId) throws MerchantNotFound;
 
-    NameAndStockDTO getNameAndStock(Integer merchantId, Integer productId);
+    NameAndStockDTO getNameAndStock(Integer merchantId, Integer productId) throws MerchantNotFound;
 }

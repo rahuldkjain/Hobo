@@ -8,6 +8,17 @@ public class MerchantDTO {
     private String email;
     private long phoneNumber;
 
+    public MerchantDTO(int merchantId, String merchantName, String address, String email, long phoneNumber) {
+        this.merchantId = merchantId;
+        this.merchantName = merchantName;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public MerchantDTO() {
+    }
+
     public int getMerchantId() {
         return merchantId;
     }
